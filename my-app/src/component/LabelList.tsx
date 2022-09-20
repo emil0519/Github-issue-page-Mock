@@ -4,7 +4,7 @@ import { store } from "../state/store";
 import { useEffect } from "react";
 
 function LabelList() {
-  const labels = useSelector((state) => state);
+  const labels: any = useSelector((state) => state);
 
   useEffect(() => {
     console.log(labels);
@@ -13,10 +13,32 @@ function LabelList() {
   console.log(labels);
 
   //   console.log(store.getState());
+  if (labels === undefined) {
+    return <></>;
+  }
 
   return (
-    <Wrapper>
-      <Label>
+    // <Wrapper>
+    <>
+      {labels.map((item: any) => {
+        return (
+          <Wrapper>
+            <Label color={item.color}>
+              <LabelText>{item.name}</LabelText>
+            </Label>
+            <LabelDes>{item.description}</LabelDes>
+            <Notification></Notification>
+            <Sort>
+              <SortText>...</SortText>
+            </Sort>
+            <BigSort>
+              <BigSortText>Edit</BigSortText>
+              <BigSortText>Delete</BigSortText>
+            </BigSort>
+          </Wrapper>
+        );
+      })}
+      {/* <Label>
         <LabelText>documentation</LabelText>
       </Label>
       <LabelDes>Improvements or additions to documentation</LabelDes>
@@ -27,8 +49,9 @@ function LabelList() {
       <BigSort>
         <BigSortText>Edit</BigSortText>
         <BigSortText>Delete</BigSortText>
-      </BigSort>
-    </Wrapper>
+      </BigSort> */}
+      {/* </Wrapper> */}
+    </>
   );
 }
 
@@ -119,10 +142,12 @@ const LabelText = styled.span`
 `;
 
 const Label = styled.div`
-  width: 109px;
+  /* width: 109px; */
+  max-width: 50%;
+  min-width: 50px;
   height: 24px;
   margin-left: 10px;
-  background: #126bbf;
+  background: #${(props) => props.color};
   border-radius: 15px;
   display: flex;
   align-items: center;
