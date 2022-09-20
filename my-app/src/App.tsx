@@ -3,6 +3,11 @@ import { response } from "express";
 import React, { useState } from "react";
 import api from "./utils/api";
 import Header from "./component/Header";
+import Repo from "./component/Repo";
+import Option from "./component/Option";
+import LabelButtons from "./component/LabelButtons";
+
+
 function App() {
 
   const [label, setLabel] = useState(null);
@@ -38,8 +43,9 @@ function App() {
   return (
     <>
       <Header />
-    
-
+      <Repo />
+      <Option />
+      <LabelButtons />
     </>
   );
 }
