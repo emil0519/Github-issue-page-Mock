@@ -59,11 +59,11 @@ const SearchBar = styled.input`
 const UpperWrapper = styled.div`
     /* width:40%; */
     display: flex;
-    display: flex;
     justify-content: space-between;
 
-    margin-right: 16px;
-
+    /* margin-right: 16px; */
+    width: 95%;
+    margin: 0 auto;
     
   @media screen and (min-width: 768px) {
  
@@ -208,7 +208,6 @@ const LabelSection = styled.section`
 
 const Wrapper = styled.section`
     background:white;
-    margin-left: 16px;
     margin-top: 20px;
     /* display: flex;
     justify-content: space-between;

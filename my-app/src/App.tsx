@@ -6,6 +6,7 @@ import Header from "./component/Header";
 import Repo from "./component/Repo";
 import Option from "./component/Option";
 import LabelButtons from "./component/LabelButtons";
+import BoxHeader from "./component/BoxHeader";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
       <Repo />
       <Option />
       <LabelButtons />
+      <BoxHeader />
     </>
   );
 }
