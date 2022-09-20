@@ -1,9 +1,10 @@
-// import {  createStore } from "redux";
-// import reducer from "./test-reducer";
+import { createStore } from "redux";
+import reducer from "./test-reducer";
+// import { configureStore } from '@reduxjs/toolkit'
 
-// export const store= createStore(reducer)
+export const store = createStore(reducer);
 
-// //可以直接呼叫store.dispatch,store.getState, store.subscribe 
+// //可以直接呼叫store.dispatch,store.getState, store.subscribe
 // //react中透過react redux取得dispatch或useSelector
 // // const store= createStore(reducer) 決定讓哪些component能取得store的資料 --> index.js
 
@@ -14,7 +15,13 @@
 // //這樣state就是一個object，當需要用useSelector的時候，可以寫成
 // //useSelector (state=> state.number)，不需要combine reducer
 
-console.log('hello  ')
+// console.log('hello  ')
 
+// export{};
+// import reducer from "./test-reducer";
 
-export{};
+// import { configureStore } from "@reduxjs/toolkit";
+
+// export const store = configureStore({
+//   reducer: { labelReducer: reducer },
+// });

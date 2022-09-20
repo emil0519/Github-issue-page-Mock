@@ -4,8 +4,28 @@
 //     ).stock;
 //   }
 
-//   const initState = JSON.parse((window.localStorage.getItem("cartItems") as string )) ||  [] as null;
+// import React, { useState } from "react";
 
+import api from "../utils/api";
+let initState: any;
+async function startResult() {
+  initState = await api.getLabels("emil0519", "testing-issues");
+}
+startResult();
+
+//   const initState = await api.getLabels("emil0519", "testing-issues")
+const reducer = (state = initState, action: any) => {
+  switch (action.type) {
+    case "getList": {
+      console.log(state);
+      return state;
+    }
+    default:
+      return state;
+  }
+};
+
+export default reducer;
 
 // const reducer =(state=initState,action)=>{
 //   console.log(state)
@@ -53,16 +73,12 @@
 //               const newCartItems=[];
 
 //               return newCartItems;
-//         }  
-//         default: 
+//         }
+//         default:
 //         return initState;
 //     }
 // }
 
-
 // export default reducer
 
-console.log('hello  ')
-
-
-export{};
+export {};
