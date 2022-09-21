@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import labelIcon from "../img/labelicon.png";
 import { MilestoneIcon, IssueReopenedIcon } from "@primer/octicons-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import api from "../utils/api";
 
 export interface opener {
   labelOpen: boolean;
@@ -9,9 +10,25 @@ export interface opener {
 
 function LabelButtons() {
   const [labelOpen, setLabelOpen] = useState(true);
-  // interface useState {
-  //   labelOpen: boolean;
-  // }
+  const [defaultColorInput, setDefaultColorInput] = useState("#e99695");
+  const [newLabelInfo, setNewLabelInfo] = useState({
+    name: "",
+    description: "",
+    color: "e99695",
+  });
+
+  const startCreate = async () => {
+    const result = await api.createLabels(
+      "emil0519",
+      "testing-issues",
+      newLabelInfo.name,
+      newLabelInfo.description,
+      newLabelInfo.color.substring(1)
+    );
+    console.log(result);
+  };
+
+  useEffect(() => console.log(newLabelInfo), [newLabelInfo]);
 
   return (
     <Wrapper>
@@ -43,11 +60,24 @@ function LabelButtons() {
         <BigWrapper>
           <LabelInputSection>
             <LabelName>Label Name</LabelName>
-            <LabelInput placeholder="Label name" />
+            <LabelInput
+              placeholder="Label name"
+              onChange={(e) =>
+                setNewLabelInfo({ ...newLabelInfo, name: e.target.value })
+              }
+            />
           </LabelInputSection>
           <LabelInputSection>
             <LabelName>Description</LabelName>
-            <LabelInput placeholder="Description" />
+            <LabelInput
+              placeholder="Description"
+              onChange={(e) =>
+                setNewLabelInfo({
+                  ...newLabelInfo,
+                  description: e.target.value,
+                })
+              }
+            />
           </LabelInputSection>
           <ColorInputSection>
             <ColorText>Color</ColorText>
@@ -55,12 +85,21 @@ function LabelButtons() {
               <ColorRoller>
                 <RollerIcon />
               </ColorRoller>
-              <ColorInput value="#e99695"></ColorInput>
+              <ColorInput
+                maxLength={7}
+                value={`${defaultColorInput}`}
+                onChange={(e) => {
+                  setDefaultColorInput(e.target.value);
+                  setNewLabelInfo({ ...newLabelInfo, color: e.target.value });
+                }}
+              ></ColorInput>
             </LowerWrapper>
           </ColorInputSection>
           <ButtonWrapper>
             <CreateLabelButton>
-              <CreateLabelText>Create Label</CreateLabelText>
+              <CreateLabelText onClick={() => startCreate()}>
+                Create Label
+              </CreateLabelText>
             </CreateLabelButton>
             <CancelButton>
               <CancelText onClick={() => setLabelOpen(false)}>

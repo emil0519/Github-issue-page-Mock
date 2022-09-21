@@ -31,7 +31,13 @@ function App() {
   }
 
   const startCreate = async () => {
-    const result = await api.createLabels("emil0519", "testing-issues");
+    const result = await api.createLabels(
+      "emil0519",
+      "testing-issues",
+      "new",
+      "newdes",
+      "e99695"
+    );
     console.log(result);
   };
 
@@ -62,22 +68,22 @@ function App() {
     /* <button onClick={()=>startResult()}>Show Label List</button> */
   }
   {
-    /* <button onClick={()=>startCreate()}>Show Label List</button> */
-  }
-  {
-    /* <button onClick={()=>startDelete()}>Show Label List</button> */
-  }
+    {
+      /* <button onClick={()=>startDelete()}>Show Label List</button> */
+    }
 
-  return (
-    <>
-      <Header />
-      <Repo />
-      <Option />
-      <LabelButtons />
-      <BoxHeader />
-      <button onClick={() => test()}></button>
-    </>
-  );
+    return (
+      <>
+        <Header />
+        <Repo />
+        <Option />
+        <LabelButtons />
+        <BoxHeader />
+        <button onClick={() => test()}></button>
+        <button onClick={() => startCreate()}>Create Label</button>
+      </>
+    );
+  }
 }
 
 export default App;

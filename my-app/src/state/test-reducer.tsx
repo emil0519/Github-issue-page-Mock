@@ -6,7 +6,6 @@
 
 // import React, { useState } from "react";
 
-import { editableInputTypes } from "@testing-library/user-event/dist/utils";
 import api from "../utils/api";
 let initState: any;
 async function startResult() {
