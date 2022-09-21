@@ -1,44 +1,55 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { store } from "../state/store";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 function LabelList() {
+  const dispatch = useDispatch();
   const labels: any = useSelector((state) => state);
-
+  // useEffect(() => {
+  //   test();
+  // }, []);
+  setTimeout(() => test(), 1000);
+  // 改進：useInterval loading boolean, lazy loading, suspends
+  function test() {
+    dispatch({
+      type: "",
+    });
+  }
   useEffect(() => {
     console.log(labels);
   }, [labels]);
 
-  console.log(labels);
-
-  //   console.log(store.getState());
   if (labels === undefined) {
-    return <></>;
-  }
-
-  return (
-    // <Wrapper>
-    <>
-      {labels.map((item: any) => {
-        return (
-          <Wrapper>
-            <Label color={item.color}>
-              <LabelText>{item.name}</LabelText>
-            </Label>
-            <LabelDes>{item.description}</LabelDes>
-            <Notification></Notification>
-            <Sort>
-              <SortText>...</SortText>
-            </Sort>
-            <BigSort>
-              <BigSortText>Edit</BigSortText>
-              <BigSortText>Delete</BigSortText>
-            </BigSort>
-          </Wrapper>
-        );
-      })}
-      {/* <Label>
+    // test();
+    return (
+      <>
+        <h1>Loading</h1>
+      </>
+    );
+  } else {
+    return (
+      <>
+        {labels.map((item: any) => {
+          return (
+            <Wrapper>
+              <LabelWrap>
+                <Label color={item.color}>
+                  <LabelText color={item.color}>{item.name}</LabelText>
+                </Label>
+              </LabelWrap>
+              <LabelDes>{item.description}</LabelDes>
+              <Notification></Notification>
+              <Sort>
+                <SortText>...</SortText>
+              </Sort>
+              <BigSort>
+                <BigSortText>Edit</BigSortText>
+                <BigSortText>Delete</BigSortText>
+              </BigSort>
+            </Wrapper>
+          );
+        })}
+        {/* <Label>
         <LabelText>documentation</LabelText>
       </Label>
       <LabelDes>Improvements or additions to documentation</LabelDes>
@@ -50,10 +61,28 @@ function LabelList() {
         <BigSortText>Edit</BigSortText>
         <BigSortText>Delete</BigSortText>
       </BigSort> */}
-      {/* </Wrapper> */}
-    </>
-  );
+        {/* </Wrapper> */}
+      </>
+    );
+  }
 }
+
+// const TextWrap = styled.div`
+
+//   @media screen and (min-width: 768px) {
+//     display: flex;
+//     width: 1280px;
+//     height: 18px;
+//     justify-content: center;
+//   }
+// `;
+
+const LabelWrap = styled.div`
+  width: 15%;
+  height: 24px;
+  @media screen and (min-width: 1012px) {
+  }
+`;
 
 const BigSortText = styled.span`
   display: none;
@@ -79,6 +108,7 @@ const BigSort = styled.div`
   display: none;
   @media screen and (min-width: 1012px) {
     display: flex;
+    width: 8%;
   }
 `;
 
@@ -103,6 +133,7 @@ const LabelDes = styled.span`
     font-size: 12px;
     color: #4d555e;
     font-weight: 500;
+    width: 57%;
   }
 `;
 
@@ -136,15 +167,20 @@ const Sort = styled.div`
 const LabelText = styled.span`
   font-size: 12px;
   font-weight: 700;
-  color: white;
+  color: ${(props) => (props.color === "ffffff" ? "black" : "white")};
   @media screen and (min-width: 768px) {
   }
 `;
 
 const Label = styled.div`
-  /* width: 109px; */
-  max-width: 50%;
-  min-width: 50px;
+  width: fit-content;
+  padding-left: 6px;
+  padding-right: 6px;
+  white-space: no-wrap;
+  border: ${(props) =>
+    props.color === "ffffff" ? "0.5px solid #b7b7b7" : "none"};
+  /* max-width: 50%;
+  min-width: 50px; */
   height: 24px;
   margin-left: 10px;
   background: #${(props) => props.color};
@@ -158,6 +194,7 @@ const Label = styled.div`
 `;
 
 const Wrapper = styled.section`
+  display: none;
   width: 95vw;
   height: 55px;
   margin: 0 auto;

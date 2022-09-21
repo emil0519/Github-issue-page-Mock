@@ -6,22 +6,24 @@
 
 // import React, { useState } from "react";
 
+import { editableInputTypes } from "@testing-library/user-event/dist/utils";
 import api from "../utils/api";
 let initState: any;
 async function startResult() {
   initState = await api.getLabels("emil0519", "testing-issues");
 }
+// 改進：payload 進去
 startResult();
 
-//   const initState = await api.getLabels("emil0519", "testing-issues")
 const reducer = (state = initState, action: any) => {
   switch (action.type) {
     case "getList": {
-      console.log(state);
+      console.log(initState);
       return state;
     }
     default:
-      return state;
+      console.log(initState);
+      return initState;
   }
 };
 

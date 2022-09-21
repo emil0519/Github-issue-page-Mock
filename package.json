@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@types/react": "^18.0.20",
+    "@types/styled-components": "^5.1.26",
     "react-router-dom": "^6.4.0"
   }
 }
