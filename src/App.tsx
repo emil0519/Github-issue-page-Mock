@@ -3,6 +3,7 @@ import { response } from "express";
 import React, { useState } from "react";
 import api from "./utils/api";
 import Header from "./component/Header";
+import Footer from "./component/Footer";
 import Repo from "./component/Repo";
 import Option from "./component/Option";
 import LabelButtons from "./component/LabelButtons";
@@ -61,29 +62,25 @@ function App() {
     );
     console.log(result);
   };
-  {
-    /* <div>Hello world</div> */
-  }
-  {
-    /* <button onClick={()=>startResult()}>Show Label List</button> */
-  }
-  {
-    {
-      /* <button onClick={()=>startDelete()}>Show Label List</button> */
-    }
 
-    return (
-      <>
-        <Header />
-        <Repo />
-        <Option />
-        <LabelButtons />
-        <BoxHeader />
-        <button onClick={() => test()}></button>
-        <button onClick={() => startCreate()}>Create Label</button>
-      </>
-    );
-  }
+  /* <div>Hello world</div> */
+
+  /* <button onClick={()=>startResult()}>Show Label List</button> */
+
+  /* <button onClick={()=>startDelete()}>Show Label List</button> */
+
+  return (
+    <>
+      <Header />
+      <Repo />
+      <Option />
+      <LabelButtons />
+      <BoxHeader />
+      <Footer />
+      <button onClick={() => test()}></button>
+      <button onClick={() => startCreate()}>Create Label</button>
+    </>
+  );
 }
 
 export default App;

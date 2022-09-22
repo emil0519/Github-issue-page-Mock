@@ -19,7 +19,8 @@ const api = {
       }),
       headers: new Headers({
         Accept: "application/vnd.github+json",
-        Authorization: "token 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",
+        Authorization: `token ${process.env.REACT_APP_TOKEN}`,
+        // hash table?
       }),
       method: "POST",
     });

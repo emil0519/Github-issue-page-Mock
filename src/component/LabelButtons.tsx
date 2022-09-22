@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import labelIcon from "../img/labelicon.png";
 import { MilestoneIcon, IssueReopenedIcon } from "@primer/octicons-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 import api from "../utils/api";
 
 export interface opener {
@@ -9,24 +11,40 @@ export interface opener {
 }
 
 function LabelButtons() {
-  const [labelOpen, setLabelOpen] = useState(true);
+  const [labelOpen, setLabelOpen] = useState(false);
   const [defaultColorInput, setDefaultColorInput] = useState("#e99695");
   const [newLabelInfo, setNewLabelInfo] = useState({
     name: "",
     description: "",
-    color: "e99695",
+    color: "#e99695",
   });
+  const [created, setCreated] = useState(0);
+  const dispatch = useDispatch();
 
   const startCreate = async () => {
-    const result = await api.createLabels(
-      "emil0519",
-      "testing-issues",
-      newLabelInfo.name,
-      newLabelInfo.description,
-      newLabelInfo.color.substring(1)
-    );
+    const result = await api
+      .createLabels(
+        "emil0519",
+        "testing-issues",
+        newLabelInfo.name,
+        newLabelInfo.description,
+        newLabelInfo.color.substring(1)
+      )
+      .then((data) => {
+        console.log(data);
+        dispatch({
+          type: "createList",
+          payload: { data },
+        });
+      });
+    setCreated(created + 1);
     console.log(result);
   };
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "getList",
+  //   });
+  // }, [created]);
 
   useEffect(() => console.log(newLabelInfo), [newLabelInfo]);
 

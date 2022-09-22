@@ -1,25 +1,57 @@
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import api from "../utils/api";
 
 function LabelList() {
   const dispatch = useDispatch();
-  const labels: any = useSelector((state) => state);
+
+  const [label, setLabel]: any = useState();
+  const updatedLabels: any = useSelector((state) => state);
+  console.log(process.env.REACT_APP_TOKEN);
+
+  useEffect(() => {
+    (async () => {
+      setLabel(await api.getLabels("emil0519", "testing-issues"));
+    })().catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    setLabel(updatedLabels);
+    console.log("update");
+  }, [updatedLabels]);
+
+  useEffect(() => {
+    dispatch({
+      type: "getList",
+      payload: { label },
+    });
+  }, [label]);
+
+  useEffect(() => {
+    console.log("updated Label refresh");
+  }, [updatedLabels]);
+
+  useEffect(() => console.log(label), []);
+
+  // const labels: any = useSelector((state) => state);
+  const [clickIndex, setClickIndex] = useState(-1);
   // useEffect(() => {
   //   test();
+  // fetch
+  // dispatch init state
   // }, []);
-  setTimeout(() => test(), 1000);
+  // setTimeout(() => test(), 1000);
   // 改進：useInterval loading boolean, lazy loading, suspends
-  function test() {
-    dispatch({
-      type: "",
-    });
-  }
-  useEffect(() => {
-    console.log(labels);
-  }, [labels]);
-
-  if (labels === undefined) {
+  // function test() {
+  //   dispatch({
+  //     type: "",
+  //   });
+  // }
+  // useEffect(() => {
+  //   console.log(labels);
+  // }, [labels]);
+  if (label === undefined) {
     // test();
     return (
       <>
@@ -29,7 +61,7 @@ function LabelList() {
   } else {
     return (
       <>
-        {labels.map((item: any) => {
+        {label.map((item: any, index: any) => {
           return (
             <Wrapper>
               <LabelWrap>
@@ -40,7 +72,17 @@ function LabelList() {
               <LabelDes>{item.description}</LabelDes>
               <Notification></Notification>
               <Sort>
-                <SortText>...</SortText>
+                <SortText onClick={() => setClickIndex(index)}>...</SortText>
+                <DropDown
+                  key={index}
+                  index={index}
+                  isActive={index === clickIndex ? true : false}
+                  clickIndex={clickIndex}
+                >
+                  {clickIndex}
+                  <DropDownText>Edit</DropDownText>
+                  <DropDownText>Delete</DropDownText>
+                </DropDown>
               </Sort>
               <BigSort>
                 <BigSortText>Edit</BigSortText>
@@ -49,33 +91,45 @@ function LabelList() {
             </Wrapper>
           );
         })}
-        {/* <Label>
-        <LabelText>documentation</LabelText>
-      </Label>
-      <LabelDes>Improvements or additions to documentation</LabelDes>
-      <Notification>1 open issue or pull request</Notification>
-      <Sort>
-        <SortText>...</SortText>
-      </Sort>
-      <BigSort>
-        <BigSortText>Edit</BigSortText>
-        <BigSortText>Delete</BigSortText>
-      </BigSort> */}
-        {/* </Wrapper> */}
       </>
     );
   }
 }
 
-// const TextWrap = styled.div`
+const DropDownText = styled.span`
+  padding: 8px;
+  width: 158px;
+  height: 34px;
+  font-size: 8px;
+  color: #34383b;
+  background: white;
+  &:hover {
+    background: #1760cf;
+  }
+  @media screen and (min-width: 1012px) {
+  }
+`;
 
-//   @media screen and (min-width: 768px) {
-//     display: flex;
-//     width: 1280px;
-//     height: 18px;
-//     justify-content: center;
-//   }
-// `;
+type Active = {
+  isActive: boolean;
+  clickIndex: number;
+  index: number;
+};
+
+const DropDown = styled.div<Active>`
+  display: ${(props) => (props.index === props.clickIndex ? "flex" : "none")};
+  /* display: flex; */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 160px;
+  height: 82px;
+  background: yellow;
+  flex-direction: column;
+
+  @media screen and (min-width: 1012px) {
+  }
+`;
 
 const LabelWrap = styled.div`
   width: 15%;
@@ -143,6 +197,7 @@ const SortText = styled.span`
 `;
 
 const Sort = styled.div`
+  position: relative;
   width: 42px;
   height: 28px;
   background: #f5f7f9;

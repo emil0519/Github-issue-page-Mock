@@ -8,21 +8,59 @@
 
 import api from "../utils/api";
 let initState: any;
-async function startResult() {
-  initState = await api.getLabels("emil0519", "testing-issues");
-}
-// 改進：payload 進去
-startResult();
-
+// async function startResult() {
+//   initState = await api.getLabels("emil0519", "testing-issues");
+// }
+// // 改進：payload 進去
+// startResult();
+initState = [];
 const reducer = (state = initState, action: any) => {
   switch (action.type) {
     case "getList": {
-      console.log(initState);
-      return state;
+      // action.payload.label && console.log(action.payload.label);
+      // if (action.label === undefined) {
+      //   console.log("undefined");
+      //   console.log("action.payload.label");
+      //   return;
+      // } else {
+      console.log(action.payload.label);
+      return action.payload.label;
+      // }
+      // return;
+      // async function startResult() {
+      //   initState = await api.getLabels("emil0519", "testing-issues");
+      // }
+      // startResult();
+      // //thunk saga
+      // //現在只存進去就好了
+      // return state;
+    }
+    case "createList": {
+      const newList = [
+        ...state,
+        {
+          id: action.payload.data.id,
+          node_id: action.payload.data.node_id,
+          url: action.payload.data.url,
+          name: action.payload.data.name,
+          color: action.payload.data.color,
+          default: action.payload.data.default,
+          description: action.payload.data.description,
+        },
+      ];
+      console.log(newList);
+      // console.log(action.payload.data);
+
+      // async function startResult() {
+      //   initState = await api.getLabels("emil0519", "testing-issues");
+      // }
+      // startResult();
+      //thunk saga
+      //現在只存進去就好了
+      return newList;
     }
     default:
-      console.log(initState);
-      return initState;
+      return;
   }
 };
 
