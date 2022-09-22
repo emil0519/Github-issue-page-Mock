@@ -31,14 +31,14 @@ function LabelButtons() {
         newLabelInfo.color.substring(1)
       )
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         dispatch({
           type: "createList",
           payload: { data },
         });
       });
     setCreated(created + 1);
-    console.log(result);
+    // console.log(result);
   };
   // useEffect(() => {
   //   dispatch({

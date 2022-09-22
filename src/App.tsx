@@ -47,7 +47,7 @@ function App() {
       "emil0519",
       "testing-issues",
       "abcd",
-      "New name",
+      "New names",
       "Hello world",
       "f29513"
     );
@@ -58,7 +58,7 @@ function App() {
     const result = await api.deleteLabel(
       "emil0519",
       "testing-issues",
-      "New name"
+      "alright"
     );
     console.log(result);
   };
@@ -79,6 +79,7 @@ function App() {
       <Footer />
       <button onClick={() => test()}></button>
       <button onClick={() => startCreate()}>Create Label</button>
+      <button onClick={() => startDelete()}>Delete</button>
     </>
   );
 }

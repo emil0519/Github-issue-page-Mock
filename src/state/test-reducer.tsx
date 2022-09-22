@@ -23,7 +23,7 @@ const reducer = (state = initState, action: any) => {
       //   console.log("action.payload.label");
       //   return;
       // } else {
-      console.log(action.payload.label);
+      // console.log(action.payload.label);
       return action.payload.label;
       // }
       // return;
@@ -48,7 +48,7 @@ const reducer = (state = initState, action: any) => {
           description: action.payload.data.description,
         },
       ];
-      console.log(newList);
+      // console.log(newList);
       // console.log(action.payload.data);
 
       // async function startResult() {

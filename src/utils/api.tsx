@@ -34,6 +34,8 @@ const api = {
     newDes: string,
     newCol: string
   ) {
+    console.log(newCol);
+
     const response = await fetch(
       `${this.hostname}/${user}/${repo}/labels/${originalName}`,
       {
@@ -44,25 +46,28 @@ const api = {
         }),
         headers: new Headers({
           Accept: "application/vnd.github+json",
-          Authorization: "token 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",
+          Authorization: `token ${process.env.REACT_APP_TOKEN}`,
         }),
         method: "POST",
       }
     );
+    console.log(response);
+
     return await response.json();
   },
   async deleteLabel(user: string, repo: string, deleteName: string) {
+    console.log(deleteName);
     const response = await fetch(
       `${this.hostname}/${user}/${repo}/labels/${deleteName}`,
       {
         headers: new Headers({
           Accept: "application/vnd.github+json",
-          Authorization: "token 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",
+          Authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
         }),
         method: "DELETE",
       }
     );
-    return await response.json();
+    return;
   },
 };
 
