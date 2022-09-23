@@ -3,46 +3,95 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import api from "../utils/api";
 import { IssueReopenedIcon } from "@primer/octicons-react";
-import useOnClickOutside from "../utils/useOnClickOutside";
+import { useOnClickOutside } from "usehooks-ts";
 
-function DropDownList() {
-  const ref = useRef(null);
-  const [clickIndex, setClickIndex] = useState(-1);
-  useEffect(() => console.log(clickIndex), [clickIndex]);
-  const handleClickOutside = () => {
-    setClickIndex(-1);
-    console.log("click outside");
+function useComponentVisible(initialIsVisible: any) {
+  const [isComponentVisible, setIsComponentVisible] =
+    useState(initialIsVisible);
+  useEffect(() => console.log(initialIsVisible), [initialIsVisible]);
+  const ref = useRef<any>(null);
+
+  const handleHideDropdown = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setIsComponentVisible(false);
+    }
   };
+
+  const handleClickOutside = (event: any) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setIsComponentVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleHideDropdown, true);
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("keydown", handleHideDropdown, true);
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  });
+
+  return { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside };
+}
+
+function Refer(props: any) {
+  const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
+    useComponentVisible(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const handleClickOutside = () => {
+    setEditOpen(false);
+    console.log("clicked outside");
+  };
+
   useOnClickOutside(ref, handleClickOutside);
   return (
-    <DropDownText
-      ref={ref}
-      //感覺這邊只有拿到最後一個ref，因為在.map的時候都賦予同一個ref
+    <Sort
       onClick={() => {
-        //這邊會把work log出來，但只有在最後一個的時候會log
-        console.log("edit label");
-        // console.log(index);
-        // handleClickInside();
-        // setLabelIndex((labelIndex: any) => [
-        //   ...labelIndex,
-        //   index,
-        // ]);
+        setIsComponentVisible(true);
+        setEditOpen(true);
       }}
+      index={props.index}
+      editOpen={editOpen}
     >
-      Edit
-    </DropDownText>
+      <SortText>...</SortText>
+      {isComponentVisible && (
+        <DropDown ref={ref}>
+          <DropDownText
+            style={{ display: "flex" }}
+            onClick={() => {
+              console.log("edit label");
+            }}
+          >
+            Edit
+          </DropDownText>
+
+          <DropDownText
+            style={{ display: "none" }}
+            onClick={() => {
+              console.log("edit label");
+            }}
+          >
+            Edit
+          </DropDownText>
+
+          <DropDownText ref={ref} onClick={() => console.log("delete")}>
+            Delete
+          </DropDownText>
+        </DropDown>
+      )}
+    </Sort>
+
+    // </div>
   );
 }
 
 function LabelList() {
-  // interface IData {
-  //   index: number;
-  // }
   const ref = useRef(null);
   const [clickIndex, setClickIndex] = useState(-1);
 
   const dispatch = useDispatch();
-  const [labelOpen, setLabelOpen] = useState(false);
+
   const [labelIndex, setLabelIndex] = useState<
     number[] | object | (() => number[])
   >([]);
@@ -50,26 +99,8 @@ function LabelList() {
   const [label, setLabel]: any = useState();
   const updatedLabels: any = useSelector((state) => state);
   const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
-  // const ref = useRef(null);
-  const handleClickOutside = () => {
-    setClickIndex(-1);
-    console.log("click outside");
-  };
 
   useEffect(() => console.log(labelIndex), [labelIndex]);
-
-  function check() {
-    console.log("this work");
-  }
-
-  const handleClickInside = () => {
-    // setClickIndex(index);
-    console.log("clicked inside");
-  };
-
-  // useOnClickOutside(ref, handleClickOutside);
-
-  // useEffect(() => console.log(`labelIndex=${labelIndex}`), [labelIndex]);
 
   function toUpdateInfo(types: any, index: any, value: any) {
     let newInfo = [...updateLabelInfo];
@@ -186,30 +217,28 @@ function LabelList() {
               </LabelWrap>
               <LabelDes>{item.description}</LabelDes>
               <Notification></Notification>
-              <Sort
+              {/* <Sort
                 clickIndex={clickIndex}
                 index={index}
-                ref={ref}
                 onClick={() => {
                   setClickIndex(index);
                   console.log(index);
                 }}
               >
-                <SortText ref={ref}>...</SortText>
-                <DropDown key={index} index={index} clickIndex={clickIndex}>
-                  <DropDownList />
+                <SortText>...</SortText> */}
+              <Refer index={index} />
+              {/* <DropDown key={index} index={index} clickIndex={clickIndex}>
                   <DropDownText
-                    ref={ref}
                     //感覺這邊只有拿到最後一個ref，因為在.map的時候都賦予同一個ref
                     onClick={() => {
                       //這邊會把work log出來，但只有在最後一個的時候會log
                       console.log("edit label");
                       // console.log(index);
                       // handleClickInside();
-                      setLabelIndex((labelIndex: any) => [
-                        ...labelIndex,
-                        index,
-                      ]);
+                      // setLabelIndex((labelIndex: any) => [
+                      //   ...labelIndex,
+                      //   index,
+                      // ]);
                     }}
                   >
                     Edit
@@ -217,8 +246,8 @@ function LabelList() {
                   <DropDownText ref={ref} onClick={() => deleteLabel(index)}>
                     Delete
                   </DropDownText>
-                </DropDown>
-              </Sort>
+                </DropDown> */}
+              {/* </Sort> */}
               <NewLabelSection
               // index={index}
               // labelIndex={labelIndex}
@@ -497,8 +526,8 @@ type Active = {
   index: number;
 };
 
-const DropDown = styled.div<Active>`
-  display: ${(props) => (props.index === props.clickIndex ? "flex" : "none")};
+const DropDown = styled.div`
+  display: flex;
   position: absolute;
   top: 141%;
   right: 12px;
@@ -578,13 +607,17 @@ const SortText = styled.span`
   margin-bottom: 12px;
 `;
 
-const Sort = styled.div<Active>`
+type Sorter = {
+  index: number;
+  editOpen: boolean;
+};
+
+const Sort = styled.div<Sorter>`
   position: relative;
   width: 42px;
   height: 28px;
-  background: ${(props) =>
-    props.index === props.clickIndex ? "#1760cf" : "white"};
-  color: ${(props) => (props.index === props.clickIndex ? "white" : "black")};
+  background: ${(props) => (props.editOpen ? "#1760cf" : "white")};
+  color: white;
   border: 0.5px solid #cad1d9;
   border-radius: 6px;
   display: flex;
