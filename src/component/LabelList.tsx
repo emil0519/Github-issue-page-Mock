@@ -8,7 +8,7 @@ import { useOnClickOutside } from "usehooks-ts";
 function useComponentVisible(initialIsVisible: any) {
   const [isComponentVisible, setIsComponentVisible] =
     useState(initialIsVisible);
-  useEffect(() => console.log(initialIsVisible), [initialIsVisible]);
+  // useEffect(() => console.log(initialIsVisible), [initialIsVisible]);
   const ref = useRef<any>(null);
 
   const handleHideDropdown = (event: KeyboardEvent) => {
@@ -39,48 +39,163 @@ function Refer(props: any) {
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [editVisible, setEditVisible] = useState(true);
   const handleClickOutside = () => {
     setEditOpen(false);
     console.log("clicked outside");
   };
+  const [labelIndex, setLabelIndex] = useState(-1);
+  const [areaOpen, setAreaOpen] = useState(false);
+  const [updateLabelInfo, setUpdateLabelInfo]: any = useState(
+    props.updateLabelInfo
+  );
+
+  // useEffect(
+  //   () => setUpdateLabelInfo(props.updateLabelInfo),
+  //   [props.updateLabelInfo]
+  // );
+
+  useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
+
+  function toUpdateInfo(types: any, index: any, value: any) {
+    let newInfo = [...updateLabelInfo];
+    if (types === "name") {
+      newInfo[index].new_name = value;
+    } else if (types === "description") {
+      newInfo[index].description = value;
+    } else if (types === "color") {
+      newInfo[index].color = value;
+    }
+    setUpdateLabelInfo(newInfo);
+    return;
+  }
+  function postInfo(index: number) {
+    let updateBody = updateLabelInfo[index];
+    console.log(updateBody);
+
+    api.updateLabels(
+      "emil0519",
+      "testing-issues",
+      updateBody.name,
+      updateBody.new_name,
+      updateBody.description,
+      updateBody.color
+    );
+  }
 
   useOnClickOutside(ref, handleClickOutside);
   return (
-    <Sort
-      onClick={() => {
-        setIsComponentVisible(true);
-        setEditOpen(true);
-      }}
-      index={props.index}
-      editOpen={editOpen}
-    >
-      <SortText>...</SortText>
-      {isComponentVisible && (
-        <DropDown ref={ref}>
-          <DropDownText
-            style={{ display: "flex" }}
-            onClick={() => {
-              console.log("edit label");
-            }}
-          >
-            Edit
-          </DropDownText>
+    <>
+      <Sort
+        onClick={() => {
+          setIsComponentVisible(true);
+          setEditOpen(true);
+          console.log(props.index);
+        }}
+        index={props.index}
+        editOpen={editOpen}
+      >
+        <SortText>...</SortText>
+        {isComponentVisible && (
+          <DropDown ref={ref}>
+            <DropDownText
+              editVisible={editVisible}
+              style={{ display: "flex" }}
+              onClick={() => {
+                setLabelIndex(props.index);
+                setAreaOpen(true);
+                setEditVisible(false);
+              }}
+            >
+              Edit
+            </DropDownText>
 
-          <DropDownText
-            style={{ display: "none" }}
-            onClick={() => {
-              console.log("edit label");
-            }}
-          >
-            Edit
-          </DropDownText>
+            <DropDownText
+              editVisible={editVisible}
+              style={{ display: "none" }}
+              onClick={() => {
+                setLabelIndex(props.index);
+                setAreaOpen(true);
+              }}
+            >
+              Edit
+            </DropDownText>
 
-          <DropDownText ref={ref} onClick={() => console.log("delete")}>
-            Delete
-          </DropDownText>
-        </DropDown>
-      )}
-    </Sort>
+            <DeleteText ref={ref} onClick={() => console.log("delete")}>
+              Delete
+            </DeleteText>
+          </DropDown>
+        )}
+      </Sort>
+      <NewLabelSection
+        index={props.index}
+        labelIndex={labelIndex}
+        areaOpen={areaOpen}
+      >
+        <BigWrapper>
+          <LabelInputSection>
+            <LabelName>Label Name</LabelName>
+            <LabelInput
+              placeholder="Label name"
+              defaultValue={`${props.itemName}`}
+              onChange={(e) => {
+                toUpdateInfo("name", props.index, e.target.value);
+              }}
+            />
+          </LabelInputSection>
+          <LabelInputSection>
+            <LabelName>Description</LabelName>
+            <LabelInput
+              placeholder="Description (optional)"
+              defaultValue={`${props.itemDescription}`}
+              onChange={(e) => {
+                toUpdateInfo("description", props.index, e.target.value);
+              }}
+            />
+          </LabelInputSection>
+          <ColorInputSection>
+            <ColorText>Color</ColorText>
+            <LowerWrapper>
+              <ColorRoller>
+                <RollerIcon />
+              </ColorRoller>
+              <ColorInput
+                // maxLength={7}
+                // type="text"
+                defaultValue={`#${props.itemColor}`}
+                onChange={(e) => {
+                  toUpdateInfo("color", props.index, e.target.value);
+                }}
+                // onChange={(e) => {
+                //   this.value=e.target.value
+                // }}
+              ></ColorInput>
+            </LowerWrapper>
+          </ColorInputSection>
+          <ButtonWrapper>
+            <CreateLabelButton>
+              <CreateLabelText onClick={() => postInfo(props.index)}>
+                Save changes
+              </CreateLabelText>
+            </CreateLabelButton>
+            <CancelButton>
+              <CancelText
+                onClick={() => {
+                  setLabelIndex(-1);
+                  setAreaOpen(false);
+                }}
+              >
+                Cancel
+              </CancelText>
+            </CancelButton>
+          </ButtonWrapper>
+        </BigWrapper>
+      </NewLabelSection>
+      <BigSort>
+        <BigSortText>Edit</BigSortText>
+        <BigSortText>Delete</BigSortText>
+      </BigSort>
+    </>
 
     // </div>
   );
@@ -115,19 +230,19 @@ function LabelList() {
     return;
   }
 
-  function postInfo(index: number) {
-    let updateBody = updateLabelInfo[index];
-    console.log(updateBody);
+  // function postInfo(index: number) {
+  //   let updateBody = updateLabelInfo[index];
+  //   console.log(updateBody);
 
-    api.updateLabels(
-      "emil0519",
-      "testing-issues",
-      updateBody.name,
-      updateBody.new_name,
-      updateBody.description,
-      updateBody.color.substring(1)
-    );
-  }
+  //   api.updateLabels(
+  //     "emil0519",
+  //     "testing-issues",
+  //     updateBody.name,
+  //     updateBody.new_name,
+  //     updateBody.description,
+  //     updateBody.color.substring(1)
+  //   );
+  // }
 
   function deleteLabel(index: number) {
     // const response = api.deleteLabel(
@@ -226,7 +341,13 @@ function LabelList() {
                 }}
               >
                 <SortText>...</SortText> */}
-              <Refer index={index} />
+              <Refer
+                index={index}
+                itemName={item.name}
+                itemDescription={item.description}
+                itemColor={item.color}
+                updateLabelInfo={updateLabelInfo}
+              />
               {/* <DropDown key={index} index={index} clickIndex={clickIndex}>
                   <DropDownText
                     //感覺這邊只有拿到最後一個ref，因為在.map的時候都賦予同一個ref
@@ -248,7 +369,7 @@ function LabelList() {
                   </DropDownText>
                 </DropDown> */}
               {/* </Sort> */}
-              <NewLabelSection
+              {/* <NewLabelSection
               // index={index}
               // labelIndex={labelIndex}
               // areaOpen={areaOpen}
@@ -308,7 +429,7 @@ function LabelList() {
               <BigSort>
                 <BigSortText>Edit</BigSortText>
                 <BigSortText>Delete</BigSortText>
-              </BigSort>
+              </BigSort> */}
             </Wrapper>
           );
         })}
@@ -487,14 +608,15 @@ const LabelPreview = styled.div`
     flex-basis: 100;
   }
 `;
-// type NewLabel = {
-//   // areaOpen: boolean;
-//   index: any;
-//   labelIndex: any;
-// };
+type NewLabel = {
+  areaOpen: boolean;
+  index: any;
+  labelIndex: any;
+};
 
-const NewLabelSection = styled.section`
-  display: flex;
+const NewLabelSection = styled.section<NewLabel>`
+  display: ${(props) =>
+    props.areaOpen && props.index === props.labelIndex ? "flex" : "none"};
   flex-direction: column;
   width: 95%;
   height: 278px;
@@ -507,7 +629,27 @@ const NewLabelSection = styled.section`
   }
 `;
 
-const DropDownText = styled.span`
+type Visible = {
+  editVisible: boolean;
+};
+
+const DropDownText = styled.span<Visible>`
+  padding: 8px;
+  width: 158px;
+  height: 34px;
+  font-size: 8px;
+  color: #34383b;
+  background: white;
+  /* display: ; */
+  /* display: none; */
+  &:hover {
+    background: #1760cf;
+  }
+  @media screen and (min-width: 1012px) {
+  }
+`;
+
+const DeleteText = styled.span`
   padding: 8px;
   width: 158px;
   height: 34px;
@@ -617,7 +759,7 @@ const Sort = styled.div<Sorter>`
   width: 42px;
   height: 28px;
   background: ${(props) => (props.editOpen ? "#1760cf" : "white")};
-  color: white;
+  color: ${(props) => (props.editOpen ? "white" : "black")};
   border: 0.5px solid #cad1d9;
   border-radius: 6px;
   display: flex;

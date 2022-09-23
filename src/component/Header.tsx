@@ -1,159 +1,137 @@
 import styled from "styled-components";
-import hamburger from "../img/hamburger.png"
-import icon from "../img/icon.png"
-import bell from "../img/bell.png"
-import plus from "../img/plus.png"
-import avatar from "../img/avatar.png"
-import down from "../img/down.png"
-
+import hamburger from "../img/hamburger.png";
+import icon from "../img/icon.png";
+import bell from "../img/bell.png";
+import plus from "../img/plus.png";
+import avatar from "../img/avatar.png";
+import down from "../img/down.png";
 
 // import searchButton from "../img/searchButton.png"
 
 // const bell=require('./img/bell.png')
 // import {MarkGithubIcon, BellIcon} from '@primer/octicons-react'
 
-
-  
-  
-function Header(){
-    return(
-        <>
-        <Wrapper>
+function Header() {
+  return (
+    <>
+      <Wrapper>
         <BigWrapOne>
-        <Search placeholder="Search or jump to..." />
-        {/* <SearchButton alt="" src="searchButton"></SearchButton> */}
-        <GithubIcon alt="" src={icon}/>
-        <HeaderText>Pull requests</HeaderText>
-        <HeaderText>Issues</HeaderText>
-        <HeaderText>Marketplace</HeaderText>
-        <HeaderText>Explore</HeaderText>
+          <Search placeholder="Search or jump to..." />
+          {/* <SearchButton alt="" src="searchButton"></SearchButton> */}
+          <GithubIcon alt="" src={icon} />
+          <HeaderText>Pull requests</HeaderText>
+          <HeaderText>Issues</HeaderText>
+          <HeaderText>Marketplace</HeaderText>
+          <HeaderText>Explore</HeaderText>
         </BigWrapOne>
         <BirWrapTwo>
-        <BigBellIcons alt="" src={bell}/>
-        <Plus alt="" src={plus}/>
-        <Avatar alt="" src={avatar}/>
-        <Down alt="" src={down}/>
+          <BigBellIcons alt="" src={bell} />
+          {/* bigbellicon 大小一樣 */}
+          <Plus alt="" src={plus} />
+          <Avatar alt="" src={avatar} />
+          <Down alt="" src={down} />
         </BirWrapTwo>
         <Hamburger alt="" src={hamburger}></Hamburger>
-        <SmallGithubIcon alt="" src={icon}/>
-        <BellIcons alt="" src={bell}/>
-        </Wrapper>
-        </>
-    )
+        <SmallGithubIcon alt="" src={icon} />
+        <BellIcons alt="" src={bell} />
+      </Wrapper>
+    </>
+  );
 }
 
 const Down = styled.img`
-    display: none; 
+  display: none;
   @media screen and (min-width: 768px) {
-    display: block; 
+    display: block;
     width: 12px;
-  height: 12px;
-  /* padding-top: 2px; */
+    height: 12px;
+    /* padding-top: 2px; */
   }
-
 `;
 
-
 const Avatar = styled.img`
-    display: none; 
+  display: none;
   @media screen and (min-width: 768px) {
-    display: block; 
+    display: block;
     width: 20px;
-  height: 20px;
-  /* padding-top: 2px; */
+    height: 20px;
+    /* padding-top: 2px; */
     margin-right: 2px;
   }
-
 `;
 
 const BigBellIcons = styled.img`
-    display: none; 
+  display: none;
   @media screen and (min-width: 768px) {
-    display: block; 
+    display: block;
     width: 16px;
-  height: 16px;
-  /* padding-top: 2px; */
+    height: 16px;
+    /* padding-top: 2px; */
     margin-right: 5px;
   }
-
 `;
 
-
-
 const BirWrapTwo = styled.section`
-    display: none; 
+  display: none;
   @media screen and (min-width: 768px) {
-    display: flex; 
+    display: flex;
     align-items: center;
     margin-right: 10px;
   }
-
 `;
 
-
 const Plus = styled.img`
-    display: none; 
+  display: none;
   @media screen and (min-width: 768px) {
     display: block;
     width: 27.59px;
-  height: 21px;
-
+    height: 21px;
   }
-
 `;
-
 
 const SmallGithubIcon = styled.img`
-    display: block;
+  display: block;
   @media screen and (min-width: 768px) {
-    display: none; 
-
+    display: none;
   }
-
 `;
-
 
 const BigWrapOne = styled.section`
-    display: none;
+  display: none;
   @media screen and (min-width: 768px) {
-    display: flex; 
+    display: flex;
     align-items: center;
   }
-
 `;
-
 
 const HeaderText = styled.span`
   display: none;
   @media screen and (min-width: 768px) {
-    display: block; 
+    display: block;
     font-size: 16px;
     color: white;
     cursor: pointer;
     margin-right: 10px;
     &:hover {
-      color:#bbbdbe;
+      color: #bbbdbe;
     }
   }
-
 `;
-
 
 // const SearchButton = styled.img`
 //   display: none;
 //   @media screen and (min-width: 768px) {
-//     display: block; 
+//     display: block;
 //     width: 19.86px;
 //     height: 20px;
 //   }
 
 // `;
 
-
 const Search = styled.input`
   display: none;
   @media screen and (min-width: 768px) {
-    display: block; 
+    display: block;
     width: 264.14px;
     height: 28px;
     color: white;
@@ -163,9 +141,7 @@ const Search = styled.input`
     padding: 5px;
     margin-right: 10px;
   }
-
 `;
-
 
 const BellIcons = styled.img`
   width: 16px;
@@ -173,10 +149,9 @@ const BellIcons = styled.img`
   padding-top: 4px;
   cursor: pointer;
   @media screen and (min-width: 768px) {
-    display:none;
+    display: none;
   }
 `;
-
 
 const GithubIcon = styled.img`
   /* width: 32px;
@@ -185,12 +160,11 @@ const GithubIcon = styled.img`
   /* background-image: url(${icon}); */
   @media screen and (min-width: 768px) {
     order: -1;
-    width: 35px; 
+    width: 35px;
     height: 35px;
-    margin-right:10px;
+    margin-right: 10px;
   }
 `;
-
 
 const Hamburger = styled.img`
   width: 24px;
@@ -206,7 +180,7 @@ const Wrapper = styled.div`
   height: 64px;
   display: flex;
   justify-content: space-between;
-  align-items:center;
+  align-items: center;
   @media screen and (min-width: 768px) {
   }
 `;

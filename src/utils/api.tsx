@@ -69,6 +69,7 @@ const api = {
         method: "DELETE",
       }
     );
+    // .then((data) => console.log(data));
     return;
   },
 };
