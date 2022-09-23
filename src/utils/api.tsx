@@ -2,6 +2,8 @@ const api = {
   hostname: "https://api.github.com/repos",
   async getLabels(user: string, repo: string) {
     const response = await fetch(`${this.hostname}/${user}/${repo}/labels`);
+    console.log(response);
+
     return await response.json();
   },
   async createLabels(

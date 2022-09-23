@@ -6,8 +6,14 @@ import { IssueReopenedIcon } from "@primer/octicons-react";
 import useOnClickOutside from "../utils/useOnClickOutside";
 
 function LabelList() {
+  // interface IData {
+  //   index: number;
+  // }
+
   const dispatch = useDispatch();
   const [labelOpen, setLabelOpen] = useState(false);
+  const [labelIndex, setLabelIndex] = useState<any>({});
+  // const [areaOpen, setAreaOpen] = useState(false);
   const [label, setLabel]: any = useState();
   const updatedLabels: any = useSelector((state) => state);
   const [clickIndex, setClickIndex] = useState(-1);
@@ -17,14 +23,21 @@ function LabelList() {
     setClickIndex(-1);
     console.log("click outside");
   };
-  const handleClickInside = (index: number) => {
+
+  useEffect(() => console.log(labelIndex), [labelIndex]);
+
+  function check() {
+    console.log("this work");
+  }
+
+  const handleClickInside = () => {
     // setClickIndex(index);
     console.log("clicked inside");
   };
 
   useOnClickOutside(ref, handleClickOutside);
 
-  useEffect(() => console.log(clickIndex), [clickIndex]);
+  useEffect(() => console.log(labelIndex), [labelIndex]);
 
   function toUpdateInfo(types: any, index: any, value: any) {
     let newInfo = [...updateLabelInfo];
@@ -54,8 +67,16 @@ function LabelList() {
   }
 
   function deleteLabel(index: number) {
-    api.deleteLabel("emil0519", "testing-issues", updateLabelInfo[index].name);
-    console.log(updateLabelInfo[index].name);
+    const response = api.deleteLabel(
+      "emil0519",
+      "testing-issues",
+      updateLabelInfo[index].name
+    );
+    dispatch({
+      type: "deleteItem",
+      payload: { deleteName: updateLabelInfo[index].name },
+    });
+    console.log(response);
   }
 
   useEffect(() => {
@@ -132,29 +153,43 @@ function LabelList() {
               </LabelWrap>
               <LabelDes>{item.description}</LabelDes>
               <Notification></Notification>
-              <Sort clickIndex={clickIndex} index={index}>
-                <SortText
-                  ref={ref}
-                  onClick={() => {
-                    setClickIndex(index);
-                    handleClickInside(index);
-                  }}
-                >
-                  ...
-                </SortText>
+              <Sort
+                clickIndex={clickIndex}
+                index={index}
+                ref={ref}
+                onClick={() => {
+                  setClickIndex(index);
+                  console.log(index);
+                }}
+              >
+                <SortText ref={ref}>...</SortText>
                 <DropDown key={index} index={index} clickIndex={clickIndex}>
                   <DropDownText
-                    onClick={() => handleClickInside(index)}
                     ref={ref}
+                    //感覺這邊只有拿到最後一個ref，因為在.map的時候都賦予同一個ref
+                    onClick={() => {
+                      //這邊會把work log出來，但只有在最後一個的時候會log
+                      console.log("work");
+                      console.log(index);
+                      handleClickInside();
+                      setLabelIndex((labelIndex: any) => [
+                        ...labelIndex,
+                        index,
+                      ]);
+                    }}
                   >
                     Edit
                   </DropDownText>
-                  <DropDownText onClick={() => deleteLabel(index)}>
+                  <DropDownText ref={ref} onClick={() => deleteLabel(index)}>
                     Delete
                   </DropDownText>
                 </DropDown>
               </Sort>
-              <NewLabelSection labelOpen={labelOpen}>
+              <NewLabelSection
+              // index={index}
+              // labelIndex={labelIndex}
+              // areaOpen={areaOpen}
+              >
                 <BigWrapper>
                   <LabelInputSection>
                     <LabelName>Label Name</LabelName>
@@ -389,12 +424,14 @@ const LabelPreview = styled.div`
     flex-basis: 100;
   }
 `;
-type NewLabel = {
-  labelOpen: boolean;
-};
+// type NewLabel = {
+//   // areaOpen: boolean;
+//   index: any;
+//   labelIndex: any;
+// };
 
-const NewLabelSection = styled.section<NewLabel>`
-  display: ${(props) => (props.labelOpen ? "flex" : "none")};
+const NewLabelSection = styled.section`
+  display: flex;
   flex-direction: column;
   width: 95%;
   height: 278px;

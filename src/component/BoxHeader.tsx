@@ -2,20 +2,32 @@ import styled from "styled-components";
 import { TriangleDownIcon } from "@primer/octicons-react";
 import LabelList from "./LabelList";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import api from "../utils/api";
 
 function BoxHeader() {
-  // const labels: any = useSelector((state) => state);
-  // console.log(label  s.length);
-  // if (labels === undefined) {
-  //   return <></>;
-  // } else {
-  // const labelLength = useSelector((state) => state);
+  let updatedLabels: any = useSelector((state) => state);
+  const [labels, setLabel]: any = useState();
+  useEffect(() => setLabel(labels), []);
+  useEffect(() => {
+    (async () => {
+      setLabel(await api.getLabels("emil0519", "testing-issues"));
+    })().catch((error) => console.log(error));
+  }, []);
+  useEffect(() => {
+    setLabel(updatedLabels);
+    // 每次有新label的時候會re-render一次
+  }, [updatedLabels]);
+
+  if (labels === undefined) {
+    return <></>;
+  }
 
   return (
     <>
       <Wrapper>
         <Header>
-          <HeaderText>11 labels</HeaderText>
+          <HeaderText>{labels.length} labels</HeaderText>
           {/* why cannot read properties of undefined even if conditional statement
             set */}
           <SortSection>
