@@ -5,6 +5,8 @@ async function startResult() {
 }
 startResult();
 const reducer = (state = initState, action: any) => {
+  console.log(initState);
+
   switch (action.type) {
     case "getList": {
       return action.payload.label;
@@ -33,11 +35,6 @@ const reducer = (state = initState, action: any) => {
       );
       console.log(state);
 
-      // console.log(
-      //   state.findIndex((e: any) => e.name === action.payload.deleteName)
-      // );
-
-      // console.log(action.payload.deleteName);
       return state;
     }
     default:

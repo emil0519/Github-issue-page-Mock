@@ -5,20 +5,52 @@ import api from "../utils/api";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 import useOnClickOutside from "../utils/useOnClickOutside";
 
+function DropDownList() {
+  const ref = useRef(null);
+  const [clickIndex, setClickIndex] = useState(-1);
+  useEffect(() => console.log(clickIndex), [clickIndex]);
+  const handleClickOutside = () => {
+    setClickIndex(-1);
+    console.log("click outside");
+  };
+  useOnClickOutside(ref, handleClickOutside);
+  return (
+    <DropDownText
+      ref={ref}
+      //感覺這邊只有拿到最後一個ref，因為在.map的時候都賦予同一個ref
+      onClick={() => {
+        //這邊會把work log出來，但只有在最後一個的時候會log
+        console.log("edit label");
+        // console.log(index);
+        // handleClickInside();
+        // setLabelIndex((labelIndex: any) => [
+        //   ...labelIndex,
+        //   index,
+        // ]);
+      }}
+    >
+      Edit
+    </DropDownText>
+  );
+}
+
 function LabelList() {
   // interface IData {
   //   index: number;
   // }
+  const ref = useRef(null);
+  const [clickIndex, setClickIndex] = useState(-1);
 
   const dispatch = useDispatch();
   const [labelOpen, setLabelOpen] = useState(false);
-  const [labelIndex, setLabelIndex] = useState<any>({});
+  const [labelIndex, setLabelIndex] = useState<
+    number[] | object | (() => number[])
+  >([]);
   // const [areaOpen, setAreaOpen] = useState(false);
   const [label, setLabel]: any = useState();
   const updatedLabels: any = useSelector((state) => state);
-  const [clickIndex, setClickIndex] = useState(-1);
   const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
-  const ref = useRef(null);
+  // const ref = useRef(null);
   const handleClickOutside = () => {
     setClickIndex(-1);
     console.log("click outside");
@@ -35,9 +67,9 @@ function LabelList() {
     console.log("clicked inside");
   };
 
-  useOnClickOutside(ref, handleClickOutside);
+  // useOnClickOutside(ref, handleClickOutside);
 
-  useEffect(() => console.log(labelIndex), [labelIndex]);
+  // useEffect(() => console.log(`labelIndex=${labelIndex}`), [labelIndex]);
 
   function toUpdateInfo(types: any, index: any, value: any) {
     let newInfo = [...updateLabelInfo];
@@ -67,16 +99,17 @@ function LabelList() {
   }
 
   function deleteLabel(index: number) {
-    const response = api.deleteLabel(
-      "emil0519",
-      "testing-issues",
-      updateLabelInfo[index].name
-    );
-    dispatch({
-      type: "deleteItem",
-      payload: { deleteName: updateLabelInfo[index].name },
-    });
-    console.log(response);
+    // const response = api.deleteLabel(
+    //   "emil0519",
+    //   "testing-issues",
+    //   updateLabelInfo[index].name
+    // );
+    // dispatch({
+    //   type: "deleteItem",
+    //   payload: { deleteName: updateLabelInfo[index].name },
+    // });
+    // console.log(response);
+    console.log("deletelabel");
   }
 
   useEffect(() => {
@@ -164,14 +197,15 @@ function LabelList() {
               >
                 <SortText ref={ref}>...</SortText>
                 <DropDown key={index} index={index} clickIndex={clickIndex}>
+                  <DropDownList />
                   <DropDownText
                     ref={ref}
                     //感覺這邊只有拿到最後一個ref，因為在.map的時候都賦予同一個ref
                     onClick={() => {
                       //這邊會把work log出來，但只有在最後一個的時候會log
-                      console.log("work");
-                      console.log(index);
-                      handleClickInside();
+                      console.log("edit label");
+                      // console.log(index);
+                      // handleClickInside();
                       setLabelIndex((labelIndex: any) => [
                         ...labelIndex,
                         index,

@@ -22,7 +22,7 @@ function LabelButtons() {
   const dispatch = useDispatch();
 
   const startCreate = async () => {
-    const result = await api
+    const result: any = await api
       .createLabels(
         "emil0519",
         "testing-issues",
@@ -31,14 +31,12 @@ function LabelButtons() {
         newLabelInfo.color.substring(1)
       )
       .then((data) => {
-        // console.log(data);
         dispatch({
           type: "createList",
           payload: { data },
         });
       });
     setCreated(created + 1);
-    // console.log(result);
   };
   // useEffect(() => {
   //   dispatch({
