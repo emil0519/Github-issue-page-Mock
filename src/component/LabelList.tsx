@@ -50,10 +50,12 @@ function Refer(props: any) {
     props.updateLabelInfo
   );
 
-  // useEffect(
-  //   () => setUpdateLabelInfo(props.updateLabelInfo),
-  //   [props.updateLabelInfo]
-  // );
+  useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
+
+  useEffect(
+    () => setUpdateLabelInfo(props.updateLabelInfo),
+    [props.updateLabelInfo]
+  );
 
   useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
 
