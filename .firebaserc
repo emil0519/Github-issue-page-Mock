@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "emil-w0p3"
+  },
+  "targets": {
+    "emil-w0p3": {
+      "hosting": {
+        "storybook": [
+          "emil0519Storybooks"
+        ],
+        "fire": [
+          "emil-w0p3"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

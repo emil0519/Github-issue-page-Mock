@@ -38,6 +38,7 @@ function useComponentVisible(initialIsVisible: any) {
 function Refer(props: any) {
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
+  const dispatch = useDispatch();
   const [editOpen, setEditOpen] = useState(false);
   const [editVisible, setEditVisible] = useState(true);
   const handleClickOutside = () => {
@@ -85,6 +86,20 @@ function Refer(props: any) {
     );
   }
 
+  function deleteLabel(index: number) {
+    const response = api.deleteLabel(
+      "emil0519",
+      "testing-issues",
+      updateLabelInfo[index].name
+    );
+    dispatch({
+      type: "deleteItem",
+      payload: { deleteName: updateLabelInfo[index].name },
+    });
+    // console.log(response);
+    // console.log("deletelabel");
+  }
+
   useOnClickOutside(ref, handleClickOutside);
   return (
     <>
@@ -123,7 +138,11 @@ function Refer(props: any) {
               Edit
             </DropDownText>
 
-            <DeleteText ref={ref} onClick={() => console.log("delete")}>
+            <DeleteText ref={ref} onClick={() => {
+              deleteLabel(props.index);
+
+            }
+            }>
               Delete
             </DeleteText>
           </DropDown>

@@ -57,7 +57,7 @@ const api = {
 
     return await response.json();
   },
-  async deleteLabel(user: string, repo: string, deleteName: string) {
+  async deleteLabel(user: string, repo: string, deleteName: any) {
     console.log(deleteName);
     const response = await fetch(
       `${this.hostname}/${user}/${repo}/labels/${deleteName}`,
@@ -69,8 +69,8 @@ const api = {
         method: "DELETE",
       }
     );
-    // .then((data) => console.log(data));
-    return;
+    console.log(response);
+    return response;
   },
 };
 

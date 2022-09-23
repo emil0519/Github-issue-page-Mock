@@ -27,7 +27,7 @@ const reducer = (state = initState, action: any) => {
       return newList;
     }
     case "deleteItem": {
-      console.log(state);
+      console.log("from delete");
 
       state.splice(
         state.findIndex((e: any) => e.name === action.payload.deleteName),

@@ -12,12 +12,18 @@ export interface opener {
 
 function LabelButtons() {
   const [labelOpen, setLabelOpen] = useState(false);
-  const [defaultColorInput, setDefaultColorInput] = useState("#e99695");
+  const [defaultColor, setDefaultColor] = useState("#e99695");
   const [newLabelInfo, setNewLabelInfo] = useState({
     name: "",
     description: "",
     color: "#e99695",
   });
+  const [createLabelChange, setCreateLabelChange] = useState(false);
+  useEffect(() => {
+    newLabelInfo.name.length >= 1
+      ? setCreateLabelChange(true)
+      : setCreateLabelChange(false);
+  }, [newLabelInfo]);
   const [created, setCreated] = useState(0);
   const dispatch = useDispatch();
 
@@ -38,13 +44,67 @@ function LabelButtons() {
       });
     setCreated(created + 1);
   };
+
+  const solidColorList: any = [
+    {
+      name: "#b6070c",
+    },
+    {
+      name: "#d94017",
+    },
+    {
+      name: "#fbca31",
+    },
+    {
+      name: "#0e8a25",
+    },
+    {
+      name: "#006b75",
+    },
+    {
+      name: "#1b76d8",
+    },
+    {
+      name: "#0052c8",
+    },
+    {
+      name: "#521be2",
+    },
+  ];
+
+  const lightColorList: any = [
+    {
+      name: "#e99796",
+    },
+    {
+      name: "#f9d0c5",
+    },
+    {
+      name: "#fef2c3",
+    },
+    {
+      name: "#c2e0c7",
+    },
+    {
+      name: "#bfdadc",
+    },
+    {
+      name: "#c5def4",
+    },
+    {
+      name: "#bfd4f1",
+    },
+    {
+      name: "#d4c5f7",
+    },
+  ];
   // useEffect(() => {
   //   dispatch({
   //     type: "getList",
   //   });
   // }, [created]);
 
-  useEffect(() => console.log(newLabelInfo), [newLabelInfo]);
+  // useEffect(() => console.log(newLabelInfo), [newLabelInfo]);
 
   return (
     <Wrapper>
@@ -72,7 +132,7 @@ function LabelButtons() {
       </UpperWrapper>
       <SearchBar placeholder="Search all labels" />
       <NewLabelSection labelOpen={labelOpen}>
-        <LabelPreview>Label preview</LabelPreview>
+        <LabelPreview colors={defaultColor}>Label preview</LabelPreview>
         <BigWrapper>
           <LabelInputSection>
             <LabelName>Label Name</LabelName>
@@ -98,21 +158,48 @@ function LabelButtons() {
           <ColorInputSection>
             <ColorText>Color</ColorText>
             <LowerWrapper>
-              <ColorRoller>
+              <ColorRoller colors={defaultColor}>
                 <RollerIcon />
               </ColorRoller>
-              <ColorInput
-                maxLength={7}
-                value={`${defaultColorInput}`}
-                onChange={(e) => {
-                  setDefaultColorInput(e.target.value);
-                  setNewLabelInfo({ ...newLabelInfo, color: e.target.value });
-                }}
-              ></ColorInput>
+              <InputWrapper>
+                <ColorInput
+                  maxLength={7}
+                  value={`${defaultColor}`}
+                  onChange={(e) => {
+                    setDefaultColor(e.target.value);
+                    setNewLabelInfo({ ...newLabelInfo, color: e.target.value });
+                  }}
+                ></ColorInput>
+                <ColorSelector>
+                  <DefaultColorText>
+                    Choose from default colors:
+                  </DefaultColorText>
+                  <DefaultColor>
+                    {solidColorList.map(({ name }: any, index: number) => {
+                      return (
+                        <ColorBrick
+                          colors={name}
+                          onClick={() => setDefaultColor(name)}
+                        />
+                      );
+                    })}
+                  </DefaultColor>
+                  <DefaultColor>
+                    {lightColorList.map(({ name }: any) => {
+                      return (
+                        <ColorBrick
+                          colors={name}
+                          onClick={() => setDefaultColor(name)}
+                        />
+                      );
+                    })}
+                  </DefaultColor>
+                </ColorSelector>
+              </InputWrapper>
             </LowerWrapper>
           </ColorInputSection>
           <ButtonWrapper>
-            <CreateLabelButton>
+            <CreateLabelButton createLabelChange={createLabelChange}>
               <CreateLabelText onClick={() => startCreate()}>
                 Create Label
               </CreateLabelText>
@@ -125,9 +212,67 @@ function LabelButtons() {
           </ButtonWrapper>
         </BigWrapper>
       </NewLabelSection>
+      <div>
+        {solidColorList.map((item: any, index: number) => {
+          return <span>{item[index]}</span>;
+        })}
+      </div>
     </Wrapper>
   );
 }
+type Col = {
+  colors: string;
+};
+const ColorBrick = styled.div<Col>`
+  background: ${(props) => props.colors};
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  width: 21px;
+  height: 21px;
+  margin-right: 8px;
+  cursor: pointer;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const DefaultColor = styled.div`
+  display: flex;
+  margin: 5px auto 0 8px;
+
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const DefaultColorText = styled.div`
+  color: #57606a;
+  font-size: 8px;
+  margin: 8px auto 4px 8px;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const InputWrapper = styled.section`
+  position: relative;
+  width: 100%;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const ColorSelector = styled.section`
+  width: 240px;
+  height: 87px;
+  background: white;
+  position: absolute;
+  top: 110%;
+  left: 17px;
+  border: 0.5px solid #cad1d9;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  @media screen and (min-width: 768px) {
+  }
+`;
 
 const BigWrapper = styled.section`
   @media screen and (min-width: 768px) {
@@ -176,11 +321,15 @@ const CreateLabelText = styled.span`
   }
 `;
 
-const CreateLabelButton = styled.div`
+type Changer = {
+  createLabelChange: boolean;
+};
+
+const CreateLabelButton = styled.div<Changer>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #8acd9a;
+  background: ${(props) => (props.createLabelChange ? "#2da454" : "#8acd9a")};
   border: 1px solid #79b288;
   width: 113.36px;
   height: 32px;
@@ -226,7 +375,7 @@ const ColorInput = styled.input`
   padding: 5px 12px;
   border: 0.5px solid #cad1d9;
   margin-left: 6px;
-  width: 45%;
+  width: 89%;
   border-radius: 5px;
   margin-top: 9px;
 `;
@@ -239,13 +388,13 @@ const RollerIcon = styled(IssueReopenedIcon)`
   }
 `;
 
-const ColorRoller = styled.div`
+const ColorRoller = styled.div<Col>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 32px;
   height: 31px;
-  background: #e58b8c;
+  background: ${(props) => props.colors};
   border-radius: 5px;
   margin-top: 10px;
   @media screen and (min-width: 768px) {
@@ -278,7 +427,7 @@ const LabelName = styled.label`
   }
 `;
 
-const LabelPreview = styled.div`
+const LabelPreview = styled.div<Col>`
   width: fit-content;
   margin: 16px 16px 0 16px;
   padding-left: 6px;
@@ -287,7 +436,7 @@ const LabelPreview = styled.div`
   font-size: 10px;
   height: 24px;
   margin-left: 10px;
-  background: #e58b8c;
+  background: ${(props) => props.colors};
   color: black;
   font-weight: 600;
   border-radius: 15px;
