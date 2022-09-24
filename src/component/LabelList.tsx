@@ -64,7 +64,8 @@ function Refer(props: any) {
     //   updateLabelInfo[index].name
     // );
     dispatch({
-      type: "try",
+      type: "deleteItem",
+      payload: { deleteName: updateLabelInfo[index].name },
     });
   }
 
@@ -203,28 +204,32 @@ function LabelList() {
   const useAppDispatch = () => useDispatch<AppDispatch>();
   const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
   const dispatch = useAppDispatch();
-  const updatedLabels: any = useAppSelector<any[]>((state) => state?.reducer);
+  const updatedLabels: any = useAppSelector<any>((state) => state?.reducer);
   const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
   const firstUpdate = useRef(true);
+  useEffect(() => console.log(label), [label]);
 
-  useLayoutEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      console.log("first update");
-      console.log(updatedLabels);
+  // useLayoutEffect(() => {
+  //   if (firstUpdate.current) {
+  //     firstUpdate.current = false;
+  //     console.log("first update");
+  //     console.log(updatedLabels);
+  //     //這是render label 列表的功能，確保在undefined的時候不會render
+  //     return;
+  //   } else {
+  //     console.log(updatedLabels);
 
-      return;
-    } else {
-      console.log("second update");
-      setLabel(updatedLabels);
-    }
-    // if (updatedLabels.length === 0) {
-    //   console.log("this is undefined");
-    // } else {
-    //   console.log(updatedLabels);
-    //   console.log("setting label, should not happen");
-    // }
-  }, [updatedLabels]);
+  //     console.log("second update");
+  //     setLabel(updatedLabels);
+  //   }
+
+  //   // if (updatedLabels.length === 0) {
+  //   //   console.log("this is undefined");
+  //   // } else {
+  //   //   console.log(updatedLabels);
+  //   //   console.log("setting label, should not happen");
+  //   // }
+  // }, [updatedLabels]);
   // useEffect(() => console.log(labelIndex), [labelIndex]);
 
   function toUpdateInfo(types: any, index: any, value: any) {

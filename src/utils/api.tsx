@@ -62,7 +62,7 @@ const api = {
       {
         headers: new Headers({
           Accept: "application/vnd.github+json",
-          Authorization: `token `,
+          Authorization: `Bearer `,
         }),
         method: "DELETE",
       }

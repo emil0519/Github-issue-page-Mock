@@ -13,6 +13,9 @@ export type AppDispatch = typeof store.dispatch;
 export const store = configureStore({
   reducer: combineReducers({ reducer, colorReducer }),
 });
+
+//這是我的combinereducer，合併了兩個reducer
+
 // export const store = createStore(reducer);
 
 // //可以直接呼叫store.dispatch,store.getState, store.subscribe

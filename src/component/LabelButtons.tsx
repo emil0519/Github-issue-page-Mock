@@ -2,9 +2,10 @@ import styled from "styled-components";
 import labelIcon from "../img/labelicon.png";
 import { MilestoneIcon, IssueReopenedIcon } from "@primer/octicons-react";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { ColorBrickWrapper } from "./ColorBrickWrapper";
 import api from "../utils/api";
+import { useSelector, useDispatch, TypedUseSelectorHook } from "react-redux";
+import type { RootState, AppDispatch } from "../state/store";
 
 export interface opener {
   labelOpen: boolean;
@@ -94,7 +95,14 @@ function LabelButtons() {
     color: "#e99695",
   });
   const [createLabelChange, setCreateLabelChange] = useState(false);
-  // useEffect(() => console.log(defaultColor), [defaultColor]);
+  const useAppDispatch = () => useDispatch<AppDispatch>();
+  const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+  const dispatch = useAppDispatch();
+  const updatedDefaultColor: any = useAppSelector<any[]>(
+    (state) => state?.colorReducer
+  );
+
+  useEffect(() => updatedDefaultColor, [updatedDefaultColor]);
 
   useEffect(() => {
     newLabelInfo.name.length >= 1
@@ -102,7 +110,7 @@ function LabelButtons() {
       : setCreateLabelChange(false);
   }, [newLabelInfo]);
   const [created, setCreated] = useState(0);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const startCreate = async () => {
     const result: any = await api
@@ -148,7 +156,7 @@ function LabelButtons() {
       </UpperWrapper>
       <SearchBar placeholder="Search all labels" />
       <NewLabelSection labelOpen={labelOpen}>
-        <LabelPreview colors={defaultColor}>Label preview</LabelPreview>
+        <LabelPreview colors={updatedDefaultColor}>Label preview</LabelPreview>
         <BigWrapper>
           <LabelInputSection>
             <LabelName>Label Name</LabelName>
@@ -174,15 +182,20 @@ function LabelButtons() {
           <ColorInputSection>
             <ColorText>Color</ColorText>
             <LowerWrapper>
-              <ColorRoller colors={defaultColor}>
+              <ColorRoller colors={updatedDefaultColor}>
                 <RollerIcon />
               </ColorRoller>
               <InputWrapper>
                 <ColorInput
                   maxLength={7}
-                  value={`${defaultColor}`}
+                  value={updatedDefaultColor}
                   onChange={(e) => {
-                    setDefaultColor(e.target.value);
+                    dispatch({
+                      type: "colorChanged",
+                      payload: { color: e.target.value },
+                    });
+                    //這是dispatch到colorreducer，但好像動到其他state了
+                    // setDefaultColor(e.target.value);
                     setNewLabelInfo({ ...newLabelInfo, color: e.target.value });
                   }}
                 ></ColorInput>
@@ -190,9 +203,7 @@ function LabelButtons() {
                   <DefaultColorText>
                     Choose from default colors:
                   </DefaultColorText>
-                  <ColorBrickWrapper
-                    onClick={() => setDefaultColor(defaultColor)}
-                  />
+                  <ColorBrickWrapper />
                   {/* <DefaultColor>
                     {solidColorList.map(({ name }: any, index: number) => {
                       return (

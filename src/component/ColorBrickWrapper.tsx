@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export function ColorBrickWrapper(props: { onClick: (name: string) => void }) {
+export function ColorBrickWrapper() {
   const solidColorList: any = [
     {
       name: "#b6070c",
@@ -59,16 +59,12 @@ export function ColorBrickWrapper(props: { onClick: (name: string) => void }) {
     <>
       <DefaultColor>
         {solidColorList.map(({ name }: any, index: number) => {
-          return (
-            <ColorBrick colors={name} onClick={() => props.onClick(name)} />
-          );
+          return <ColorBrick colors={name} />;
         })}
       </DefaultColor>
       <DefaultColor>
         {lightColorList.map(({ name }: any) => {
-          return (
-            <ColorBrick colors={name} onClick={() => props.onClick(name)} />
-          );
+          return <ColorBrick colors={name} />;
         })}
       </DefaultColor>
     </>

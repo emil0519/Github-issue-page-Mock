@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import api from "../utils/api";
 let initState: any;
 async function startResult() {
@@ -6,7 +5,7 @@ async function startResult() {
 }
 
 startResult();
-const reducer = (state = initState, action: any) => {
+const reducer = async (state = initState, action: any) => {
   switch (action.type) {
     case "getList": {
       return action.payload.label;
@@ -32,21 +31,19 @@ const reducer = (state = initState, action: any) => {
     }
     case "deleteItem": {
       console.log("from delete");
-
-      state.splice(
-        state.findIndex((e: any) => e.name === action.payload.deleteName),
+      const newState = state;
+      newState.splice(
+        newState.findIndex((e: any) => e.name === action.payload.deleteName),
         1
       );
-      console.log(state);
+      console.log(newState);
 
       return state;
     }
-    case "try": {
-      console.log("trt");
-      return "trying";
-    }
     default:
-      return "hello";
+      console.log(initState);
+
+      return await initState;
   }
 };
 
