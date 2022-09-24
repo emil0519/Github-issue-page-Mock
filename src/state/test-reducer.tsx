@@ -1,17 +1,19 @@
+import { useEffect } from "react";
 import api from "../utils/api";
 let initState: any;
 async function startResult() {
   initState = await api.getLabels("emil0519", "testing-issues");
 }
+
 startResult();
 const reducer = (state = initState, action: any) => {
-  console.log(initState);
-
   switch (action.type) {
     case "getList": {
       return action.payload.label;
     }
     case "createList": {
+      console.log("creating list");
+
       const newList = [
         ...state,
         {
@@ -24,6 +26,8 @@ const reducer = (state = initState, action: any) => {
           description: action.payload.data.description,
         },
       ];
+      console.log(newList);
+
       return newList;
     }
     case "deleteItem": {
@@ -37,8 +41,12 @@ const reducer = (state = initState, action: any) => {
 
       return state;
     }
+    case "try": {
+      console.log("trt");
+      return "trying";
+    }
     default:
-      return;
+      return "hello";
   }
 };
 

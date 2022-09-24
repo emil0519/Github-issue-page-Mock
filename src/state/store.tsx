@@ -1,8 +1,19 @@
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 import reducer from "./test-reducer";
+import reduceReducers from "reduce-reducers";
+import colorReducer from "./colorReducer";
+import { configureStore } from "@reduxjs/toolkit";
 // import { configureStore } from '@reduxjs/toolkit'
+// type Reduce={
+//     labelReducer: (state: any, action: any) => any;
+// }
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
-export const store = createStore(reducer);
+export const store = configureStore({
+  reducer: combineReducers({ reducer, colorReducer }),
+});
+// export const store = createStore(reducer);
 
 // //可以直接呼叫store.dispatch,store.getState, store.subscribe
 // //react中透過react redux取得dispatch或useSelector

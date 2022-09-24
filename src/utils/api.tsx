@@ -2,8 +2,6 @@ const api = {
   hostname: "https://api.github.com/repos",
   async getLabels(user: string, repo: string) {
     const response = await fetch(`${this.hostname}/${user}/${repo}/labels`);
-    console.log(response);
-
     return await response.json();
   },
   async createLabels(
@@ -21,11 +19,11 @@ const api = {
       }),
       headers: new Headers({
         Accept: "application/vnd.github+json",
-        Authorization: `token ${process.env.REACT_APP_TOKEN}`,
-        // hash table?
+        Authorization: `token `,
       }),
       method: "POST",
     });
+
     return await response.json();
   },
   async updateLabels(
@@ -48,7 +46,7 @@ const api = {
         }),
         headers: new Headers({
           Accept: "application/vnd.github+json",
-          Authorization: `token ${process.env.REACT_APP_TOKEN}`,
+          Authorization: `token `,
         }),
         method: "POST",
       }
@@ -64,7 +62,7 @@ const api = {
       {
         headers: new Headers({
           Accept: "application/vnd.github+json",
-          Authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
+          Authorization: `token `,
         }),
         method: "DELETE",
       }

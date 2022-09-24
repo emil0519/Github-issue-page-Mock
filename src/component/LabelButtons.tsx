@@ -3,22 +3,99 @@ import labelIcon from "../img/labelicon.png";
 import { MilestoneIcon, IssueReopenedIcon } from "@primer/octicons-react";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-
+import { ColorBrickWrapper } from "./ColorBrickWrapper";
 import api from "../utils/api";
 
 export interface opener {
   labelOpen: boolean;
 }
 
+// function ColorBrickWrapper(props: { onClick: (name: string) => void }) {
+//   const solidColorList: any = [
+//     {
+//       name: "#b6070c",
+//     },
+//     {
+//       name: "#d94017",
+//     },
+//     {
+//       name: "#fbca31",
+//     },
+//     {
+//       name: "#0e8a25",
+//     },
+//     {
+//       name: "#006b75",
+//     },
+//     {
+//       name: "#1b76d8",
+//     },
+//     {
+//       name: "#0052c8",
+//     },
+//     {
+//       name: "#521be2",
+//     },
+//   ];
+
+//   const lightColorList: any = [
+//     {
+//       name: "#e99796",
+//     },
+//     {
+//       name: "#f9d0c5",
+//     },
+//     {
+//       name: "#fef2c3",
+//     },
+//     {
+//       name: "#c2e0c7",
+//     },
+//     {
+//       name: "#bfdadc",
+//     },
+//     {
+//       name: "#c5def4",
+//     },
+//     {
+//       name: "#bfd4f1",
+//     },
+//     {
+//       name: "#d4c5f7",
+//     },
+//   ];
+
+//   return (
+//     <>
+//       <DefaultColor>
+//         {solidColorList.map(({ name }: any, index: number) => {
+//           return (
+//             <ColorBrick colors={name} onClick={() => props.onClick(name)} />
+//           );
+//         })}
+//       </DefaultColor>
+//       <DefaultColor>
+//         {lightColorList.map(({ name }: any) => {
+//           return (
+//             <ColorBrick colors={name} onClick={() => props.onClick(name)} />
+//           );
+//         })}
+//       </DefaultColor>
+//     </>
+//   );
+// }
+
 function LabelButtons() {
   const [labelOpen, setLabelOpen] = useState(false);
-  const [defaultColor, setDefaultColor] = useState("#e99695");
+  const [defaultColor, setDefaultColor] = useState<any>("#e99695");
   const [newLabelInfo, setNewLabelInfo] = useState({
     name: "",
     description: "",
     color: "#e99695",
   });
   const [createLabelChange, setCreateLabelChange] = useState(false);
+  // useEffect(() => console.log(defaultColor), [defaultColor]);
+
   useEffect(() => {
     newLabelInfo.name.length >= 1
       ? setCreateLabelChange(true)
@@ -44,67 +121,6 @@ function LabelButtons() {
       });
     setCreated(created + 1);
   };
-
-  const solidColorList: any = [
-    {
-      name: "#b6070c",
-    },
-    {
-      name: "#d94017",
-    },
-    {
-      name: "#fbca31",
-    },
-    {
-      name: "#0e8a25",
-    },
-    {
-      name: "#006b75",
-    },
-    {
-      name: "#1b76d8",
-    },
-    {
-      name: "#0052c8",
-    },
-    {
-      name: "#521be2",
-    },
-  ];
-
-  const lightColorList: any = [
-    {
-      name: "#e99796",
-    },
-    {
-      name: "#f9d0c5",
-    },
-    {
-      name: "#fef2c3",
-    },
-    {
-      name: "#c2e0c7",
-    },
-    {
-      name: "#bfdadc",
-    },
-    {
-      name: "#c5def4",
-    },
-    {
-      name: "#bfd4f1",
-    },
-    {
-      name: "#d4c5f7",
-    },
-  ];
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "getList",
-  //   });
-  // }, [created]);
-
-  // useEffect(() => console.log(newLabelInfo), [newLabelInfo]);
 
   return (
     <Wrapper>
@@ -174,7 +190,10 @@ function LabelButtons() {
                   <DefaultColorText>
                     Choose from default colors:
                   </DefaultColorText>
-                  <DefaultColor>
+                  <ColorBrickWrapper
+                    onClick={() => setDefaultColor(defaultColor)}
+                  />
+                  {/* <DefaultColor>
                     {solidColorList.map(({ name }: any, index: number) => {
                       return (
                         <ColorBrick
@@ -193,7 +212,7 @@ function LabelButtons() {
                         />
                       );
                     })}
-                  </DefaultColor>
+                  </DefaultColor> */}
                 </ColorSelector>
               </InputWrapper>
             </LowerWrapper>
@@ -212,11 +231,6 @@ function LabelButtons() {
           </ButtonWrapper>
         </BigWrapper>
       </NewLabelSection>
-      <div>
-        {solidColorList.map((item: any, index: number) => {
-          return <span>{item[index]}</span>;
-        })}
-      </div>
     </Wrapper>
   );
 }

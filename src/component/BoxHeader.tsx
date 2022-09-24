@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import { TriangleDownIcon } from "@primer/octicons-react";
 import LabelList from "./LabelList";
-import { useSelector } from "react-redux";
+import { useSelector, TypedUseSelectorHook } from "react-redux";
 import { useEffect, useState } from "react";
 import api from "../utils/api";
+import type { RootState, AppDispatch } from "../state/store";
 
 function BoxHeader() {
-  let updatedLabels: any = useSelector((state) => state);
+  const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+  let updatedLabels: any = useAppSelector((state) => state?.reducer);
   const [labels, setLabel]: any = useState();
-  useEffect(() => setLabel(labels), []);
   useEffect(() => {
     (async () => {
       setLabel(await api.getLabels("emil0519", "testing-issues"));
@@ -19,6 +20,7 @@ function BoxHeader() {
     // 每次有新label的時候會re-render一次
   }, [updatedLabels]);
 
+  // useEffect(() => console.log(labels), [labels]);
   if (labels === undefined) {
     return <></>;
   }

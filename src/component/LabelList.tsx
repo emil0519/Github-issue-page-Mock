@@ -1,39 +1,10 @@
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState, useRef } from "react";
+import { useSelector, useDispatch, TypedUseSelectorHook } from "react-redux";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import api from "../utils/api";
 import { IssueReopenedIcon } from "@primer/octicons-react";
-import { useOnClickOutside } from "usehooks-ts";
-
-function useComponentVisible(initialIsVisible: any) {
-  const [isComponentVisible, setIsComponentVisible] =
-    useState(initialIsVisible);
-  // useEffect(() => console.log(initialIsVisible), [initialIsVisible]);
-  const ref = useRef<any>(null);
-
-  const handleHideDropdown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      setIsComponentVisible(false);
-    }
-  };
-
-  const handleClickOutside = (event: any) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setIsComponentVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleHideDropdown, true);
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("keydown", handleHideDropdown, true);
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  });
-
-  return { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside };
-}
+import { useComponentVisible } from "../utils/useComponentVisible";
+import type { RootState, AppDispatch } from "../state/store";
 
 function Refer(props: any) {
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
@@ -51,14 +22,14 @@ function Refer(props: any) {
     props.updateLabelInfo
   );
 
-  useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
+  // useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
 
   useEffect(
     () => setUpdateLabelInfo(props.updateLabelInfo),
     [props.updateLabelInfo]
   );
 
-  useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
+  // useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
 
   function toUpdateInfo(types: any, index: any, value: any) {
     let newInfo = [...updateLabelInfo];
@@ -74,8 +45,6 @@ function Refer(props: any) {
   }
   function postInfo(index: number) {
     let updateBody = updateLabelInfo[index];
-    console.log(updateBody);
-
     api.updateLabels(
       "emil0519",
       "testing-issues",
@@ -87,17 +56,16 @@ function Refer(props: any) {
   }
 
   function deleteLabel(index: number) {
-    const response = api.deleteLabel(
-      "emil0519",
-      "testing-issues",
-      updateLabelInfo[index].name
-    );
+    console.log(updateLabelInfo[index].name);
+
+    // const response = api.deleteLabel(
+    //   "emil0519",
+    //   "testing-issues",
+    //   updateLabelInfo[index].name
+    // );
     dispatch({
-      type: "deleteItem",
-      payload: { deleteName: updateLabelInfo[index].name },
+      type: "try",
     });
-    // console.log(response);
-    // console.log("deletelabel");
   }
 
   useOnClickOutside(ref, handleClickOutside);
@@ -138,11 +106,12 @@ function Refer(props: any) {
               Edit
             </DropDownText>
 
-            <DeleteText ref={ref} onClick={() => {
-              deleteLabel(props.index);
-
-            }
-            }>
+            <DeleteText
+              ref={ref}
+              onClick={() => {
+                deleteLabel(props.index);
+              }}
+            >
               Delete
             </DeleteText>
           </DropDown>
@@ -226,17 +195,37 @@ function LabelList() {
   const ref = useRef(null);
   const [clickIndex, setClickIndex] = useState(-1);
 
-  const dispatch = useDispatch();
-
   const [labelIndex, setLabelIndex] = useState<
     number[] | object | (() => number[])
   >([]);
   // const [areaOpen, setAreaOpen] = useState(false);
   const [label, setLabel]: any = useState();
-  const updatedLabels: any = useSelector((state) => state);
+  const useAppDispatch = () => useDispatch<AppDispatch>();
+  const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+  const dispatch = useAppDispatch();
+  const updatedLabels: any = useAppSelector<any[]>((state) => state?.reducer);
   const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
+  const firstUpdate = useRef(true);
 
-  useEffect(() => console.log(labelIndex), [labelIndex]);
+  useLayoutEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      console.log("first update");
+      console.log(updatedLabels);
+
+      return;
+    } else {
+      console.log("second update");
+      setLabel(updatedLabels);
+    }
+    // if (updatedLabels.length === 0) {
+    //   console.log("this is undefined");
+    // } else {
+    //   console.log(updatedLabels);
+    //   console.log("setting label, should not happen");
+    // }
+  }, [updatedLabels]);
+  // useEffect(() => console.log(labelIndex), [labelIndex]);
 
   function toUpdateInfo(types: any, index: any, value: any) {
     let newInfo = [...updateLabelInfo];
@@ -303,16 +292,20 @@ function LabelList() {
     })().catch((error) => console.log(error));
   }, []);
 
-  useEffect(() => {
-    setLabel(updatedLabels);
-    // 每次有新label的時候會re-render一次
-  }, [updatedLabels]);
+  // useEffect(() => {
+  //   setLabel(updatedLabels);
+  //   // 每次有新label的時候會re-render一次
+  // }, [updatedLabels]);
 
   useEffect(() => {
-    dispatch({
-      type: "getList",
-      payload: { label },
-    });
+    if (label === undefined) {
+      return;
+    } else {
+      dispatch({
+        type: "getList",
+        payload: { label },
+      });
+    }
   }, [label]);
 
   // useEffect(() => console.log(label), []);
