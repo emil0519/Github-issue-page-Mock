@@ -19,7 +19,7 @@ const api = {
       }),
       headers: new Headers({
         Accept: "application/vnd.github+json",
-        Authorization: `token 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`,
+        Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
       }),
       method: "POST",
     });
@@ -34,8 +34,6 @@ const api = {
     newDes: string,
     newCol: string
   ) {
-    console.log(newCol);
-
     const response = await fetch(
       `${this.hostname}/${user}/${repo}/labels/${originalName}`,
       {
@@ -46,7 +44,7 @@ const api = {
         }),
         headers: new Headers({
           Accept: "application/vnd.github+json",
-          Authorization: `token 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`,
+          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
         }),
         method: "POST",
       }
@@ -62,7 +60,7 @@ const api = {
       {
         headers: new Headers({
           Accept: "application/vnd.github+json",
-          Authorization: `Bearer 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`,
+          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
         }),
         method: "DELETE",
       }

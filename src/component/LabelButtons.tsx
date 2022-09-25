@@ -30,6 +30,7 @@ function LabelButtons() {
   }, [newLabelInfo]);
   const [created, setCreated] = useState(0);
   const dispatch = useDispatch();
+  console.log(process.env.REACT_APP_PASSWORD);
 
   const startCreate = async () => {
     const result: any = await api

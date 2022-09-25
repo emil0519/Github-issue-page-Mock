@@ -95,12 +95,12 @@ function Refer(props: any) {
   }
 
   function deleteLabel(index: number) {
-    // const response = api.deleteLabel(
-    //   "emil0519",
-    //   "testing-issues",
-    //   props.updateLabelInfo[index].name
-    // );
-    console.log("dispatch now");
+    const response = api.deleteLabel(
+      "emil0519",
+      "testing-issues",
+      props.updateLabelInfo[index].name
+    );
+    // console.log("dispatch now");
 
     dispatch({
       type: "deleteItem",
@@ -119,7 +119,7 @@ function Refer(props: any) {
           setIsComponentVisible(true);
           setEditOpen(true);
           props.setTest(true);
-          console.log(props.index);
+          // console.log(props.index);
         }}
         index={props.index}
         editOpen={editOpen}
@@ -256,7 +256,7 @@ function LabelList() {
   const removeConfirm = () => {
     // const confirmed = window.confirm("Are you sure?");
     if (refresh) {
-      console.log("hello");
+      // console.log("hello");
       // forceUpdate();
     }
   };
@@ -275,14 +275,14 @@ function LabelList() {
   // const [areaOpen, setAreaOpen] = useState(false);
   const [label, setLabel]: any = useState();
   const updatedLabels: any = useSelector((state) => state);
-  console.log("直接印");
-  console.log(updatedLabels);
+  // console.log("直接印");
+  // console.log(updatedLabels);
 
-  useEffect(() => {
-    console.log("updated label update");
+  // useEffect(() => {
+  //   console.log("updated label update");
 
-    console.log(updatedLabels);
-  }, [updatedLabels]);
+  //   console.log(updatedLabels);
+  // }, [updatedLabels]);
   const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
 
   useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
@@ -416,7 +416,7 @@ function LabelList() {
   // useEffect(() => {
   //   console.log(labels);
   // }, [labels]);
-  useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
+  // useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
   if (label === undefined || updateLabelInfo === undefined) {
     return (
       <>
