@@ -1,216 +1,25 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { useComponentVisible } from "../utils/useComponentVisible";
-import { MilestoneIcon, IssueReopenedIcon } from "@primer/octicons-react";
+import {
+  MilestoneIcon,
+  IssueReopenedIcon,
+  SearchIcon,
+} from "@primer/octicons-react";
+import { useState } from "react";
+import ColorBricks from "../component/ColorBricks";
 
-function ColorBricks(props: any) {
-  const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
-    useComponentVisible(false);
-  const [editOpen, setEditOpen] = useState(false);
+const SearchBarWrapper = styled.div`
+  position: relative;
+  @media screen and (min-width: 768px) {
+  }
+`;
 
-  const handleClickOutside = () => {
-    setEditOpen(false);
-    setIsComponentVisible(false);
-    console.log("clicked outside");
-  };
-  useOnClickOutside(ref, handleClickOutside);
-
-  const solidColorList: any = [
-    {
-      name: "#b6070c",
-    },
-    {
-      name: "#d94017",
-    },
-    {
-      name: "#fbca31",
-    },
-    {
-      name: "#0e8a25",
-    },
-    {
-      name: "#006b75",
-    },
-    {
-      name: "#1b76d8",
-    },
-    {
-      name: "#0052c8",
-    },
-    {
-      name: "#521be2",
-    },
-  ];
-
-  const lightColorList: any = [
-    {
-      name: "#e99796",
-    },
-    {
-      name: "#f9d0c5",
-    },
-    {
-      name: "#fef2c3",
-    },
-    {
-      name: "#c2e0c7",
-    },
-    {
-      name: "#bfdadc",
-    },
-    {
-      name: "#c5def4",
-    },
-    {
-      name: "#bfd4f1",
-    },
-    {
-      name: "#d4c5f7",
-    },
-  ];
-
-  return (
-    <>
-      <ColorInput
-        maxLength={7}
-        value={`${props.defaultColor}`}
-        onChange={(e) => {
-          props.setDefaultColor(e.target.value);
-          props.setNewLabelInfo({
-            ...props.newLabelInfo,
-            color: e.target.value,
-          });
-        }}
-        onClick={() => {
-          setIsComponentVisible(true);
-          setEditOpen(true);
-        }}
-      ></ColorInput>
-      {isComponentVisible && (
-        <ColorSelector style={{ display: "flex" }} ref={ref}>
-          <DefaultColorText>Choose from default colors:</DefaultColorText>
-          <DefaultColor>
-            {solidColorList.map(({ name }: any, index: number) => {
-              return (
-                <ColorBrick
-                  colors={name}
-                  onClick={() => {
-                    props.setDefaultColor(name);
-                    props.setNewLabelInfo({
-                      ...props.newLabelInfo,
-                      color: name,
-                    });
-                  }}
-                />
-              );
-            })}
-          </DefaultColor>
-          <DefaultColor>
-            {lightColorList.map(({ name }: any) => {
-              return (
-                <ColorBrick
-                  colors={name}
-                  onClick={() => {
-                    props.setDefaultColor(name);
-                    props.setNewLabelInfo({
-                      ...props.newLabelInfo,
-                      color: name,
-                    });
-                  }}
-                />
-              );
-            })}
-          </DefaultColor>
-        </ColorSelector>
-      )}
-      <ColorSelector style={{ display: "none" }}>
-        <DefaultColorText>Choose from default colors:</DefaultColorText>
-        <DefaultColor>
-          {solidColorList.map(({ name }: any, index: number) => {
-            return (
-              <ColorBrick
-                colors={name}
-                onClick={() => {
-                  props.setDefaultColor(name);
-                  props.setNewLabelInfo({
-                    ...props.newLabelInfo,
-                    color: name,
-                  });
-                }}
-              />
-            );
-          })}
-        </DefaultColor>
-        <DefaultColor>
-          {lightColorList.map(({ name }: any) => {
-            return (
-              <ColorBrick
-                colors={name}
-                onClick={() => {
-                  props.setDefaultColor(name);
-                  props.setNewLabelInfo({
-                    ...props.newLabelInfo,
-                    color: name,
-                  });
-                }}
-              />
-            );
-          })}
-        </DefaultColor>
-      </ColorSelector>
-    </>
-  );
-}
 type Col = {
   colors: string;
 };
-const ColorBrick = styled.div<Col>`
-  background: ${(props) => props.colors};
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-  width: 21px;
-  height: 21px;
-  margin-right: 8px;
-  cursor: pointer;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const DefaultColor = styled.div`
-  display: flex;
-  margin: 5px auto 0 8px;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const DefaultColorText = styled.div`
-  color: #57606a;
-  font-size: 8px;
-  margin: 8px auto 4px 8px;
-  @media screen and (min-width: 768px) {
-  }
-`;
 
 const InputWrapper = styled.section`
   position: relative;
   width: 100%;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const ColorSelector = styled.section`
-  width: 240px;
-  height: 87px;
-  background: white;
-  position: absolute;
-  top: 110%;
-  left: 6px;
-  border: 0.5px solid #cad1d9;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  display: none;
   @media screen and (min-width: 768px) {
   }
 `;
@@ -265,11 +74,11 @@ type Changer = {
   createLabelChange: boolean;
 };
 
-const CreateLabelButton = styled.div<Changer>`
+const CreateLabelButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => (props.createLabelChange ? "#2da454" : "#8acd9a")};
+  background: #2da454;
   border: 1px solid #79b288;
   width: 113.36px;
   height: 32px;
@@ -309,16 +118,6 @@ const LabelInput = styled.input`
   }
 `;
 
-const ColorInput = styled.input`
-  background: #f5f7f9;
-  padding: 5px 12px;
-  border: 0.5px solid #cad1d9;
-  margin-left: 6px;
-  width: 89%;
-  border-radius: 5px;
-  margin-top: 9px;
-`;
-
 const RollerIcon = styled(IssueReopenedIcon)`
   width: 16px;
   height: 16px;
@@ -327,13 +126,13 @@ const RollerIcon = styled(IssueReopenedIcon)`
   }
 `;
 
-const ColorRoller = styled.div<Col>`
+const ColorRoller = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 32px;
   height: 31px;
-  background: ${(props) => props.colors};
+  background: yellow;
   border-radius: 5px;
   margin-top: 10px;
   @media screen and (min-width: 768px) {
@@ -366,7 +165,7 @@ const LabelName = styled.label`
   }
 `;
 
-const LabelPreview = styled.div<Col>`
+const LabelPreview = styled.div`
   width: fit-content;
   margin: 16px 16px 0 16px;
   padding-left: 6px;
@@ -375,7 +174,7 @@ const LabelPreview = styled.div<Col>`
   font-size: 10px;
   height: 24px;
   margin-left: 10px;
-  background: ${(props) => props.colors};
+  background: #e99695;
   color: black;
   font-weight: 600;
   border-radius: 15px;
@@ -388,13 +187,10 @@ const LabelPreview = styled.div<Col>`
   }
 `;
 
-type NewLabel = {
-  labelOpen: boolean;
-};
 //傳props一定要設定type，在styled component
 
-const NewLabelSection = styled.section<NewLabel>`
-  display: ${(props) => (props.labelOpen ? "flex" : "none")};
+const NewLabelSection = styled.section`
+  display: flex;
   flex-direction: column;
   width: 95%;
   height: 328px;
@@ -546,4 +342,77 @@ const LabelSubSection = styled.div`
   }
 `;
 
-export default ColorBricks;
+const LabelSection = styled.section`
+  background: #1760cf;
+  width: 97px;
+  height: 32px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  cursor: pointer;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const Wrapper = styled.section`
+  background: white;
+  margin-top: 20px;
+  /* display: flex;
+    justify-content: space-between;
+    margin-right: 16px; */
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+type NewLabelProps = {
+  TEXT: string;
+  //   background: string;
+};
+
+export const NewLabels = ({ ...props }: NewLabelProps) => {
+  const [text, setText] = useState("Label Preview");
+
+  return (
+    <>
+      <NewLabelSection>
+        <LabelPreview>{text}</LabelPreview>
+        <BigWrapper>
+          <LabelInputSection>
+            <LabelName>Label Name</LabelName>
+            <LabelInput onChange={(e) => setText(e.target.value)} />
+          </LabelInputSection>
+          <LabelInputSection>
+            <LabelName>Description</LabelName>
+            <LabelInput />
+          </LabelInputSection>
+          <ColorInputSection>
+            <ColorText>Color</ColorText>
+            <LowerWrapper>
+              <ColorRoller>
+                <RollerIcon />
+              </ColorRoller>
+              <InputWrapper>
+                <ColorBricks
+                //   setNewLabelInfo={setNewLabelInfo}
+                //   newLabelInfo={newLabelInfo}
+                //   setDefaultColor={setDefaultColor}
+                //   defaultColor={defaultColor}
+                />
+              </InputWrapper>
+            </LowerWrapper>
+          </ColorInputSection>
+          <ButtonWrapper>
+            <CreateLabelButton>
+              <CreateLabelText>Create Label</CreateLabelText>
+            </CreateLabelButton>
+            <CancelButton>
+              <CancelText>Cancel</CancelText>
+            </CancelButton>
+          </ButtonWrapper>
+        </BigWrapper>
+      </NewLabelSection>{" "}
+    </>
+  );
+};

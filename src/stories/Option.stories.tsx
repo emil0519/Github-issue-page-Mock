@@ -1,4 +1,3 @@
-/* eslint-disable storybook/story-exports */
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Option } from "./Option";
 

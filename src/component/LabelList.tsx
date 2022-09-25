@@ -97,17 +97,23 @@ function Refer(props: any) {
   }
 
   function deleteLabel(index: number) {
-    const response = api.deleteLabel(
-      "emil0519",
-      "testing-issues",
-      props.updateLabelInfo[index].name
+    const confirm = window.confirm(
+      "Are you sure? Deleting a label will remove it from all issues and pull requests."
     );
-    // console.log("dispatch now");
+    if (confirm) {
+      const response = api.deleteLabel(
+        "emil0519",
+        "testing-issues",
+        props.updateLabelInfo[index].name
+      );
+      // console.log("dispatch now");
 
-    dispatch({
-      type: "deleteItem",
-      payload: { deleteName: props.updateLabelInfo[index].name },
-    });
+      dispatch({
+        type: "deleteItem",
+        payload: { deleteName: props.updateLabelInfo[index].name },
+      });
+    }
+
     // setDeleteCount(deleteCount+1)
     // console.log(response);
     // console.log("deletelabel");
@@ -460,13 +466,15 @@ function LabelList() {
         {label.map((item: any, index: any) => {
           return (
             <Wrapper index={index} labelIndex={labelIndex} areaOpen={areaOpen}>
-              <LabelWrap>
-                <Label color={updateLabelInfo[index].color}>
-                  <LabelText color={item.color}>
-                    {updateLabelInfo[index].new_name}
-                  </LabelText>
-                </Label>
-              </LabelWrap>
+              <OuterWrapper>
+                <LabelWrap>
+                  <Label color={updateLabelInfo[index].color}>
+                    <LabelText color={item.color}>
+                      {updateLabelInfo[index].new_name}
+                    </LabelText>
+                  </Label>
+                </LabelWrap>
+              </OuterWrapper>
               <LabelDes>{item.description}</LabelDes>
               <Notification></Notification>
               {/* <Sort
@@ -823,11 +831,18 @@ const DropDown = styled.div`
   @media screen and (min-width: 1012px) {
   }
 `;
-
-const LabelWrap = styled.div`
+const OuterWrapper = styled.section`
   width: 15%;
   height: 24px;
-  margin-top: 25px;
+  /* margin-top: 25px; */
+  @media screen and (min-width: 1012px) {
+  }
+`;
+
+const LabelWrap = styled.div`
+  width: auto;
+  height: 24px;
+  /* margin-top: 25px; */
   @media screen and (min-width: 1012px) {
   }
 `;

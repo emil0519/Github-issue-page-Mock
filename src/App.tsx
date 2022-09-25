@@ -68,7 +68,7 @@ function App() {
   return (
     <>
       <Header />
-      {/* <Repo /> */}
+      <Repo />
       <Option />
       <LabelButtons />
       <BoxHeader />

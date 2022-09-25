@@ -35,26 +35,50 @@ const api = {
     newDes: string,
     newCol: string
   ) {
+    console.log("not yet change");
+
     console.log(newCol);
 
-    const response = await fetch(
-      `${this.hostname}/${user}/${repo}/labels/${originalName}`,
-      {
-        body: JSON.stringify({
-          new_name: newName,
-          description: newDes,
-          color: newCol,
-        }),
-        headers: new Headers({
-          Accept: "application/vnd.github+json",
-          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
-        }),
-        method: "POST",
-      }
-    );
-    console.log(response);
+    if (newCol.includes("#")) {
+      const replaced = newCol.replace("#", "");
+      const response = await fetch(
+        `${this.hostname}/${user}/${repo}/labels/${originalName}`,
+        {
+          body: JSON.stringify({
+            new_name: newName,
+            description: newDes,
+            color: replaced,
+          }),
+          headers: new Headers({
+            Accept: "application/vnd.github+json",
+            Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          }),
+          method: "POST",
+        }
+      );
+      console.log(response);
 
-    return await response.json();
+      return await response.json();
+    } else {
+      const response = await fetch(
+        `${this.hostname}/${user}/${repo}/labels/${originalName}`,
+        {
+          body: JSON.stringify({
+            new_name: newName,
+            description: newDes,
+            color: newCol,
+          }),
+          headers: new Headers({
+            Accept: "application/vnd.github+json",
+            Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          }),
+          method: "POST",
+        }
+      );
+      console.log(response);
+
+      return await response.json();
+    }
   },
   async deleteLabel(user: string, repo: string, deleteName: any) {
     console.log(deleteName);

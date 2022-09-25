@@ -1,80 +1,84 @@
 import styled from "styled-components";
-import repo from "../img/repo.png";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  IssueOpenedIcon,
+} from "@primer/octicons-react";
 
-function Repo() {
+function Option() {
   return (
-    <TitleWrapper>
-      <RepoLogo alt="" src={repo} />
-      <UserName>emil0519 </UserName>
-      <Slash>/</Slash>
-      <RepoName>testing-issues</RepoName>
-      <RepoType>Public</RepoType>
-    </TitleWrapper>
+    <Wrapper>
+      <CodeSection>
+        <CodeLeftIMG />
+        <CodeRightIMG />
+        <CodeText>Code</CodeText>
+      </CodeSection>
+      <CodeSection>
+        <IssueIMG />
+        <CodeText>Issues</CodeText>
+      </CodeSection>
+    </Wrapper>
   );
 }
 
-const RepoType = styled.span`
-  font-size: 14px;
-  color: #4d555e;
-  border: 0.5px solid #cad1d9;
-  border-radius: 25px;
-  margin-left: 8px;
-  padding: 5px;
+const IssueIMG = styled(IssueOpenedIcon)`
+  margin-right: 5px;
+  @media screen and (min-width: 543) {
+    width: 15px;
+    height: 15px;
+    display: block;
+  }
+`;
+
+const CodeRightIMG = styled(ChevronRightIcon)`
+  display: none;
+  @media screen and (min-width: 543) {
+    width: 15px;
+    height: 15px;
+    display: block;
+  }
+`;
+
+const CodeLeftIMG = styled(ChevronLeftIcon)`
+  display: none;
+  @media screen and (min-width: 543) {
+    width: 15px;
+    height: 15px;
+    display: block;
+  }
+  /* imported icon cannot be displayed none, need to fix afterwards */
+`;
+
+const CodeText = styled.span`
+  color: black;
+  font-size: 16px;
   @media screen and (min-width: 768px) {
   }
 `;
 
-const RepoName = styled.span`
-  font-weight: 700;
-  font-size: 20px;
-  color: #1760cf;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-    text-decoration-color: #1760cf;
-  }
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const Slash = styled.span`
-  font-size: 20px;
-  color: #4d555e;
-  margin: 0 2px;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const UserName = styled.span`
-  font-size: 20px;
-  color: #1760cf;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-    text-decoration-color: #1760cf;
-  }
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const RepoLogo = styled.img`
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const TitleWrapper = styled.section`
+const CodeSection = styled.div`
   display: flex;
-  padding: 16px;
   align-items: center;
+  width: 75.38px;
+  height: 30px;
   background: #f5f7f9;
+  border-radius: 5px;
+  margin-left: 16px;
+  margin-right: 5px;
+  cursor: pointer;
+  &:hover {
+    background: #e7ebef;
+  }
   @media screen and (min-width: 768px) {
-    /* display: flex; 
-    align-items: center;
-    margin-right: 10px; */
   }
 `;
 
-export default Repo;
+const Wrapper = styled.section`
+  display: flex;
+  background: #f5f7f9;
+  height: 48px;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+export default Option;

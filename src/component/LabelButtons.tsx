@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import labelIcon from "../img/labelicon.png";
-import { MilestoneIcon, IssueReopenedIcon } from "@primer/octicons-react";
+import {
+  MilestoneIcon,
+  IssueReopenedIcon,
+  SearchIcon,
+} from "@primer/octicons-react";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useOnClickOutside } from "usehooks-ts";
@@ -319,7 +323,10 @@ function LabelButtons() {
               <MileText>Milestones</MileText>
             </MileStoneSubSection>
           </MileSection>
-          <BigSearchBar placeholder="Search all labels" />
+          <BigSearchBarWrapper>
+            <BigSearchIcon />
+            <BigSearchBar placeholder="Search all labels" />
+          </BigSearchBarWrapper>
         </SubWrapOne>
         <NewLabel>
           <NewLabelText
@@ -339,7 +346,10 @@ function LabelButtons() {
           </NewLabelText>
         </NewLabel>
       </UpperWrapper>
-      <SearchBar placeholder="Search all labels" />
+      <SearchBarWrapper>
+        <SearchIconIMG />
+        <SearchBar placeholder="Search all labels" />
+      </SearchBarWrapper>
       <NewLabelSection labelOpen={labelOpen}>
         <LabelPreview colors={defaultColor}>{defaultLabelPreview}</LabelPreview>
         <BigWrapper>
@@ -374,51 +384,12 @@ function LabelButtons() {
                 <RollerIcon />
               </ColorRoller>
               <InputWrapper>
-                {/* <ColorInput
-                  maxLength={7}
-                  value={`${defaultColor}`}
-                  onChange={(e) => {
-                    setDefaultColor(e.target.value);
-                    setNewLabelInfo({ ...newLabelInfo, color: e.target.value });
-                  }}
-                ></ColorInput> */}
                 <ColorBricks
                   setNewLabelInfo={setNewLabelInfo}
                   newLabelInfo={newLabelInfo}
                   setDefaultColor={setDefaultColor}
                   defaultColor={defaultColor}
                 />
-                {/* <ColorSelector>
-                  <DefaultColorText>
-                    Choose from default colors:
-                  </DefaultColorText>
-                  <DefaultColor>
-                    {solidColorList.map(({ name }: any, index: number) => {
-                      return (
-                        <ColorBrick
-                          colors={name}
-                          onClick={() => {
-                            setDefaultColor(name);
-                            setNewLabelInfo({ ...newLabelInfo, color: name });
-                          }}
-                        />
-                      );
-                    })}
-                  </DefaultColor>
-                  <DefaultColor>
-                    {lightColorList.map(({ name }: any) => {
-                      return (
-                        <ColorBrick
-                          colors={name}
-                          onClick={() => {
-                            setDefaultColor(name);
-                            setNewLabelInfo({ ...newLabelInfo, color: name });
-                          }}
-                        />
-                      );
-                    })}
-                  </DefaultColor>
-                </ColorSelector> */}
               </InputWrapper>
             </LowerWrapper>
           </ColorInputSection>
@@ -444,6 +415,45 @@ function LabelButtons() {
     </Wrapper>
   );
 }
+
+const SearchIconIMG = styled(SearchIcon)`
+  width: 21px;
+  height: 21px;
+  position: absolute;
+  top: 25%;
+  left: 20px;
+  @media screen and (min-width: 768px) {
+    width: 0;
+    height: 0;
+  }
+`;
+
+const BigSearchIcon = styled(SearchIcon)`
+  display: none;
+  @media screen and (min-width: 768px) {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    top: 21%;
+    left: 13px;
+    display: block;
+  }
+`;
+
+const SearchBarWrapper = styled.div`
+  position: relative;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const BigSearchBarWrapper = styled(SearchBarWrapper)`
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: block;
+    position: relative;
+  }
+`;
+
 type Col = {
   colors: string;
 };

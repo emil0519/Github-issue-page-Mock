@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -9,7 +9,7 @@ import {
   TableIcon,
   ShieldIcon,
   GraphIcon,
-} from '@primer/octicons-react';
+} from "@primer/octicons-react";
 
 const IssueIMG = styled(IssueOpenedIcon)`
   display: none;
@@ -79,7 +79,7 @@ type OptionProps = {
   TEXT: string;
 };
 
-export const Option = ({ TEXT = 'Issues', ...props }: OptionProps) => {
+export const Option = ({ TEXT = "Issues", ...props }: OptionProps) => {
   return (
     <Wrapper>
       <CodeSection>
@@ -94,26 +94,6 @@ export const Option = ({ TEXT = 'Issues', ...props }: OptionProps) => {
       <CodeSection>
         <GitPullRequestIcon />
         <CodeText>Pull requests</CodeText>
-      </CodeSection>
-      <CodeSection>
-        <CommentDiscussionIcon />
-        <CodeText>Discussions</CodeText>
-      </CodeSection>
-      <CodeSection>
-        <PlayIcon />
-        <CodeText>Actions</CodeText>
-      </CodeSection>
-      <CodeSection>
-        <TableIcon />
-        <CodeText>Projects</CodeText>
-      </CodeSection>
-      <CodeSection>
-        <ShieldIcon />
-        <CodeText>Security</CodeText>
-      </CodeSection>
-      <CodeSection>
-        <GraphIcon />
-        <CodeText>Insight</CodeText>
       </CodeSection>
     </Wrapper>
   );
