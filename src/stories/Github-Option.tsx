@@ -3,16 +3,9 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   IssueOpenedIcon,
-  GitPullRequestIcon,
-  CommentDiscussionIcon,
-  PlayIcon,
-  TableIcon,
-  ShieldIcon,
-  GraphIcon,
 } from "@primer/octicons-react";
 
 const IssueIMG = styled(IssueOpenedIcon)`
-  display: none;
   margin-right: 5px;
   @media screen and (min-width: 543) {
     width: 15px;
@@ -89,11 +82,7 @@ export const Option = ({ TEXT = "Issues", ...props }: OptionProps) => {
       </CodeSection>
       <CodeSection>
         <IssueIMG />
-        <CodeText>{TEXT}</CodeText>
-      </CodeSection>
-      <CodeSection>
-        <GitPullRequestIcon />
-        <CodeText>Pull requests</CodeText>
+        <CodeText>Issues</CodeText>
       </CodeSection>
     </Wrapper>
   );

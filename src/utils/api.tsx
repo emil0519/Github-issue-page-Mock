@@ -35,10 +35,6 @@ const api = {
     newDes: string,
     newCol: string
   ) {
-    console.log("not yet change");
-
-    console.log(newCol);
-
     if (newCol.includes("#")) {
       const replaced = newCol.replace("#", "");
       const response = await fetch(
@@ -56,7 +52,6 @@ const api = {
           method: "POST",
         }
       );
-      console.log(response);
 
       return await response.json();
     } else {
@@ -75,13 +70,11 @@ const api = {
           method: "POST",
         }
       );
-      console.log(response);
 
       return await response.json();
     }
   },
   async deleteLabel(user: string, repo: string, deleteName: any) {
-    console.log(deleteName);
     const response = await fetch(
       `${this.hostname}/${user}/${repo}/labels/${deleteName}`,
       {

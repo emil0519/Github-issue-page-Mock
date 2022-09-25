@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { RepoIcon } from '@primer/octicons-react';
+import styled from "styled-components";
+import repo from "../img/repo.png";
 
 const RepoType = styled.span`
   font-size: 14px;
@@ -59,7 +59,7 @@ const TitleWrapper = styled.section`
   align-items: center;
   background: #f5f7f9;
   @media screen and (min-width: 768px) {
-    /* display: flex;
+    /* display: flex; 
     align-items: center;
     margin-right: 10px; */
   }
@@ -74,19 +74,14 @@ type RepoProps = {
   TYPE: string;
 };
 
-export const Repo = ({
-  OWNER = 'OWNER',
-  REPO = 'REPO',
-  TYPE = 'Public',
-  ...props
-}: RepoProps) => {
+export const Repo = ({ OWNER = "emil0519", ...props }: RepoProps) => {
   return (
     <TitleWrapper>
-      <RepoIcon size={16} />
-      <UserName>{OWNER}</UserName>
+      <RepoLogo alt="" src={repo} />
+      <UserName>{OWNER} </UserName>
       <Slash>/</Slash>
-      <RepoName>{REPO}</RepoName>
-      <RepoType>{TYPE}</RepoType>
+      <RepoName>testing-issues</RepoName>
+      <RepoType>Public</RepoType>
     </TitleWrapper>
   );
 };

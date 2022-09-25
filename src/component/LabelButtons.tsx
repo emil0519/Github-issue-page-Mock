@@ -5,204 +5,16 @@ import {
   IssueReopenedIcon,
   SearchIcon,
 } from "@primer/octicons-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useOnClickOutside } from "usehooks-ts";
 import ColorBricks from "./ColorBricks";
 import api from "../utils/api";
+import useGenerateRandomColor from "../utils/useGenerateRandomColor";
 
 export interface opener {
   labelOpen: boolean;
 }
-
-// function useComponentVisible(initialIsVisible: any) {
-//   const [isComponentVisible, setIsComponentVisible] =
-//     useState(initialIsVisible);
-//   // useEffect(() => console.log(initialIsVisible), [initialIsVisible]);
-//   const ref = useRef<any>(null);
-
-//   const handleHideDropdown = (event: KeyboardEvent) => {
-//     if (event.key === "Escape") {
-//       setIsComponentVisible(false);
-//     }
-//   };
-
-//   const handleClickOutside = (event: any) => {
-//     if (ref.current && !ref.current.contains(event.target)) {
-//       setIsComponentVisible(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     document.addEventListener("keydown", handleHideDropdown, true);
-//     document.addEventListener("click", handleClickOutside, true);
-//     return () => {
-//       document.removeEventListener("keydown", handleHideDropdown, true);
-//       document.removeEventListener("click", handleClickOutside, true);
-//     };
-//   });
-
-//   return { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside };
-// }
-
-// function ColorBricks(props: any) {
-//   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
-//     useComponentVisible(false);
-//   const [editOpen, setEditOpen] = useState(false);
-
-//   const handleClickOutside = () => {
-//     setEditOpen(false);
-//     setIsComponentVisible(false);
-//     console.log("clicked outside");
-//   };
-//   useOnClickOutside(ref, handleClickOutside);
-
-//   const solidColorList: any = [
-//     {
-//       name: "#b6070c",
-//     },
-//     {
-//       name: "#d94017",
-//     },
-//     {
-//       name: "#fbca31",
-//     },
-//     {
-//       name: "#0e8a25",
-//     },
-//     {
-//       name: "#006b75",
-//     },
-//     {
-//       name: "#1b76d8",
-//     },
-//     {
-//       name: "#0052c8",
-//     },
-//     {
-//       name: "#521be2",
-//     },
-//   ];
-
-//   const lightColorList: any = [
-//     {
-//       name: "#e99796",
-//     },
-//     {
-//       name: "#f9d0c5",
-//     },
-//     {
-//       name: "#fef2c3",
-//     },
-//     {
-//       name: "#c2e0c7",
-//     },
-//     {
-//       name: "#bfdadc",
-//     },
-//     {
-//       name: "#c5def4",
-//     },
-//     {
-//       name: "#bfd4f1",
-//     },
-//     {
-//       name: "#d4c5f7",
-//     },
-//   ];
-
-//   return (
-//     <>
-//       <ColorInput
-//         maxLength={7}
-//         value={`${props.defaultColor}`}
-//         onChange={(e) => {
-//           props.setDefaultColor(e.target.value);
-//           props.setNewLabelInfo({
-//             ...props.newLabelInfo,
-//             color: e.target.value,
-//           });
-//         }}
-//         onClick={() => {
-//           setIsComponentVisible(true);
-//           setEditOpen(true);
-//         }}
-//       ></ColorInput>
-//       {isComponentVisible && (
-//         <ColorSelector style={{ display: "flex" }} ref={ref}>
-//           <DefaultColorText>Choose from default colors:</DefaultColorText>
-//           <DefaultColor>
-//             {solidColorList.map(({ name }: any, index: number) => {
-//               return (
-//                 <ColorBrick
-//                   colors={name}
-//                   onClick={() => {
-//                     props.setDefaultColor(name);
-//                     props.setNewLabelInfo({
-//                       ...props.newLabelInfo,
-//                       color: name,
-//                     });
-//                   }}
-//                 />
-//               );
-//             })}
-//           </DefaultColor>
-//           <DefaultColor>
-//             {lightColorList.map(({ name }: any) => {
-//               return (
-//                 <ColorBrick
-//                   colors={name}
-//                   onClick={() => {
-//                     props.setDefaultColor(name);
-//                     props.setNewLabelInfo({
-//                       ...props.newLabelInfo,
-//                       color: name,
-//                     });
-//                   }}
-//                 />
-//               );
-//             })}
-//           </DefaultColor>
-//         </ColorSelector>
-//       )}
-//       <ColorSelector style={{ display: "none" }}>
-//         <DefaultColorText>Choose from default colors:</DefaultColorText>
-//         <DefaultColor>
-//           {solidColorList.map(({ name }: any, index: number) => {
-//             return (
-//               <ColorBrick
-//                 colors={name}
-//                 onClick={() => {
-//                   props.setDefaultColor(name);
-//                   props.setNewLabelInfo({
-//                     ...props.newLabelInfo,
-//                     color: name,
-//                   });
-//                 }}
-//               />
-//             );
-//           })}
-//         </DefaultColor>
-//         <DefaultColor>
-//           {lightColorList.map(({ name }: any) => {
-//             return (
-//               <ColorBrick
-//                 colors={name}
-//                 onClick={() => {
-//                   props.setDefaultColor(name);
-//                   props.setNewLabelInfo({
-//                     ...props.newLabelInfo,
-//                     color: name,
-//                   });
-//                 }}
-//               />
-//             );
-//           })}
-//         </DefaultColor>
-//       </ColorSelector>
-//     </>
-//   );
-// }
 
 function LabelButtons() {
   const [labelOpen, setLabelOpen] = useState(false);
@@ -213,18 +25,27 @@ function LabelButtons() {
     color: "#e99695",
   });
   const [labelText, setLabelText] = useState("Create Label");
+  const { color, generateColor } = useGenerateRandomColor();
+  useEffect(() => {
+    generateColor();
+  }, []);
+  useEffect(() => {
+    setDefaultColor(`#${color}`);
+    setNewLabelInfo({ ...newLabelInfo, color: defaultColor });
+  }, [color]);
 
   const [defaultLabelPreview, setDefaultLabelPreview] =
     useState("Label Preview");
   const [createLabelChange, setCreateLabelChange] = useState(false);
+  const [redBorder, setRedBorder] = useState(false);
   useEffect(() => {
+    newLabelInfo.color.includes("#") ? setRedBorder(false) : setRedBorder(true);
     newLabelInfo.name.length >= 1
       ? setCreateLabelChange(true)
       : setCreateLabelChange(false);
   }, [newLabelInfo]);
   const [created, setCreated] = useState(0);
   const dispatch = useDispatch();
-  console.log(process.env.REACT_APP_PASSWORD);
 
   const startCreate = async () => {
     const result: any = await api
@@ -305,8 +126,6 @@ function LabelButtons() {
   //   });
   // }, [created]);
 
-  // useEffect(() => console.log(newLabelInfo), [newLabelInfo]);
-
   return (
     <Wrapper>
       <UpperWrapper>
@@ -380,7 +199,10 @@ function LabelButtons() {
           <ColorInputSection>
             <ColorText>Color</ColorText>
             <LowerWrapper>
-              <ColorRoller colors={defaultColor}>
+              <ColorRoller
+                colors={defaultColor}
+                onClick={() => generateColor()}
+              >
                 <RollerIcon />
               </ColorRoller>
               <InputWrapper>
@@ -389,12 +211,16 @@ function LabelButtons() {
                   newLabelInfo={newLabelInfo}
                   setDefaultColor={setDefaultColor}
                   defaultColor={defaultColor}
+                  redBorder={redBorder}
                 />
               </InputWrapper>
             </LowerWrapper>
           </ColorInputSection>
           <ButtonWrapper>
-            <CreateLabelButton createLabelChange={createLabelChange}>
+            <CreateLabelButton
+              redBorder={redBorder}
+              createLabelChange={createLabelChange}
+            >
               <CreateLabelText onClick={() => startCreate()}>
                 {labelText}
               </CreateLabelText>
@@ -556,19 +382,25 @@ const CreateLabelText = styled.span`
 
 type Changer = {
   createLabelChange: boolean;
+  redBorder: boolean;
 };
 
 const CreateLabelButton = styled.div<Changer>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => (props.createLabelChange ? "#2da454" : "#8acd9a")};
+  background: ${(props) =>
+    props.createLabelChange && props.redBorder === false
+      ? "#2da454"
+      : "#8acd9a"};
   border: 1px solid #79b288;
   width: 113.36px;
   height: 32px;
   border-radius: 5px;
   margin-left: 16px;
-  cursor: pointer;
+  cursor: ${(props) => (props.createLabelChange ? "pointer" : "none")};
+  pointer-events: ${(props) =>
+    props.createLabelChange && props.redBorder === false ? "all" : "none"};
   @media screen and (min-width: 768px) {
     order: 2;
   }
@@ -600,16 +432,6 @@ const LabelInput = styled.input`
   border-radius: 5px;
   @media screen and (min-width: 768px) {
   }
-`;
-
-const ColorInput = styled.input`
-  background: #f5f7f9;
-  padding: 5px 12px;
-  border: 0.5px solid #cad1d9;
-  margin-left: 6px;
-  width: 89%;
-  border-radius: 5px;
-  margin-top: 9px;
 `;
 
 const RollerIcon = styled(IssueReopenedIcon)`

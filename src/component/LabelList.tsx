@@ -202,19 +202,8 @@ function Refer(props: any) {
               <ColorRoller>
                 <RollerIcon />
               </ColorRoller>
-              {/* <ColorInput
-                // maxLength={7}
-                // type="text"
-                defaultValue={`#${props.itemColor}`}
-                onChange={(e) => {
-                  toUpdateInfo("color", props.index, e.target.value);
-                }}
-                // onChange={(e) => {
-                //   this.value=e.target.value
-                // }}
-              ></ColorInput> */}
+
               <ColorBricksNoProps
-                // defaultValue={`#${props.itemColor}`}
                 defaultValue={`#${props.itemColor}`}
                 toUpdateInfo={toUpdateInfo}
                 index={props.index}
@@ -475,7 +464,7 @@ function LabelList() {
                   </Label>
                 </LabelWrap>
               </OuterWrapper>
-              <LabelDes>{item.description}</LabelDes>
+              <LabelDes>{updateLabelInfo[index].description}</LabelDes>
               <Notification></Notification>
               {/* <Sort
                 clickIndex={clickIndex}
@@ -502,88 +491,6 @@ function LabelList() {
                 refresh={refresh}
                 setRefresh={setRefresh}
               />
-              {/* <DropDown key={index} index={index} clickIndex={clickIndex}>
-                  <DropDownText
-                    //感覺這邊只有拿到最後一個ref，因為在.map的時候都賦予同一個ref
-                    onClick={() => {
-                      //這邊會把work log出來，但只有在最後一個的時候會log
-                      console.log("edit label");
-                      // console.log(index);
-                      // handleClickInside();
-                      // setLabelIndex((labelIndex: any) => [
-                      //   ...labelIndex,
-                      //   index,
-                      // ]);
-                    }}
-                  >
-                    Edit
-                  </DropDownText>
-                  <DropDownText ref={ref} onClick={() => deleteLabel(index)}>
-                    Delete
-                  </DropDownText>
-                </DropDown> */}
-              {/* </Sort> */}
-              {/* <NewLabelSection
-              // index={index}
-              // labelIndex={labelIndex}
-              // areaOpen={areaOpen}
-              >
-                <BigWrapper>
-                  <LabelInputSection>
-                    <LabelName>Label Name</LabelName>
-                    <LabelInput
-                      placeholder="Label name"
-                      defaultValue={`${item.name}`}
-                      onChange={(e) => {
-                        toUpdateInfo("name", index, e.target.value);
-                      }}
-                    />
-                  </LabelInputSection>
-                  <LabelInputSection>
-                    <LabelName>Description</LabelName>
-                    <LabelInput
-                      placeholder="Description (optional)"
-                      defaultValue={`${item.description}`}
-                      onChange={(e) => {
-                        toUpdateInfo("description", index, e.target.value);
-                      }}
-                    />
-                  </LabelInputSection>
-                  <ColorInputSection>
-                    <ColorText>Color</ColorText>
-                    <LowerWrapper>
-                      <ColorRoller>
-                        <RollerIcon />
-                      </ColorRoller>
-                      <ColorInput
-                        maxLength={7}
-                        type="text"
-                        defaultValue={`#${item.color}`}
-                        onChange={(e) => {
-                          toUpdateInfo("color", index, e.target.value);
-                        }}
-                        // onChange={(e) => {
-                        //   this.value=e.target.value
-                        // }}
-                      ></ColorInput>
-                    </LowerWrapper>
-                  </ColorInputSection>
-                  <ButtonWrapper>
-                    <CreateLabelButton>
-                      <CreateLabelText onClick={() => postInfo(index)}>
-                        Save changes
-                      </CreateLabelText>
-                    </CreateLabelButton>
-                    <CancelButton>
-                      <CancelText>Cancel</CancelText>
-                    </CancelButton>
-                  </ButtonWrapper>
-                </BigWrapper>
-              </NewLabelSection>
-              <BigSort>
-                <BigSortText>Edit</BigSortText>
-                <BigSortText>Delete</BigSortText>
-              </BigSort> */}
             </Wrapper>
           );
         })}

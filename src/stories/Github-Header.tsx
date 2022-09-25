@@ -1,18 +1,10 @@
-import styled from 'styled-components';
-import {
-  DiffIgnoredIcon,
-  CopilotIcon,
-  BellIcon,
-  ThreeBarsIcon,
-  MarkGithubIcon,
-  PlusIcon,
-  TriangleDownIcon,
-} from '@primer/octicons-react';
-
-// import searchButton from "../img/searchButton.png"
-
-// const bell=require('./img/bell.png')
-// import {MarkGithubIcon, BellIcon} from '@primer/octicons-react'
+import styled from "styled-components";
+import hamburger from "../img/hamburger.png";
+import icon from "../img/icon.png";
+import bell from "../img/bell.png";
+import plus from "../img/plus.png";
+import avatar from "../img/avatar.png";
+import down from "../img/down.png";
 
 const Down = styled.img`
   display: none;
@@ -132,7 +124,7 @@ const GithubIcon = styled.img`
   /* width: 32px;
   height: 32px;
   cursor: pointer; */
-  /* background-image: url(icon); */
+  /* background-image: url(${icon}); */
   @media screen and (min-width: 768px) {
     order: -1;
     width: 35px;
@@ -167,28 +159,29 @@ type HeaderProps = {
   TEXT: string;
 };
 
-export const Header = ({ TEXT = 'Issues', ...props }: HeaderProps) => {
+export const Header = ({ TEXT = "Issues", ...props }: HeaderProps) => {
   return (
-    <Wrapper>
-      <BigWrapOne>
-        <MarkGithubIcon size={35} fill="white" />
-        <Search placeholder="Search or jump to..." />
-        <DiffIgnoredIcon size={20} />
-        <HeaderText>Pull requests</HeaderText>
-        <HeaderText>{TEXT}</HeaderText>
-        <HeaderText>Marketplace</HeaderText>
-        <HeaderText>Explore</HeaderText>
-      </BigWrapOne>
-      <BirWrapTwo>
-        <BellIcon size={16} />
-        <PlusIcon size={16} />
-        <TriangleDownIcon size={16} />
-        <CopilotIcon size={20} />
-        <TriangleDownIcon size={16} />
-      </BirWrapTwo>
-      <ThreeBarsIcon size={24} />
-      <MarkGithubIcon size={16} fill="white" />
-      <BellIcon size={16} />
-    </Wrapper>
+    <>
+      <Wrapper>
+        <BigWrapOne>
+          <Search placeholder="Search or jump to..." />
+          {/* <SearchButton alt="" src="searchButton"></SearchButton> */}
+          <GithubIcon alt="" src={icon} />
+          <HeaderText>Pull requests</HeaderText>
+          <HeaderText>Issues</HeaderText>
+          <HeaderText>Marketplace</HeaderText>
+          <HeaderText>Explore</HeaderText>
+        </BigWrapOne>
+        <BirWrapTwo>
+          <BigBellIcons alt="" src={bell} />
+          <Plus alt="" src={plus} />
+          <Avatar alt="" src={avatar} />
+          <Down alt="" src={down} />
+        </BirWrapTwo>
+        <Hamburger alt="" src={hamburger}></Hamburger>
+        <SmallGithubIcon alt="" src={icon} />
+        <BellIcons alt="" src={bell} />
+      </Wrapper>
+    </>
   );
 };
