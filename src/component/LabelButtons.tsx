@@ -1,14 +1,204 @@
 import styled from "styled-components";
 import labelIcon from "../img/labelicon.png";
 import { MilestoneIcon, IssueReopenedIcon } from "@primer/octicons-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-
+import { useOnClickOutside } from "usehooks-ts";
+import ColorBricks from "./ColorBricks";
 import api from "../utils/api";
 
 export interface opener {
   labelOpen: boolean;
 }
+
+// function useComponentVisible(initialIsVisible: any) {
+//   const [isComponentVisible, setIsComponentVisible] =
+//     useState(initialIsVisible);
+//   // useEffect(() => console.log(initialIsVisible), [initialIsVisible]);
+//   const ref = useRef<any>(null);
+
+//   const handleHideDropdown = (event: KeyboardEvent) => {
+//     if (event.key === "Escape") {
+//       setIsComponentVisible(false);
+//     }
+//   };
+
+//   const handleClickOutside = (event: any) => {
+//     if (ref.current && !ref.current.contains(event.target)) {
+//       setIsComponentVisible(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     document.addEventListener("keydown", handleHideDropdown, true);
+//     document.addEventListener("click", handleClickOutside, true);
+//     return () => {
+//       document.removeEventListener("keydown", handleHideDropdown, true);
+//       document.removeEventListener("click", handleClickOutside, true);
+//     };
+//   });
+
+//   return { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside };
+// }
+
+// function ColorBricks(props: any) {
+//   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
+//     useComponentVisible(false);
+//   const [editOpen, setEditOpen] = useState(false);
+
+//   const handleClickOutside = () => {
+//     setEditOpen(false);
+//     setIsComponentVisible(false);
+//     console.log("clicked outside");
+//   };
+//   useOnClickOutside(ref, handleClickOutside);
+
+//   const solidColorList: any = [
+//     {
+//       name: "#b6070c",
+//     },
+//     {
+//       name: "#d94017",
+//     },
+//     {
+//       name: "#fbca31",
+//     },
+//     {
+//       name: "#0e8a25",
+//     },
+//     {
+//       name: "#006b75",
+//     },
+//     {
+//       name: "#1b76d8",
+//     },
+//     {
+//       name: "#0052c8",
+//     },
+//     {
+//       name: "#521be2",
+//     },
+//   ];
+
+//   const lightColorList: any = [
+//     {
+//       name: "#e99796",
+//     },
+//     {
+//       name: "#f9d0c5",
+//     },
+//     {
+//       name: "#fef2c3",
+//     },
+//     {
+//       name: "#c2e0c7",
+//     },
+//     {
+//       name: "#bfdadc",
+//     },
+//     {
+//       name: "#c5def4",
+//     },
+//     {
+//       name: "#bfd4f1",
+//     },
+//     {
+//       name: "#d4c5f7",
+//     },
+//   ];
+
+//   return (
+//     <>
+//       <ColorInput
+//         maxLength={7}
+//         value={`${props.defaultColor}`}
+//         onChange={(e) => {
+//           props.setDefaultColor(e.target.value);
+//           props.setNewLabelInfo({
+//             ...props.newLabelInfo,
+//             color: e.target.value,
+//           });
+//         }}
+//         onClick={() => {
+//           setIsComponentVisible(true);
+//           setEditOpen(true);
+//         }}
+//       ></ColorInput>
+//       {isComponentVisible && (
+//         <ColorSelector style={{ display: "flex" }} ref={ref}>
+//           <DefaultColorText>Choose from default colors:</DefaultColorText>
+//           <DefaultColor>
+//             {solidColorList.map(({ name }: any, index: number) => {
+//               return (
+//                 <ColorBrick
+//                   colors={name}
+//                   onClick={() => {
+//                     props.setDefaultColor(name);
+//                     props.setNewLabelInfo({
+//                       ...props.newLabelInfo,
+//                       color: name,
+//                     });
+//                   }}
+//                 />
+//               );
+//             })}
+//           </DefaultColor>
+//           <DefaultColor>
+//             {lightColorList.map(({ name }: any) => {
+//               return (
+//                 <ColorBrick
+//                   colors={name}
+//                   onClick={() => {
+//                     props.setDefaultColor(name);
+//                     props.setNewLabelInfo({
+//                       ...props.newLabelInfo,
+//                       color: name,
+//                     });
+//                   }}
+//                 />
+//               );
+//             })}
+//           </DefaultColor>
+//         </ColorSelector>
+//       )}
+//       <ColorSelector style={{ display: "none" }}>
+//         <DefaultColorText>Choose from default colors:</DefaultColorText>
+//         <DefaultColor>
+//           {solidColorList.map(({ name }: any, index: number) => {
+//             return (
+//               <ColorBrick
+//                 colors={name}
+//                 onClick={() => {
+//                   props.setDefaultColor(name);
+//                   props.setNewLabelInfo({
+//                     ...props.newLabelInfo,
+//                     color: name,
+//                   });
+//                 }}
+//               />
+//             );
+//           })}
+//         </DefaultColor>
+//         <DefaultColor>
+//           {lightColorList.map(({ name }: any) => {
+//             return (
+//               <ColorBrick
+//                 colors={name}
+//                 onClick={() => {
+//                   props.setDefaultColor(name);
+//                   props.setNewLabelInfo({
+//                     ...props.newLabelInfo,
+//                     color: name,
+//                   });
+//                 }}
+//               />
+//             );
+//           })}
+//         </DefaultColor>
+//       </ColorSelector>
+//     </>
+//   );
+// }
 
 function LabelButtons() {
   const [labelOpen, setLabelOpen] = useState(false);
@@ -184,18 +374,21 @@ function LabelButtons() {
                 <RollerIcon />
               </ColorRoller>
               <InputWrapper>
-                <ColorInput
+                {/* <ColorInput
                   maxLength={7}
                   value={`${defaultColor}`}
                   onChange={(e) => {
                     setDefaultColor(e.target.value);
                     setNewLabelInfo({ ...newLabelInfo, color: e.target.value });
                   }}
-                ></ColorInput>
-                <ColorSelector
-                  onMouseDown={() => console.log("mousedown")}
-                  onMouseOut={() => console.log("onMouseOut")}
-                >
+                ></ColorInput> */}
+                <ColorBricks
+                  setNewLabelInfo={setNewLabelInfo}
+                  newLabelInfo={newLabelInfo}
+                  setDefaultColor={setDefaultColor}
+                  defaultColor={defaultColor}
+                />
+                {/* <ColorSelector>
                   <DefaultColorText>
                     Choose from default colors:
                   </DefaultColorText>
@@ -225,7 +418,7 @@ function LabelButtons() {
                       );
                     })}
                   </DefaultColor>
-                </ColorSelector>
+                </ColorSelector> */}
               </InputWrapper>
             </LowerWrapper>
           </ColorInputSection>
@@ -295,11 +488,12 @@ const ColorSelector = styled.section`
   background: white;
   position: absolute;
   top: 110%;
-  left: 187px;
+  left: 6px;
   border: 0.5px solid #cad1d9;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  display: none;
   @media screen and (min-width: 768px) {
   }
 `;

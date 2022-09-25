@@ -4,6 +4,7 @@ const api = {
     const response = await fetch(`${this.hostname}/${user}/${repo}/labels`);
     return await response.json();
   },
+
   async createLabels(
     user: string,
     repo: string,
@@ -34,6 +35,8 @@ const api = {
     newDes: string,
     newCol: string
   ) {
+    console.log(newCol);
+
     const response = await fetch(
       `${this.hostname}/${user}/${repo}/labels/${originalName}`,
       {

@@ -11,6 +11,7 @@ import api from "../utils/api";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 import { useOnClickOutside } from "usehooks-ts";
 import useForceUpdate from "use-force-update";
+import ColorBricksNoProps from "./ColorBricksNoProps";
 
 function useComponentVisible(initialIsVisible: any) {
   const [isComponentVisible, setIsComponentVisible] =
@@ -75,6 +76,7 @@ function Refer(props: any) {
     } else if (types === "description") {
       newInfo[index].description = value;
     } else if (types === "color") {
+      console.log("function work");
       newInfo[index].color = value;
     }
     props.setUpdateLabelInfo(newInfo);
@@ -194,7 +196,7 @@ function Refer(props: any) {
               <ColorRoller>
                 <RollerIcon />
               </ColorRoller>
-              <ColorInput
+              {/* <ColorInput
                 // maxLength={7}
                 // type="text"
                 defaultValue={`#${props.itemColor}`}
@@ -204,7 +206,13 @@ function Refer(props: any) {
                 // onChange={(e) => {
                 //   this.value=e.target.value
                 // }}
-              ></ColorInput>
+              ></ColorInput> */}
+              <ColorBricksNoProps
+                // defaultValue={`#${props.itemColor}`}
+                defaultValue={`#${props.itemColor}`}
+                toUpdateInfo={toUpdateInfo}
+                index={props.index}
+              />
             </LowerWrapper>
           </ColorInputSection>
           <ButtonWrapper>
@@ -233,8 +241,29 @@ function Refer(props: any) {
         </BigWrapper>
       </NewLabelSection>
       <BigSort>
-        <BigSortText>Edit</BigSortText>
-        <BigSortText>Delete</BigSortText>
+        <BigSortText
+          index={props.index}
+          labelIndex={props.labelIndex}
+          areaOpen={props.areaOpen}
+          onClick={() => {
+            props.setLabelIndex(props.index);
+            props.setAreaOpen(true);
+            setEditVisible(false);
+          }}
+        >
+          Edit
+        </BigSortText>
+        <BigSortText
+          index={props.index}
+          labelIndex={props.labelIndex}
+          areaOpen={props.areaOpen}
+          onClick={() => {
+            // removeConfirm();
+            deleteLabel(props.index);
+          }}
+        >
+          Delete
+        </BigSortText>
       </BigSort>
     </>
 
@@ -417,6 +446,8 @@ function LabelList() {
   //   console.log(labels);
   // }, [labels]);
   // useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
+  useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
+
   if (label === undefined || updateLabelInfo === undefined) {
     return (
       <>
@@ -430,7 +461,7 @@ function LabelList() {
           return (
             <Wrapper index={index} labelIndex={labelIndex} areaOpen={areaOpen}>
               <LabelWrap>
-                <Label color={item.color}>
+                <Label color={updateLabelInfo[index].color}>
                   <LabelText color={item.color}>
                     {updateLabelInfo[index].new_name}
                   </LabelText>
@@ -801,10 +832,17 @@ const LabelWrap = styled.div`
   }
 `;
 
-const BigSortText = styled.span`
+type BigSortter = {
+  labelIndex: number;
+  areaOpen: boolean;
+  index: number;
+};
+
+const BigSortText = styled.span<BigSortter>`
   display: none;
   @media screen and (min-width: 1012px) {
-    display: block;
+    display: ${(props) =>
+      props.areaOpen && props.labelIndex === props.index ? "none" : "block"};
     font-size: 12px;
     color: #4d555e;
     font-weight: 500;
@@ -897,7 +935,11 @@ const LabelText = styled.span`
   }
 `;
 
-const Label = styled.div`
+type LabelProp = {
+  color: string;
+};
+
+const Label = styled.div<LabelProp>`
   width: fit-content;
   padding-left: 6px;
   padding-right: 6px;
@@ -908,7 +950,7 @@ const Label = styled.div`
   min-width: 50px; */
   height: 24px;
   margin-left: 10px;
-  background: #${(props) => props.color};
+  background: #${(props) => props.color.replace("#", "")};
   border-radius: 15px;
   display: flex;
   align-items: center;

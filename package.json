@@ -5,6 +5,7 @@
   "dependencies": {
     "@primer/octicons-react": "^17.5.0",
     "@reduxjs/toolkit": "^1.8.5",
+    "@supabase/supabase-js": "^1.35.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
+import SignIn from "./component/SignIn";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,9 +15,8 @@ root.render(
   <BrowserRouter>
     <Provider store={store}>
       <Routes>
-        <Route path="/" element={<App />}>
-          {/* <Route path="label" element={<Label />} /> */}
-        </Route>
+        <Route path="/" element={<SignIn />}></Route>
+        <Route path="/App" element={<App />}></Route>
       </Routes>
     </Provider>
   </BrowserRouter>

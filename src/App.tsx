@@ -68,14 +68,14 @@ function App() {
   return (
     <>
       <Header />
-      <Repo />
+      {/* <Repo /> */}
       <Option />
       <LabelButtons />
       <BoxHeader />
       <Footer />
-      <button onClick={() => test()}></button>
+      {/* <button onClick={() => test()}></button>
       <button onClick={() => startCreate()}>Create Label</button>
-      <button onClick={() => startDelete()}>Delete</button>
+      <button onClick={() => startDelete()}>Delete</button> */}
     </>
   );
 }
