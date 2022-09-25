@@ -18,7 +18,11 @@ function BoxHeader() {
     setLabel(updatedLabels);
     // 每次有新label的時候會re-render一次
   }, [updatedLabels]);
-
+  useEffect(() => {
+    if (typeof labels === "string") {
+      setLabel(JSON.parse(labels));
+    }
+  }, []);
   if (labels === undefined) {
     return <></>;
   }

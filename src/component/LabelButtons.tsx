@@ -18,6 +18,10 @@ function LabelButtons() {
     description: "",
     color: "#e99695",
   });
+  const [labelText, setLabelText] = useState("Create Label");
+
+  const [defaultLabelPreview, setDefaultLabelPreview] =
+    useState("Label Preview");
   const [createLabelChange, setCreateLabelChange] = useState(false);
   useEffect(() => {
     newLabelInfo.name.length >= 1
@@ -42,7 +46,9 @@ function LabelButtons() {
           payload: { data },
         });
       });
-    setCreated(created + 1);
+    setCreateLabelChange(false);
+    setLabelText("Saving ...");
+    setTimeout(() => setLabelOpen(false), 1000);
   };
 
   const solidColorList: any = [
@@ -125,28 +131,43 @@ function LabelButtons() {
           <BigSearchBar placeholder="Search all labels" />
         </SubWrapOne>
         <NewLabel>
-          <NewLabelText onClick={() => setLabelOpen(true)}>
+          <NewLabelText
+            onClick={() => {
+              setLabelOpen(true);
+              setLabelText("Create Label");
+              setCreated(created + 1);
+              setDefaultLabelPreview("Label Preview");
+              setNewLabelInfo({
+                name: "",
+                description: "",
+                color: "#e99695",
+              });
+            }}
+          >
             New Label
           </NewLabelText>
         </NewLabel>
       </UpperWrapper>
       <SearchBar placeholder="Search all labels" />
       <NewLabelSection labelOpen={labelOpen}>
-        <LabelPreview colors={defaultColor}>Label preview</LabelPreview>
+        <LabelPreview colors={defaultColor}>{defaultLabelPreview}</LabelPreview>
         <BigWrapper>
           <LabelInputSection>
             <LabelName>Label Name</LabelName>
             <LabelInput
+              value={newLabelInfo.name}
               placeholder="Label name"
-              onChange={(e) =>
-                setNewLabelInfo({ ...newLabelInfo, name: e.target.value })
-              }
+              onChange={(e) => {
+                setNewLabelInfo({ ...newLabelInfo, name: e.target.value });
+                setDefaultLabelPreview(e.target.value);
+              }}
             />
           </LabelInputSection>
           <LabelInputSection>
             <LabelName>Description</LabelName>
             <LabelInput
-              placeholder="Description"
+              value={newLabelInfo.description}
+              placeholder="Description (Optional)"
               onChange={(e) =>
                 setNewLabelInfo({
                   ...newLabelInfo,
@@ -170,7 +191,10 @@ function LabelButtons() {
                     setNewLabelInfo({ ...newLabelInfo, color: e.target.value });
                   }}
                 ></ColorInput>
-                <ColorSelector>
+                <ColorSelector
+                  onMouseDown={() => console.log("mousedown")}
+                  onMouseOut={() => console.log("onMouseOut")}
+                >
                   <DefaultColorText>
                     Choose from default colors:
                   </DefaultColorText>
@@ -179,7 +203,10 @@ function LabelButtons() {
                       return (
                         <ColorBrick
                           colors={name}
-                          onClick={() => setDefaultColor(name)}
+                          onClick={() => {
+                            setDefaultColor(name);
+                            setNewLabelInfo({ ...newLabelInfo, color: name });
+                          }}
                         />
                       );
                     })}
@@ -189,7 +216,10 @@ function LabelButtons() {
                       return (
                         <ColorBrick
                           colors={name}
-                          onClick={() => setDefaultColor(name)}
+                          onClick={() => {
+                            setDefaultColor(name);
+                            setNewLabelInfo({ ...newLabelInfo, color: name });
+                          }}
                         />
                       );
                     })}
@@ -201,7 +231,7 @@ function LabelButtons() {
           <ButtonWrapper>
             <CreateLabelButton createLabelChange={createLabelChange}>
               <CreateLabelText onClick={() => startCreate()}>
-                Create Label
+                {labelText}
               </CreateLabelText>
             </CreateLabelButton>
             <CancelButton>
@@ -239,7 +269,6 @@ const ColorBrick = styled.div<Col>`
 const DefaultColor = styled.div`
   display: flex;
   margin: 5px auto 0 8px;
-
   @media screen and (min-width: 768px) {
   }
 `;
@@ -265,7 +294,7 @@ const ColorSelector = styled.section`
   background: white;
   position: absolute;
   top: 110%;
-  left: 17px;
+  left: 187px;
   border: 0.5px solid #cad1d9;
   border-radius: 5px;
   display: flex;
@@ -308,7 +337,6 @@ const CancelButton = styled.div`
   border-radius: 5px;
   margin-left: 8px;
   cursor: pointer;
-
   @media screen and (min-width: 768px) {
   }
 `;
@@ -336,7 +364,6 @@ const CreateLabelButton = styled.div<Changer>`
   border-radius: 5px;
   margin-left: 16px;
   cursor: pointer;
-
   @media screen and (min-width: 768px) {
     order: 2;
   }
@@ -501,11 +528,9 @@ const UpperWrapper = styled.div`
   /* width:40%; */
   display: flex;
   justify-content: space-between;
-
   /* margin-right: 16px; */
   width: 95%;
   margin: 0 auto;
-
   @media screen and (min-width: 768px) {
   }
 `;
@@ -513,7 +538,6 @@ const UpperWrapper = styled.div`
 const SubWrapOne = styled.div`
   /* width:40%; */
   display: flex;
-
   @media screen and (min-width: 768px) {
   }
 `;
@@ -523,7 +547,6 @@ const NewLabelText = styled.span`
   font-weight: 600;
   color: white;
   text-align: center;
-
   @media screen and (min-width: 768px) {
   }
 `;
@@ -621,7 +644,6 @@ const LabelSection = styled.section`
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   cursor: pointer;
-
   @media screen and (min-width: 768px) {
   }
 `;
@@ -631,9 +653,7 @@ const Wrapper = styled.section`
   margin-top: 20px;
   /* display: flex;
     justify-content: space-between;
-
     margin-right: 16px; */
-
   @media screen and (min-width: 768px) {
   }
 `;

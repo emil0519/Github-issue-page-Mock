@@ -55,11 +55,7 @@ function App() {
   };
 
   const startDelete = async () => {
-    const result = await api.deleteLabel(
-      "emil0519",
-      "testing-issues",
-      "alright"
-    );
+    const result = await api.deleteLabel("emil0519", "testing-issues", "abcd");
     console.log(result);
   };
 
