@@ -11,7 +11,6 @@ function ColorBricksNoProps(props: any) {
   const handleClickOutside = () => {
     setEditOpen(false);
     setIsComponentVisible(false);
-    console.log("clicked outside");
   };
   useOnClickOutside(ref, handleClickOutside);
 
@@ -91,6 +90,7 @@ function ColorBricksNoProps(props: any) {
             {solidColorList.map(({ name }: any, index: number) => {
               return (
                 <ColorBrick
+                  key={name}
                   colors={name}
                   onClick={() => {
                     props.toUpdateInfo("color", props.index, name);
@@ -104,6 +104,7 @@ function ColorBricksNoProps(props: any) {
             {lightColorList.map(({ name }: any) => {
               return (
                 <ColorBrick
+                  key={name}
                   colors={name}
                   onClick={() => {
                     props.toUpdateInfo("color", props.index, name);
@@ -118,12 +119,12 @@ function ColorBricksNoProps(props: any) {
         <DefaultColorText>Choose from default colors:</DefaultColorText>
         <DefaultColor>
           {solidColorList.map(({ name }: any, index: number) => {
-            return <ColorBrick colors={name} />;
+            return <ColorBrick key={name} colors={name} />;
           })}
         </DefaultColor>
         <DefaultColor>
           {lightColorList.map(({ name }: any) => {
-            return <ColorBrick colors={name} />;
+            return <ColorBrick key={name} colors={name} />;
           })}
         </DefaultColor>
       </ColorSelector>

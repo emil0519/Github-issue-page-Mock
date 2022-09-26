@@ -265,7 +265,7 @@ export const NewLabels = ({ ...props }: NewLabelProps) => {
   const handleClickOutside = () => {
     setEditOpen(false);
     setIsComponentVisible(false);
-    console.log("clicked outside");
+
   };
   useOnClickOutside(ref, handleClickOutside);
   const solidColorList: any = [
@@ -328,9 +328,7 @@ export const NewLabels = ({ ...props }: NewLabelProps) => {
     input.length >= 1 ? setChangeColor(true) : setChangeColor(false);
   }, [input]);
 
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
+
   return (
     <>
       <NewLabelSection>

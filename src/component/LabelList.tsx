@@ -45,7 +45,6 @@ function Refer(props: any) {
   const [editVisible, setEditVisible] = useState(true);
   const handleClickOutside = () => {
     setEditOpen(false);
-    console.log("clicked outside");
   };
 
   function toUpdateInfo(types: any, index: any, value: any) {
@@ -55,7 +54,6 @@ function Refer(props: any) {
     } else if (types === "description") {
       newInfo[index].description = value;
     } else if (types === "color") {
-      console.log("function work");
       newInfo[index].color = value;
     }
     props.setUpdateLabelInfo(newInfo);
@@ -63,16 +61,35 @@ function Refer(props: any) {
   }
   function postInfo(index: number) {
     let updateBody = props.updateLabelInfo[index];
-    console.log(updateBody);
 
-    api.updateLabels(
-      "emil0519",
-      "testing-issues",
-      updateBody.name,
-      updateBody.new_name,
-      updateBody.description,
-      updateBody.color
-    );
+    api
+      .updateLabels(
+        "emil0519",
+        "testing-issues",
+        updateBody.name,
+        updateBody.new_name,
+        updateBody.description,
+        updateBody.color
+      )
+      .then((data) => {
+        if (
+          data.message !== "Validation Failed" ||
+          data.message === undefined
+        ) {
+          props.setLabelIndex(-1);
+          props.setAreaOpen(false);
+        } else if (data.errors !== undefined) {
+          alert(
+            `Your label ${
+              data.errors[0].field
+            } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
+          );
+        } else {
+          alert(
+            "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
+          );
+        }
+      });
   }
 
   function deleteLabel(index: number) {
@@ -85,7 +102,6 @@ function Refer(props: any) {
         "testing-issues",
         props.updateLabelInfo[index].name
       );
-      // console.log("dispatch now");
 
       dispatch({
         type: "deleteItem",
@@ -188,8 +204,6 @@ function Refer(props: any) {
               <CreateLabelText
                 onClick={() => {
                   postInfo(props.index);
-                  props.setLabelIndex(-1);
-                  props.setAreaOpen(false);
                 }}
               >
                 Save changes
@@ -251,8 +265,6 @@ function LabelList() {
 
   const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
 
-  useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
-
   useEffect(() => {
     (async () => {
       setLabel(await api.getLabels("emil0519", "testing-issues"));
@@ -264,7 +276,6 @@ function LabelList() {
     if (label === undefined) {
       return;
     } else {
-      console.log("firs render");
       setUpdateLabelInfo(
         label.map((item: any) => {
           return {
@@ -280,21 +291,29 @@ function LabelList() {
 
   useEffect(() => {
     if (updatedLabels === undefined) {
-      console.log("i didnt do anything");
       return;
     } else {
-      console.log("this is updated labels");
       setUpdateLabelInfo(updatedLabels);
       setLabel(updatedLabels);
     }
   }, [updatedLabels]);
 
-  useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
-
   if (label === undefined || updateLabelInfo === undefined) {
     return (
       <>
-        <h1>Loading</h1>
+        <NoLabelWrapper>
+          <NoLabelText>Loading</NoLabelText>
+        </NoLabelWrapper>
+      </>
+    );
+  } else if (label.length === 0) {
+    return (
+      <>
+        <NoLabelWrapper>
+          <NoLabelText>
+            There is no label yet. Click New Label to create one.
+          </NoLabelText>
+        </NoLabelWrapper>
       </>
     );
   } else {
@@ -302,7 +321,12 @@ function LabelList() {
       <>
         {label.map((item: any, index: any) => {
           return (
-            <Wrapper index={index} labelIndex={labelIndex} areaOpen={areaOpen}>
+            <Wrapper
+              key={item.id}
+              index={index}
+              labelIndex={labelIndex}
+              areaOpen={areaOpen}
+            >
               <OuterWrapper>
                 <LabelWrap>
                   <Label color={updateLabelInfo[index].color}>
@@ -316,6 +340,7 @@ function LabelList() {
               <Notification></Notification>
 
               <Refer
+                key={item.id}
                 index={index}
                 itemName={item.name}
                 itemDescription={item.description}
@@ -506,10 +531,10 @@ const DropDownText = styled.span<Visible>`
   font-size: 8px;
   color: #34383b;
   background: white;
-  /* display: ; */
-  /* display: none; */
+
   &:hover {
     background: #1760cf;
+    color: white;
   }
   @media screen and (min-width: 1012px) {
   }
@@ -524,6 +549,7 @@ const DeleteText = styled.span`
   background: white;
   &:hover {
     background: #1760cf;
+    color: white;
   }
   @media screen and (min-width: 1012px) {
   }
@@ -674,7 +700,7 @@ const Label = styled.div<LabelProp>`
     props.color === "ffffff" ? "0.5px solid #b7b7b7" : "none"};
   height: 24px;
   margin-left: 10px;
-  background: #${(props) => (props.color.includes("#") ? props.color.replace("#", "") : props.color)};
+  background: #${(props) => props.color};
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -703,6 +729,25 @@ const Wrapper = styled.section<NewLabels>`
   justify-content: space-between;
   @media screen and (min-width: 768px) {
   }
+`;
+
+const NoLabelWrapper = styled.section`
+  width: 95vw;
+  height: 61px;
+  margin: 0 auto;
+  background: white;
+  border: 0.5px solid #cad1d9;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  @media screen and (min-width: 768px) {
+  }
+`;
+const NoLabelText = styled.span`
+  text-align: center;
+  font-size: 20;
 `;
 
 export default LabelList;

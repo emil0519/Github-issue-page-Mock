@@ -5,26 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 import { superbase } from "../utils/client";
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Noto Sans TC', sans-serif;
-  }
-
-  #root {
-    min-height: 100vh;
-    padding: 140px 0 115px;
-    position: relative;
-
-    @media screen and (max-width: 1279px) {
-      padding: 102px 0 208px;
-    }
-  }
-`;
-
 const App = () => {
   useEffect(() => {
     checkUser();
@@ -39,8 +19,7 @@ const App = () => {
     const user: any | never = superbase.auth.user();
     const session: any = superbase.auth.session();
     setUser(user);
-    console.log(user);
-    console.log(session.provider_token);
+
     // get access token from this user
   }
 

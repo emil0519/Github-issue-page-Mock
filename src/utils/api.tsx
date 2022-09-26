@@ -2,6 +2,13 @@ const api = {
   hostname: "https://api.github.com/repos",
   async getLabels(user: string, repo: string) {
     const response = await fetch(`${this.hostname}/${user}/${repo}/labels`);
+    if (response.status === 403) {
+      alert(
+        "API rate limit exceeded, please use another IP Address or try again later."
+      );
+      return;
+    }
+
     return await response.json();
   },
 
@@ -37,6 +44,7 @@ const api = {
   ) {
     if (newCol.includes("#")) {
       const replaced = newCol.replace("#", "");
+
       const response = await fetch(
         `${this.hostname}/${user}/${repo}/labels/${originalName}`,
         {
@@ -85,7 +93,7 @@ const api = {
         method: "DELETE",
       }
     );
-    console.log(response);
+
     return response;
   },
 };

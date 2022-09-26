@@ -4,7 +4,7 @@ import { useOnClickOutside } from "usehooks-ts";
 export function useComponentVisible(initialIsVisible: any) {
   const [isComponentVisible, setIsComponentVisible] =
     useState(initialIsVisible);
-  // useEffect(() => console.log(initialIsVisible), [initialIsVisible]);
+
   const ref = useRef<any>(null);
 
   const handleHideDropdown = (event: KeyboardEvent) => {
