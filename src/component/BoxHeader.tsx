@@ -32,8 +32,6 @@ function BoxHeader() {
       <Wrapper>
         <Header>
           <HeaderText>{labels.length} labels</HeaderText>
-          {/* why cannot read properties of undefined even if conditional statement
-            set */}
           <SortSection>
             <SortText>Sort</SortText>
             <SortDown />

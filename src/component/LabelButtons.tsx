@@ -5,9 +5,8 @@ import {
   IssueReopenedIcon,
   SearchIcon,
 } from "@primer/octicons-react";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useOnClickOutside } from "usehooks-ts";
 import ColorBricks from "./ColorBricks";
 import api from "../utils/api";
 import useGenerateRandomColor from "../utils/useGenerateRandomColor";
@@ -30,6 +29,8 @@ function LabelButtons() {
     generateColor();
   }, []);
   useEffect(() => {
+    console.log(color);
+
     setDefaultColor(`#${color}`);
     setNewLabelInfo({ ...newLabelInfo, color: defaultColor });
   }, [color]);
@@ -120,11 +121,6 @@ function LabelButtons() {
       name: "#d4c5f7",
     },
   ];
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "getList",
-  //   });
-  // }, [created]);
 
   return (
     <Wrapper>
@@ -283,53 +279,10 @@ const BigSearchBarWrapper = styled(SearchBarWrapper)`
 type Col = {
   colors: string;
 };
-const ColorBrick = styled.div<Col>`
-  background: ${(props) => props.colors};
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-  width: 21px;
-  height: 21px;
-  margin-right: 8px;
-  cursor: pointer;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const DefaultColor = styled.div`
-  display: flex;
-  margin: 5px auto 0 8px;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const DefaultColorText = styled.div`
-  color: #57606a;
-  font-size: 8px;
-  margin: 8px auto 4px 8px;
-  @media screen and (min-width: 768px) {
-  }
-`;
 
 const InputWrapper = styled.section`
   position: relative;
   width: 100%;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const ColorSelector = styled.section`
-  width: 240px;
-  height: 87px;
-  background: white;
-  position: absolute;
-  top: 110%;
-  left: 6px;
-  border: 0.5px solid #cad1d9;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  display: none;
   @media screen and (min-width: 768px) {
   }
 `;
@@ -503,12 +456,12 @@ const LabelPreview = styled.div<Col>`
   }
 `;
 
-type NewLabel = {
+type NewLabels = {
   labelOpen: boolean;
 };
 //傳props一定要設定type，在styled component
 
-const NewLabelSection = styled.section<NewLabel>`
+const NewLabelSection = styled.section<NewLabels>`
   display: ${(props) => (props.labelOpen ? "flex" : "none")};
   flex-direction: column;
   width: 95%;
@@ -678,9 +631,6 @@ const LabelSection = styled.section`
 const Wrapper = styled.section`
   background: white;
   margin-top: 20px;
-  /* display: flex;
-    justify-content: space-between;
-    margin-right: 16px; */
   @media screen and (min-width: 768px) {
   }
 `;
