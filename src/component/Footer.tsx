@@ -20,7 +20,7 @@ function Footer() {
       <FooterWrapper>
         <FooterInfo>
           {footerWords.map((item) => {
-            return <FooterText>{item.name}</FooterText>;
+            return <FooterText key={item.name}>{item.name}</FooterText>;
           })}
         </FooterInfo>
         <GithubWrapper>

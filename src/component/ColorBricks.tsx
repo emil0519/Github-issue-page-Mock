@@ -10,7 +10,6 @@ function ColorBricks(props: any) {
   const handleClickOutside = () => {
     setEditOpen(false);
     setIsComponentVisible(false);
-    console.log("clicked outside");
   };
   useOnClickOutside(ref, handleClickOutside);
 
@@ -73,7 +72,7 @@ function ColorBricks(props: any) {
       <ColorInput
         maxLength={7}
         redBorder={props.redBorder}
-        value={`${props.defaultColor}`}
+        value={`#${props.color}`}
         onChange={(e) => {
           props.setDefaultColor(e.target.value);
           props.setNewLabelInfo({
@@ -93,6 +92,7 @@ function ColorBricks(props: any) {
             {solidColorList.map(({ name }: any, index: number) => {
               return (
                 <ColorBrick
+                  key={name}
                   colors={name}
                   onClick={() => {
                     props.setDefaultColor(name);
@@ -109,6 +109,7 @@ function ColorBricks(props: any) {
             {lightColorList.map(({ name }: any) => {
               return (
                 <ColorBrick
+                  key={name}
                   colors={name}
                   onClick={() => {
                     props.setDefaultColor(name);
@@ -129,6 +130,7 @@ function ColorBricks(props: any) {
           {solidColorList.map(({ name }: any, index: number) => {
             return (
               <ColorBrick
+                key={name}
                 colors={name}
                 onClick={() => {
                   props.setDefaultColor(name);
@@ -145,6 +147,7 @@ function ColorBricks(props: any) {
           {lightColorList.map(({ name }: any) => {
             return (
               <ColorBrick
+                key={name}
                 colors={name}
                 onClick={() => {
                   props.setDefaultColor(name);

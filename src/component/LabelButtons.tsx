@@ -27,12 +27,12 @@ function LabelButtons() {
   const { color, generateColor } = useGenerateRandomColor();
   useEffect(() => {
     generateColor();
+    setDefaultColor(color);
   }, []);
   useEffect(() => {
-    console.log(color);
-
     setDefaultColor(`#${color}`);
-    setNewLabelInfo({ ...newLabelInfo, color: defaultColor });
+
+    setNewLabelInfo({ ...newLabelInfo, color: `#${color}` });
   }, [color]);
 
   const [defaultLabelPreview, setDefaultLabelPreview] =
@@ -40,6 +40,8 @@ function LabelButtons() {
   const [createLabelChange, setCreateLabelChange] = useState(false);
   const [redBorder, setRedBorder] = useState(false);
   useEffect(() => {
+    //validation on input
+
     newLabelInfo.color.includes("#") ? setRedBorder(false) : setRedBorder(true);
     newLabelInfo.name.length >= 1
       ? setCreateLabelChange(true)
@@ -49,7 +51,7 @@ function LabelButtons() {
   const dispatch = useDispatch();
 
   const startCreate = async () => {
-    const result: any = await api
+    await api
       .createLabels(
         "emil0519",
         "testing-issues",
@@ -58,69 +60,30 @@ function LabelButtons() {
         newLabelInfo.color.substring(1)
       )
       .then((data) => {
-        dispatch({
-          type: "createList",
-          payload: { data },
-        });
+        if (
+          data.message !== "Validation Failed" ||
+          data.message === undefined
+        ) {
+          dispatch({
+            type: "createList",
+            payload: { data },
+          });
+          setCreateLabelChange(false);
+          setLabelText("Saving ...");
+          setTimeout(() => setLabelOpen(false), 1000);
+        } else if (data.errors !== undefined) {
+          alert(
+            `Your label ${
+              data.errors[0].field
+            } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
+          );
+        } else {
+          alert(
+            "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
+          );
+        }
       });
-    setCreateLabelChange(false);
-    setLabelText("Saving ...");
-    setTimeout(() => setLabelOpen(false), 1000);
   };
-
-  const solidColorList: any = [
-    {
-      name: "#b6070c",
-    },
-    {
-      name: "#d94017",
-    },
-    {
-      name: "#fbca31",
-    },
-    {
-      name: "#0e8a25",
-    },
-    {
-      name: "#006b75",
-    },
-    {
-      name: "#1b76d8",
-    },
-    {
-      name: "#0052c8",
-    },
-    {
-      name: "#521be2",
-    },
-  ];
-
-  const lightColorList: any = [
-    {
-      name: "#e99796",
-    },
-    {
-      name: "#f9d0c5",
-    },
-    {
-      name: "#fef2c3",
-    },
-    {
-      name: "#c2e0c7",
-    },
-    {
-      name: "#bfdadc",
-    },
-    {
-      name: "#c5def4",
-    },
-    {
-      name: "#bfd4f1",
-    },
-    {
-      name: "#d4c5f7",
-    },
-  ];
 
   return (
     <Wrapper>
@@ -203,6 +166,7 @@ function LabelButtons() {
               </ColorRoller>
               <InputWrapper>
                 <ColorBricks
+                  color={color}
                   setNewLabelInfo={setNewLabelInfo}
                   newLabelInfo={newLabelInfo}
                   setDefaultColor={setDefaultColor}
@@ -229,11 +193,6 @@ function LabelButtons() {
           </ButtonWrapper>
         </BigWrapper>
       </NewLabelSection>
-      <div>
-        {solidColorList.map((item: any, index: number) => {
-          return <span>{item[index]}</span>;
-        })}
-      </div>
     </Wrapper>
   );
 }
@@ -435,7 +394,7 @@ const LabelName = styled.label`
 `;
 
 const LabelPreview = styled.div<Col>`
-  width: fit-content;
+  width: max-content;
   margin: 16px 16px 0 16px;
   padding-left: 6px;
   padding-right: 6px;
@@ -444,7 +403,7 @@ const LabelPreview = styled.div<Col>`
   height: 24px;
   margin-left: 10px;
   background: ${(props) => props.colors};
-  color: black;
+  color: white;
   font-weight: 600;
   border-radius: 15px;
   display: flex;
