@@ -9,15 +9,11 @@ import Option from "./component/Option";
 import LabelButtons from "./component/LabelButtons";
 import BoxHeader from "./component/BoxHeader";
 import { useDispatch } from "react-redux";
+import LabelList from "./component/LabelList";
 
 function App() {
   const [label, setLabel] = useState(null);
-  // console.log(initState.then((data: { json: () => any }) => data.json()));
-  // reducer(_,action)
-  // async function startResults() {
-  //   const reuslt = await console.log(initState);
-  // }
-  // startResults();
+
   const dispatch = useDispatch();
   function test() {
     dispatch({
@@ -72,6 +68,7 @@ function App() {
       <Option />
       <LabelButtons />
       <BoxHeader />
+      {/* <LabelList /> */}
       <Footer />
       {/* <button onClick={() => test()}></button>
       <button onClick={() => startCreate()}>Create Label</button>
