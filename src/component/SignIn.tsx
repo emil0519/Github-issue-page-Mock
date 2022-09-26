@@ -1,11 +1,9 @@
-import { useEffect, useReducer, useState } from "react";
-// import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-// import { Octokit } from '@octokit/rest';
 import { superbase } from "../utils/client";
-// import { userInfo } from "os";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -62,36 +60,10 @@ const App = () => {
     setUser(null);
   }
 
-  console.log(user);
+  //Will render signOut function later
 
-  //   const [cartItems, dispatch] = useReducer(
-  //     reducer,
-  //     JSON.parse((window.localStorage.getItem("cartItems") as string )) ||  [] as null
-  //   );
-
-  // const octokit = new Octokit({
-  //   auth: "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",
-  // });
-
-  // const result = octokit.request("GET /repos/{owner}/{repo}/issues", {
-  //   owner: "emil0519",
-  //   repo: "testing-issues",
-  // });
-
-  // console.log(result)
-
-  //   useEffect(()=>{window.localStorage.setItem(
-  //     "cartItems",
-  //     JSON.stringify(cartItems)
-  //   );},[cartItems])
   if (user) {
     navigate("/App");
-    // return (
-    //   <>
-    //     <h1>Hello {user}</h1>
-    //     <button onClick={signOut}>Sign out</button>
-    //   </>
-    // );
   }
 
   return (
@@ -100,16 +72,6 @@ const App = () => {
       <button onClick={signInWithGitHub}>Sign In</button>
     </>
   );
-
-  // return (
-  //   <>
-  //     <Reset />
-  //     <GlobalStyle />
-  //     <Header cartItems={[cartItems]} />
-  //     <Outlet context={[cartItems, dispatch]} />
-  //     <Footer />
-  //   </>
-  // );
 };
 
 export default App;

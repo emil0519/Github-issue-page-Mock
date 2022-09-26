@@ -1,22 +1,16 @@
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  useLayoutEffect,
-} from "react";
+import { useEffect, useState, useRef } from "react";
 import api from "../utils/api";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 import { useOnClickOutside } from "usehooks-ts";
-import useForceUpdate from "use-force-update";
+
 import ColorBricksNoProps from "./ColorBricksNoProps";
 
 function useComponentVisible(initialIsVisible: any) {
   const [isComponentVisible, setIsComponentVisible] =
     useState(initialIsVisible);
-  // useEffect(() => console.log(initialIsVisible), [initialIsVisible]);
+
   const ref = useRef<any>(null);
 
   const handleHideDropdown = (event: KeyboardEvent) => {
@@ -53,21 +47,6 @@ function Refer(props: any) {
     setEditOpen(false);
     console.log("clicked outside");
   };
-  // const [deleteCount, setDeletCount]=useState(0);
-  // const forceUpdate = useForceUpdate();
-
-  const removeConfirm = () => {
-    props.setRefresh(true);
-  };
-
-  // useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
-
-  // useEffect(
-  //   () => props.setUpdateLabelInfo(props.updateLabelInfo),
-  //   [props.updateLabelInfo]
-  // );
-
-  // useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
 
   function toUpdateInfo(types: any, index: any, value: any) {
     let newInfo = [...props.updateLabelInfo];
@@ -113,10 +92,6 @@ function Refer(props: any) {
         payload: { deleteName: props.updateLabelInfo[index].name },
       });
     }
-
-    // setDeleteCount(deleteCount+1)
-    // console.log(response);
-    // console.log("deletelabel");
   }
 
   useOnClickOutside(ref, handleClickOutside);
@@ -127,7 +102,6 @@ function Refer(props: any) {
           setIsComponentVisible(true);
           setEditOpen(true);
           props.setTest(true);
-          // console.log(props.index);
         }}
         index={props.index}
         editOpen={editOpen}
@@ -161,7 +135,6 @@ function Refer(props: any) {
             <DeleteText
               ref={ref}
               onClick={() => {
-                // removeConfirm();
                 deleteLabel(props.index);
               }}
             >
@@ -253,7 +226,6 @@ function Refer(props: any) {
           labelIndex={props.labelIndex}
           areaOpen={props.areaOpen}
           onClick={() => {
-            // removeConfirm();
             deleteLabel(props.index);
           }}
         >
@@ -269,88 +241,17 @@ function Refer(props: any) {
 function LabelList() {
   const [labelIndex, setLabelIndex] = useState(-1);
   const [areaOpen, setAreaOpen] = useState(false);
-  const ref = useRef(null);
+
   const [test, setTest] = useState(false);
 
-  const [clickIndex, setClickIndex] = useState(-1);
   const [refresh, setRefresh] = useState(false);
-  const dispatch = useDispatch();
-  const forceUpdate = useForceUpdate();
 
-  const removeConfirm = () => {
-    // const confirmed = window.confirm("Are you sure?");
-    if (refresh) {
-      // console.log("hello");
-      // forceUpdate();
-    }
-  };
-
-  useLayoutEffect(() => {
-    // if (refresh === true) {
-    // console.log("checking updates");
-    removeConfirm();
-    // setRefresh(false);
-    // }
-  }, [refresh]);
-
-  // const [labelIndex, setLabelIndex] = useState<
-  //   number[] | object | (() => number[])
-  // >([]);
-  // const [areaOpen, setAreaOpen] = useState(false);
   const [label, setLabel]: any = useState();
   const updatedLabels: any = useSelector((state) => state);
-  // console.log("直接印");
-  // console.log(updatedLabels);
 
-  // useEffect(() => {
-  //   console.log("updated label update");
-
-  //   console.log(updatedLabels);
-  // }, [updatedLabels]);
   const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
 
   useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
-
-  // function toUpdateInfo(types: any, index: any, value: any) {
-  //   let newInfo = [...updateLabelInfo];
-  //   if (types === "name") {
-  //     newInfo[index].new_name = value;
-  //   } else if (types === "description") {
-  //     newInfo[index].description = value;
-  //   } else if (types === "color") {
-  //     newInfo[index].color = value;
-  //   }
-  //   setUpdateLabelInfo(newInfo);
-  //   return;
-  // }
-
-  // function postInfo(index: number) {
-  //   let updateBody = updateLabelInfo[index];
-  //   console.log(updateBody);
-
-  //   api.updateLabels(
-  //     "emil0519",
-  //     "testing-issues",
-  //     updateBody.name,
-  //     updateBody.new_name,
-  //     updateBody.description,
-  //     updateBody.color.substring(1)
-  //   );
-  // }
-
-  function deleteLabel(index: number) {
-    // const response = api.deleteLabel(
-    //   "emil0519",
-    //   "testing-issues",
-    //   updateLabelInfo[index].name
-    // );
-    // dispatch({
-    //   type: "deleteItem",
-    //   payload: { deleteName: updateLabelInfo[index].name },
-    // });
-    // console.log(response);
-    console.log("deletelabel");
-  }
 
   useEffect(() => {
     (async () => {
@@ -388,59 +289,6 @@ function LabelList() {
     }
   }, [updatedLabels]);
 
-  // useEffect(() => {
-  //   setLabel(updateLabelInfo);
-  // }, [updateLabelInfo]);
-
-  // useEffect(() => {
-  //   if (label === undefined) {
-  //     return;
-  //   } else {
-  //     console.log("updating label");
-
-  //     setUpdateLabelInfo(updateLabelInfo);
-  //   }
-  // }, [label]);
-
-  // useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
-
-  // useEffect(() => {
-  //   if (label === undefined) {
-  //     return;
-  //   } else {
-  //     console.log("update here");
-  //     console.log(updatedLabels);
-  //     setUpdateLabelInfo(updatedLabels);
-  //   }
-  //   // 每次有新label的時候會re-render一次
-  // }, [updatedLabels]);
-
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "getList",
-  //     payload: { label },
-  //   });
-  // }, [label]);
-
-  // useEffect(() => console.log(label), []);
-
-  // const labels: any = useSelector((state) => state);
-  // useEffect(() => {
-  //   test();
-  // fetch
-  // dispatch init state
-  // }, []);
-  // setTimeout(() => test(), 1000);
-  // 改進：useInterval loading boolean, lazy loading, suspends
-  // function test() {
-  //   dispatch({
-  //     type: "",
-  //   });
-  // }
-  // useEffect(() => {
-  //   console.log(labels);
-  // }, [labels]);
-  // useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
   useEffect(() => console.log(updateLabelInfo), [updateLabelInfo]);
 
   if (label === undefined || updateLabelInfo === undefined) {
@@ -466,15 +314,7 @@ function LabelList() {
               </OuterWrapper>
               <LabelDes>{updateLabelInfo[index].description}</LabelDes>
               <Notification></Notification>
-              {/* <Sort
-                clickIndex={clickIndex}
-                index={index}
-                onClick={() => {
-                  setClickIndex(index);
-                  console.log(index);
-                }}
-              >
-                <SortText>...</SortText> */}
+
               <Refer
                 index={index}
                 itemName={item.name}
@@ -589,16 +429,6 @@ const LabelInput = styled.input`
   }
 `;
 
-const ColorInput = styled.input`
-  background: #f5f7f9;
-  padding: 5px 12px;
-  border: 0.5px solid #cad1d9;
-  margin-left: 6px;
-  width: 45%;
-  border-radius: 5px;
-  margin-top: 9px;
-`;
-
 const RollerIcon = styled(IssueReopenedIcon)`
   width: 16px;
   height: 16px;
@@ -646,27 +476,6 @@ const LabelName = styled.label`
   }
 `;
 
-const LabelPreview = styled.div`
-  width: fit-content;
-  margin: 16px 16px 0 16px;
-  padding-left: 6px;
-  padding-right: 6px;
-  white-space: no-wrap;
-  font-size: 10px;
-  height: 24px;
-  margin-left: 10px;
-  background: #e58b8c;
-  color: black;
-  font-weight: 600;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  @media screen and (min-width: 768px) {
-    flex-basis: 100;
-  }
-`;
 type NewLabel = {
   areaOpen: boolean;
   index: any;
@@ -720,11 +529,6 @@ const DeleteText = styled.span`
   }
 `;
 
-type Active = {
-  clickIndex: number;
-  index: number;
-};
-
 const DropDown = styled.div`
   display: flex;
   position: absolute;
@@ -741,7 +545,7 @@ const DropDown = styled.div`
 const OuterWrapper = styled.section`
   width: 15%;
   height: 24px;
-  /* margin-top: 25px; */
+
   @media screen and (min-width: 1012px) {
   }
 `;
@@ -749,7 +553,7 @@ const OuterWrapper = styled.section`
 const LabelWrap = styled.div`
   width: auto;
   height: 24px;
-  /* margin-top: 25px; */
+
   @media screen and (min-width: 1012px) {
   }
 `;
@@ -837,7 +641,7 @@ const Sort = styled.div<Sorter>`
   align-items: center;
   cursor: pointer;
   margin-right: 10px;
-  /* margin-top: 25px; */
+
   &:hover {
     background: #1760cf;
     > * {
@@ -868,11 +672,9 @@ const Label = styled.div<LabelProp>`
   white-space: no-wrap;
   border: ${(props) =>
     props.color === "ffffff" ? "0.5px solid #b7b7b7" : "none"};
-  /* max-width: 50%;
-  min-width: 50px; */
   height: 24px;
   margin-left: 10px;
-  background: #${(props) => props.color.replace("#", "")};
+  background: #${(props) => (props.color.includes("#") ? props.color.replace("#", "") : props.color)};
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -891,7 +693,6 @@ const Wrapper = styled.section<NewLabels>`
   width: 95vw;
   height: ${(props) =>
     props.areaOpen && props.index === props.labelIndex ? "339px" : "61px"};
-  /* 要設條件 */
   margin: 0 auto;
   background: white;
   border: 0.5px solid #cad1d9;

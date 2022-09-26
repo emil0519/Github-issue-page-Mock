@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useComponentVisible } from "../utils/useComponentVisible";
-import { MilestoneIcon, IssueReopenedIcon } from "@primer/octicons-react";
 
 function ColorBricks(props: any) {
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =

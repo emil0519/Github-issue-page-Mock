@@ -46,7 +46,6 @@ const CodeLeftIMG = styled(ChevronLeftIcon)`
     height: 15px;
     display: block;
   }
-  /* imported icon cannot be displayed none, need to fix afterwards */
 `;
 
 const CodeText = styled.span`

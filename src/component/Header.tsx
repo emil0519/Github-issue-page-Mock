@@ -6,18 +6,13 @@ import plus from "../img/plus.png";
 import avatar from "../img/avatar.png";
 import down from "../img/down.png";
 
-// import searchButton from "../img/searchButton.png"
-
-// const bell=require('./img/bell.png')
-// import {MarkGithubIcon, BellIcon} from '@primer/octicons-react'
-
 function Header() {
   return (
     <>
       <Wrapper>
         <BigWrapOne>
           <Search placeholder="Search or jump to..." />
-          {/* <SearchButton alt="" src="searchButton"></SearchButton> */}
+
           <GithubIcon alt="" src={icon} />
           <HeaderText>Pull requests</HeaderText>
           <HeaderText>Issues</HeaderText>
@@ -26,7 +21,7 @@ function Header() {
         </BigWrapOne>
         <BirWrapTwo>
           <BigBellIcons alt="" src={bell} />
-          {/* bigbellicon 大小一樣 */}
+
           <Plus alt="" src={plus} />
           <Avatar alt="" src={avatar} />
           <Down alt="" src={down} />
@@ -45,7 +40,6 @@ const Down = styled.img`
     display: block;
     width: 12px;
     height: 12px;
-    /* padding-top: 2px; */
   }
 `;
 
@@ -55,7 +49,7 @@ const Avatar = styled.img`
     display: block;
     width: 20px;
     height: 20px;
-    /* padding-top: 2px; */
+
     margin-right: 2px;
   }
 `;
@@ -66,7 +60,7 @@ const BigBellIcons = styled.img`
     display: block;
     width: 16px;
     height: 16px;
-    /* padding-top: 2px; */
+
     margin-right: 5px;
   }
 `;
@@ -118,16 +112,6 @@ const HeaderText = styled.span`
   }
 `;
 
-// const SearchButton = styled.img`
-//   display: none;
-//   @media screen and (min-width: 768px) {
-//     display: block;
-//     width: 19.86px;
-//     height: 20px;
-//   }
-
-// `;
-
 const Search = styled.input`
   display: none;
   @media screen and (min-width: 768px) {
@@ -154,10 +138,6 @@ const BellIcons = styled.img`
 `;
 
 const GithubIcon = styled.img`
-  /* width: 32px;
-  height: 32px;
-  cursor: pointer; */
-  /* background-image: url(${icon}); */
   @media screen and (min-width: 768px) {
     order: -1;
     width: 35px;
