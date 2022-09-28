@@ -300,11 +300,9 @@ function LabelList() {
 
   if (label === undefined || updateLabelInfo === undefined) {
     return (
-      <>
-        <NoLabelWrapper>
-          <NoLabelText>Loading</NoLabelText>
-        </NoLabelWrapper>
-      </>
+      <NoLabelWrapper>
+        <NoLabelText>Loading</NoLabelText>
+      </NoLabelWrapper>
     );
   } else if (label.length === 0) {
     return (

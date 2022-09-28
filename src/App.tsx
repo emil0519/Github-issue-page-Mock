@@ -2,9 +2,11 @@ import Header from "./component/Header";
 import Footer from "./component/Footer";
 import Repo from "./component/Repo";
 import Option from "./component/Option";
-import LabelButtons from "./component/LabelButtons";
-import BoxHeader from "./component/BoxHeader";
+
 import { createGlobalStyle } from "styled-components";
+
+import IssueHeader from "./component/IssueHeader";
+import IssueContent from "./component/IssueContent";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -18,8 +20,10 @@ function App() {
       <Header />
       <Repo />
       <Option />
-      <LabelButtons />
-      <BoxHeader />
+      <IssueHeader />
+      <IssueContent />
+
+      {/* <BoxHeader /> */}
       <Footer />
     </>
   );
