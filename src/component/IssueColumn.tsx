@@ -5,7 +5,7 @@ import comment from "../img/comment.svg";
 import { useState, useEffect } from "react";
 import api from "../utils/api";
 import { iteratorSymbol } from "immer/dist/internal";
-import { hourAdder } from "../utils/horus";
+import { hourAdder, timeAgo } from "../utils/horus";
 
 function IssueColumn() {
   // const [hoverUser, setHoverUser] = useState(false);
@@ -104,12 +104,14 @@ function IssueColumn() {
                     </>
                   </div>
                   <span className="mb-[10px] text-sm text-[#4d555e]">
-                    #{item.number} opened
-                    {item.created_at.slice(0, -1)}
+                    #{item.number} opened {""}
+                    {/* {item.created_at.slice(0, -1)} */}
                     {(() => {
                       let hours = item.created_at.slice(0, -1);
                       let obj = hourAdder(8, new Date(hours));
-                      return obj.toString();
+                      let timeStamp = obj.toString().substring(4, 24);
+                      let differences = Date.now() - Date.parse(timeStamp);
+                      return timeAgo(new Date(Date.now() - differences));
                     })()}
                     days ago by {item.user.login}
                   </span>
