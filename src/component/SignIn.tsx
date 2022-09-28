@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import { superbase } from "../utils/client";

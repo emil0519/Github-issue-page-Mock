@@ -10,12 +10,13 @@ import { useDispatch } from "react-redux";
 import ColorBricks from "./ColorBricks";
 import api from "../utils/api";
 import useGenerateRandomColor from "../utils/useGenerateRandomColor";
+import Filter from "./Filter";
 
 export interface opener {
   labelOpen: boolean;
 }
 
-function LabelButtons() {
+function LabelButtonsIssues() {
   const [labelOpen, setLabelOpen] = useState(false);
   const [defaultColor, setDefaultColor] = useState("#e99695");
   const [newLabelInfo, setNewLabelInfo] = useState({
@@ -101,98 +102,12 @@ function LabelButtons() {
               <MileText>Milestones</MileText>
             </MileStoneSubSection>
           </MileSection>
-          <BigSearchBarWrapper>
-            <BigSearchIcon />
-            <BigSearchBar placeholder="Search all labels" />
-          </BigSearchBarWrapper>
         </SubWrapOne>
         <NewLabel>
-          <NewLabelText
-            onClick={() => {
-              setLabelOpen(true);
-              setLabelText("Create Label");
-              setCreated(created + 1);
-              setDefaultLabelPreview("Label Preview");
-              setNewLabelInfo({
-                name: "",
-                description: "",
-                color: "#e99695",
-              });
-            }}
-          >
-            New Label
-          </NewLabelText>
+          <NewLabelText>New</NewLabelText>
         </NewLabel>
       </UpperWrapper>
-      <SearchBarWrapper>
-        <SearchIconIMG />
-        <SearchBar placeholder="Search all labels" />
-      </SearchBarWrapper>
-      <NewLabelSection labelOpen={labelOpen}>
-        <LabelPreview colors={defaultColor}>{defaultLabelPreview}</LabelPreview>
-        <BigWrapper>
-          <LabelInputSection>
-            <LabelName>Label Name</LabelName>
-            <LabelInput
-              value={newLabelInfo.name}
-              placeholder="Label name"
-              onChange={(e) => {
-                setNewLabelInfo({ ...newLabelInfo, name: e.target.value });
-                setDefaultLabelPreview(e.target.value);
-              }}
-            />
-          </LabelInputSection>
-          <LabelInputSection>
-            <LabelName>Description</LabelName>
-            <LabelInput
-              value={newLabelInfo.description}
-              placeholder="Description (Optional)"
-              onChange={(e) =>
-                setNewLabelInfo({
-                  ...newLabelInfo,
-                  description: e.target.value,
-                })
-              }
-            />
-          </LabelInputSection>
-          <ColorInputSection>
-            <ColorText>Color</ColorText>
-            <LowerWrapper>
-              <ColorRoller
-                colors={defaultColor}
-                onClick={() => generateColor()}
-              >
-                <RollerIcon />
-              </ColorRoller>
-              <InputWrapper>
-                <ColorBricks
-                  color={color}
-                  setNewLabelInfo={setNewLabelInfo}
-                  newLabelInfo={newLabelInfo}
-                  setDefaultColor={setDefaultColor}
-                  defaultColor={defaultColor}
-                  redBorder={redBorder}
-                />
-              </InputWrapper>
-            </LowerWrapper>
-          </ColorInputSection>
-          <ButtonWrapper>
-            <CreateLabelButton
-              redBorder={redBorder}
-              createLabelChange={createLabelChange}
-            >
-              <CreateLabelText onClick={() => startCreate()}>
-                {labelText}
-              </CreateLabelText>
-            </CreateLabelButton>
-            <CancelButton>
-              <CancelText onClick={() => setLabelOpen(false)}>
-                Cancel
-              </CancelText>
-            </CancelButton>
-          </ButtonWrapper>
-        </BigWrapper>
-      </NewLabelSection>
+      <Filter />
     </Wrapper>
   );
 }
@@ -251,7 +166,7 @@ const BigWrapper = styled.section`
     display: flex;
     align-items: center;
     margin-top: 20px;
-    /* margin-right: 6px; */
+    margin-right: 6px;
   }
 `;
 
@@ -468,9 +383,15 @@ const UpperWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   /* margin-right: 16px; */
-  width: 100%;
+  width: 95%;
   margin: 0 auto;
+  margin-left: 0;
   @media screen and (min-width: 768px) {
+    justify-content: flex-end;
+    order: 2;
+    width: 413px;
+    margin: 0;
+    /* margin-right: 16px; */
   }
 `;
 
@@ -492,6 +413,7 @@ const NewLabelText = styled.span`
 
 const NewLabel = styled.div`
   background: #29994a;
+  margin-left: 16px;
   width: 98.69px;
   height: 32px;
   font-size: 14px;
@@ -582,6 +504,7 @@ const LabelSection = styled.section`
   justify-content: center;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+  /* margin-left: 16px; */
   cursor: pointer;
   @media screen and (min-width: 768px) {
   }
@@ -590,11 +513,16 @@ const LabelSection = styled.section`
 const Wrapper = styled.section`
   background: white;
   margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
-  margin-right: auto;
-  margin-left: auto;
   @media screen and (min-width: 768px) {
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 `;
 
-export default LabelButtons;
+export default LabelButtonsIssues;

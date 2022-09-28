@@ -1,17 +1,28 @@
 import styled from "styled-components";
 import repo from "../img/repo.png";
+import Watch from "./Watch";
 
 function Repo() {
   return (
     <TitleWrapper>
-      <RepoLogo alt="" src={repo} />
-      <UserName>emil0519 </UserName>
-      <Slash>/</Slash>
-      <RepoName>testing-issues</RepoName>
-      <RepoType>Public</RepoType>
+      <RepoWrapper>
+        <RepoLogo alt="" src={repo} />
+        <UserName>emil0519 </UserName>
+        <Slash>/</Slash>
+        <RepoName>testing-issues</RepoName>
+        <RepoType>Public</RepoType>
+      </RepoWrapper>
+      <Watch />
     </TitleWrapper>
   );
 }
+
+const RepoWrapper = styled.section`
+  display: flex;
+  margin: 16px;
+  @media screen and (min-width: 768px) {
+  }
+`;
 
 const RepoType = styled.span`
   font-size: 14px;
@@ -67,9 +78,12 @@ const RepoLogo = styled.img`
 
 const TitleWrapper = styled.section`
   display: flex;
-  padding: 16px;
+  /* padding: 16px 0; */
+  /* margin-left: 16px; */
   align-items: center;
   background: #f5f7f9;
+  justify-content: space-between;
+  width: 100%;
   @media screen and (min-width: 768px) {
     /* display: flex; 
     align-items: center;
