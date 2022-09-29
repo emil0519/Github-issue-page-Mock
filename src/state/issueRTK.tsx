@@ -11,6 +11,7 @@ export type GetLebal = {
 };
 
 type Parameter = {
+  type: string;
   name: string;
   repo: string;
   query: string;
@@ -46,11 +47,11 @@ export const createIssueApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.github.com/repos",
   }),
-  tagTypes: ["issues", "specific"],
+  tagTypes: ["issues"],
   endpoints: (builder) => ({
     getAllIssues: builder.query<GetLebal[], Parameter>({
-      query: ({ name, repo, query }) => ({
-        url: `/${name}/${repo}/issues${query}`,
+      query: ({ type, name, repo, query }) => ({
+        url: `/${name}/${repo}/${type}${query}`,
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -59,34 +60,11 @@ export const createIssueApi = createApi({
       }),
       providesTags: ["issues"],
     }),
-    // getMoreIssues: builder.query<GetLebal[], Query>({
-    //     query: ({ name, repo }) => ({
-    //       url: `/${name}/${repo}/issues`,
-    //       method: "GET",
-    //       headers: new Headers({
-    //         "Content-Type": "application/json",
-    //         Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
-    //       }),
-    //     }),
-    //     providesTags: ["specific"],
-    //   }),
-    // getSPECIFICIssue: builder.mutation<GetLebal[], Query>({
-    //   query: ({ name, repo, query }) => ({
-    //     url: `/${name}/${repo}/issues${query}`,
-    //     method: "GET",
-    //     headers: new Headers({
-    //       "Content-Type": "application/json",
-    //       Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
-    //     }),
-    //   }),
-    //   invalidatesTags: ["issues"],
-    // }),
   }),
 });
 
 export const { useGetAllIssuesQuery } = createIssueApi;
 
-// export const pokemonApi = createApi({
 //   baseQuery: fetchBaseQuery({
 //     baseUrl: "https://api.github.com/repos/emil0519/testing-issues/issues",
 //   }),

@@ -1,7 +1,10 @@
 import check from "../img/check.svg";
 import open from "../img/issue-opened.svg";
+import { useNavigate } from "react-router-dom";
 
 function OpenClosedInHeader() {
+  const navigate = useNavigate();
+
   return (
     <section className="m-0 hidden big:flex">
       <div className="mr-[4px] flex cursor-pointer big:h-[21px] big:w-[71px]">
@@ -10,7 +13,12 @@ function OpenClosedInHeader() {
       </div>
       <div className="ml-[10px] flex cursor-pointer">
         <img src={check} alt="" className="h-[16px] w-[16px]"></img>
-        <span className="ml-[4px] text-xs">1 Closed</span>
+        <span
+          className="ml-[4px] text-xs"
+          onClick={() => navigate("?query=?state=closed")}
+        >
+          1 Closed
+        </span>
       </div>
     </section>
   );

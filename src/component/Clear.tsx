@@ -1,8 +1,14 @@
 import x from "../img/x.svg";
 import { XIcon } from "@primer/octicons-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 function Clear() {
+  const navigate = useNavigate();
   const [hover, setHover] = useState(false);
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("query");
   return (
     <div
       onMouseEnter={() => {
@@ -11,7 +17,10 @@ function Clear() {
       onMouseOut={() => {
         setHover(false);
       }}
-      className=" ml-[0] mt-[22px] flex items-center big:mb-[22px]"
+      onClick={() => navigate("/")}
+      className={`ml-[0] ${
+        query !== null ? "flex" : "hidden"
+      } mt-[16px] items-center`}
     >
       <XIcon
         fill="white"

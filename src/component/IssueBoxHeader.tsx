@@ -1,12 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import down from "../img/triangle-down.svg";
 import OpenClosedInHeader from "./OpenClosedInHeader";
 import x from "../img/x.svg";
+import { useNavigate } from "react-router-dom";
 import check from "../img/check.svg";
+import { useGetAllIssuesQuery } from "../state/issueRTK";
+
+import { useSearchParams } from "react-router-dom";
 
 function IssueBoxHeader() {
+  interface GetLebal {
+    color: string;
+    default: boolean;
+    description: string;
+    id: number;
+    name: string;
+    node_id: string;
+    url: string;
+  }
+
   const [labelListOpen, setLabelListOpen] = useState(false);
   const [sortListOpen, setSortListOpen] = useState(false);
+  const [queryState, setQueryState] = useState<string | null>("");
+  const [labelData, setLabelData] = useState<any>();
+  const [labelStore, setLabelStore] = useState<any>();
+  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
+    type: "labels",
+    name: "emil0519",
+    repo: "testing-issues",
+    query: "",
+  });
+
+  useEffect(() => {
+    setLabelData(data);
+    setLabelStore(data);
+  }, [data]);
+
+  const [searchParams] = useSearchParams();
+  const queryOnUrl = searchParams.get("query");
 
   const titleName = [
     { name: "Author" },
@@ -16,31 +47,59 @@ function IssueBoxHeader() {
     { name: "Assignee" },
     { name: "Sort" },
   ];
-  const labelName = [
+
+  const sortText = [
+    { name: "Newest", query: "?query=?sort=created%26direction=desc" },
+    { name: "Oldest", query: "?query=?sort=created%26direction=asc" },
+    { name: "Most commented", query: "?query=?sort=comments%26direction=desc" },
+    { name: "Least commented", query: "?query=?sort=comments%26direction=asc" },
     {
-      name: "Hello world",
-      description: "This is a description",
-      color: "navy",
+      name: "Recently updated",
+      query: "?query=?sort=updated%26direction=desc",
     },
-    { name: "Your issues", color: "#f7c9bf" },
-    { name: "PR", color: "#1c1c1c", description: "I do have a description" },
-    { name: "Everything assigned to you", color: "#ac6a4c" },
-    { name: "Everything mentioning you", color: "#e86e64" },
-    { name: "Everything mentioning you", color: "#e86e64" },
-    { name: "Everything mentioning you", color: "#e86e64" },
-    { name: "Everything mentioning you", color: "#e86e64" },
-    { name: "Everything mentioning you", color: "#e86e64" },
-    { name: "Everything mentioning you", color: "#e86e64" },
-    { name: "Everything mentioning you", color: "#e86e64" },
-    { name: "Everything mentioning you", color: "#e86e64" },
+    {
+      name: "Least recently updated",
+      query: "?query=?sort=updated%26direction=asc",
+    },
   ];
 
-  const mapper = [1, 2, 3, 4, 5, 6];
+  function labelFilter(value: string) {
+    console.log(value);
 
+    const found = labelStore.filter(({ name }: { name: string }) =>
+      new RegExp(value, "i").test(name)
+    );
+    console.log(found);
+
+    setLabelData(found);
+  }
+
+  // useEffect(() => setQueryState(queryOnUrl), [queryOnUrl]);
+
+  function navigator(query: string) {
+    console.log(queryState);
+    let compare = query.replace("%26", "&");
+    console.log(compare);
+    console.log(queryState);
+    console.log(queryState!.includes(compare));
+    if (queryState === null) {
+      navigate(query);
+    } else if (queryState.includes("sort")) {
+      console.log("success");
+
+      // console.log(compare.includes(query));
+    }
+  }
+
+  const navigate = useNavigate();
+
+  if (labelData === undefined) {
+    return <></>;
+  }
   return (
     <section className="flex w-[100%]">
       <div className="fixed top-0 left-0 bg-black"></div>
-      <section className="flex h-[55px] w-[100%] items-center justify-evenly rounded-md border-t-[0.5px] border-b-[0.5px] border-solid border-[#cad1d9] bg-[#f5f7f9] pl-[16px] pr-[16px] small:justify-start small:border-[0.5px] big:justify-between big:justify-between">
+      <section className="mt-[16px] flex h-[55px] w-[100%] items-center justify-evenly rounded-md border-t-[0.5px] border-b-[0.5px] border-solid border-[#cad1d9] bg-[#f5f7f9] pl-[16px] pr-[16px] small:justify-start small:border-[0.5px] big:justify-between big:justify-between">
         <section className="flex">
           <OpenClosedInHeader />
         </section>
@@ -99,54 +158,41 @@ function IssueBoxHeader() {
                     <div className="flex h-[65px] w-[100%] items-center justify-center border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] small:h-[49px] ">
                       <input
                         placeholder="Filter labels"
+                        onChange={(e) => labelFilter(e.target.value)}
                         className="h-[32px] w-[85%] rounded-md border-[1px] border-solid border-[#d3d9e0] p-[5px_12px] small:w-[95%] small:text-xs"
                       ></input>
                     </div>
                     <div className="h-[416px] overflow-y-auto overflow-x-hidden">
-                      <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-between border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[33px] small:w-[298px]">
+                      <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-between border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]">
                         <span className=" m-[16px] ml-[52px] text-xs font-semibold">
                           Unlabeled
                         </span>
                       </div>
 
-                      {labelName.map((item) => {
-                        if (item.hasOwnProperty("description")) {
-                          return (
-                            //unlabeled 下面的每行，判斷是否有description，樣式會不一樣
-                            <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]">
-                              <div
-                                //label preview
-                                className={`mb-16px mr-[6px] ml-[32px] h-[14px] w-[14px] rounded-full bg-[navy] small:mb-[18px] small:mr-[8px]`}
-                              ></div>
-                              <div className="flex flex-col">
-                                <span className=" text-xs font-semibold ">
-                                  {item.name}
-                                </span>
-                                <span className=" mt-[3px] w-[max-content] text-xs text-[#57606a] ">
-                                  {item.description}
-                                </span>
-                              </div>
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[33px]">
-                              <div
-                                className={`mr-[6px] ml-[32px] h-[14px] w-[14px] rounded-full bg-[${item.color}]`}
-                              ></div>
-                              <div className="flex flex-col">
-                                <span className=" text-xs font-semibold">
-                                  {item.name}
-                                </span>
-                              </div>
-                            </div>
-                          );
-                        }
-                      })}
+                      {labelData.map((item: any) => (
+                        <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]">
+                          <div
+                            style={{ background: `#${item.color}` }}
+                            className={`mr-[6px] ml-[32px] h-[14px] w-[14px] rounded-full bg-[${item.color}]`}
+                          ></div>
+                          <div className="flex flex-col">
+                            <span className=" text-xs font-semibold">
+                              {item.name}
+                            </span>
+                            {item.description.length !== 0 ? (
+                              <span className=" mt-[3px] w-[max-content] text-xs text-[#57606a] small:inline-block small:h-[15px] small:w-[220px] small:overflow-hidden small:whitespace-nowrap">
+                                {item.description}
+                              </span>
+                            ) : (
+                              <></>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                     {/* 最後一行的資訊列 */}
                     <div className="flex h-[59.91px] w-[100%] items-center  justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] pl-[5px] ">
-                      <span className="small:mt[16px] text-xs text-[#57606a] small:h-[33px]">
+                      <span className="small:mt[16px] text-xs text-[#57606a] small:h-[49px]">
                         Use{" "}
                         <span className="h-[fit-content] w-[fit-content] rounded-lg border-[1px] border-solid border-[#e8ebef] bg-[#f6f8fa] p-[3px_5px] text-[#24292f]">
                           ⌥
@@ -196,7 +242,7 @@ function IssueBoxHeader() {
                       sortListOpen ? "fixed" : "hidden"
                     } top-[1.5%] right-[9px] z-[99] flex h-[646px] w-[95vw] flex-col rounded-lg border-[0.5px] border-solid border-[#cad1d9] bg-[white] small:absolute  small:top-[18px] small:left-[260px] small:h-[max-content] small:w-[298px] med:top-[20px] med:left-[440px] big:top-[20px] big:left-[210px] `}
                   >
-                    <div className="right-[5vw] flex  h-[54px] w-[100%] items-center justify-between small:h-[33px]">
+                    <div className="right-[5vw] flex  h-[54px] w-[100%] items-center justify-between small:h-[49px]">
                       <span className="ml-[16px] text-xs font-semibold small:p-0 ">
                         Sort by
                       </span>
@@ -208,17 +254,23 @@ function IssueBoxHeader() {
                       ></img>
                     </div>
                     <div className="h-[324px]">
-                      {mapper.map(() => {
+                      {sortText.map((item) => {
                         return (
-                          <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[33px]">
+                          <div
+                            onClick={() => {
+                              navigator(`${item.query}`);
+                              setSortListOpen(false);
+                            }}
+                            className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]"
+                          >
                             <img
                               src={check}
                               alt=""
                               className="ml-[16px] mr-[8px] h-[16px] w-[16px]"
                             ></img>
                             <div className="flex flex-col">
-                              <span className=" text-xs font-semibold">
-                                Newest
+                              <span className=" z-50 text-xs font-semibold">
+                                {item.name}
                               </span>
                             </div>
                           </div>

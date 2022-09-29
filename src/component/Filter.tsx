@@ -2,23 +2,80 @@ import x from "../img/x.svg";
 import solidDown from "../img/solid-down.svg";
 import external from "../img/external.svg";
 import search from "../img/search.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import check from "../img/check.svg";
 import { useNavigate } from "react-router-dom";
+import { isShorthandPropertyAssignment } from "typescript";
+import { useSearchParams } from "react-router-dom";
 
 function Filter() {
-  const [queryValue, setQueryValue] = useState("");
-
   const [showFilter, setShowFilter] = useState(false);
-  const filterName = [
-    { name: "Open issues and pull request" },
-    { name: "Your issues" },
-    { name: "Your pull requests" },
-    { name: "Everything assigned to you" },
-    { name: "Everything mentioning you" },
-  ];
+  const [clickName, setClickName] = useState("");
+  const [defaultInput, setDefaultInput] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  useEffect(() => console.log(clickName), [clickName]);
 
+  const filterName = [
+    { name: "Open issues and pull request", query: "" },
+    { name: "Your issues", query: `?query=?creator=emil0519` },
+    { name: "Your pull requests", query: "" },
+    { name: "Everything assigned to you", query: "?query=?assignee=emil0519" },
+    { name: "Everything mentioning you", query: "?query=?mentioned=emil0519" },
+  ];
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("query");
+
+  useEffect(() => {
+    console.log(query);
+
+    switch (query) {
+      case "?creator=emil0519": {
+        console.log("set");
+        setDefaultInput("is:open is:issue author:@me");
+        break;
+      }
+      case "?assignee=emil0519": {
+        setDefaultInput("is:open assignee:@me");
+        break;
+      }
+      case "?mentioned=emil0519": {
+        setDefaultInput("is:open mentions:@me");
+        break;
+      }
+      default:
+        setDefaultInput("is:issue is:open");
+    }
+  }, [query]);
+
+  function handleInput(e: any) {
+    if (e.key === "Enter") {
+      console.log("enter now");
+
+      switch (inputValue) {
+        case "is:issue is:open":
+        case "is:issue is:open ":
+        case " is:issue is:open": {
+          navigate("/");
+          break;
+        }
+        case "is:open assignee:@me":
+        case "is:open assignee:@me ":
+        case " is:open assignee:@me": {
+          navigate("?query=?assignee=emil0519");
+          break;
+        }
+        case "is:open mentions:@me":
+        case "is:open mentions:@me ":
+        case " is:open mentions:@me": {
+          navigate("?query=?assignee=emil0519");
+          break;
+        }
+        default:
+          return;
+      }
+    }
+  }
 
   return (
     <section className="mt-[23px] ml-[0] flex w-[95%] med:m-[0]  med:w-[60%]">
@@ -55,16 +112,23 @@ function Filter() {
               alt=""
             ></img>
           </div>
-          {filterName.map((item) => {
+          {filterName.map((item, index: number) => {
             return (
               <div
-                onClick={() => navigate(`?query=?creator=emil0519`)}
+                key={item.name}
+                onClick={() => {
+                  setClickName(item.name);
+                  navigate(`${item.query}`);
+                  setShowFilter(false);
+                }}
                 className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[33px]"
               >
                 <img
                   src={check}
                   alt=""
-                  className="mr-[8px] ml-[16px] h-[16px] w-[16px]"
+                  className={`${
+                    item.name === clickName ? "visible" : "invisible"
+                  }mr-[8px] ml-[16px]  h-[16px] w-[16px]`}
                 ></img>
                 <span className="text-xs">{item.name}</span>
               </div>
@@ -90,7 +154,9 @@ function Filter() {
           alt=""
         ></img>
         <input
-          defaultValue="is:open is:issue author:@me"
+          defaultValue={defaultInput}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => handleInput(e)}
           className="w-[100%] bg-[#f5f7f9] p-[8px] text-[14px] text-[#636c75] small:w-[100%] med:w-[100%]"
         ></input>
       </div>

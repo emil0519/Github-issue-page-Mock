@@ -17,6 +17,7 @@ function IssueColumn() {
   // const [queryValue, setQueryValue] = useState("");
   const [queryString, setQueryString] = useState("");
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
+    type: "issues",
     name: "emil0519",
     repo: "testing-issues",
     query: `${queryString}`,
@@ -30,9 +31,7 @@ function IssueColumn() {
       setQueryString("");
     }
   }, [category]);
-  useEffect(() => console.log(queryString), [queryString]);
 
-  useEffect(() => console.log(data), [data]);
   // const { data, error, isLoading } = useGetPokemonByNameQuery("pikachu");
   // useEffect(() => console.log(data), [data]);
   // useEffect(() => {
