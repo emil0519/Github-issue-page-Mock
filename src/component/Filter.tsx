@@ -3,8 +3,12 @@ import solidDown from "../img/solid-down.svg";
 import external from "../img/external.svg";
 import search from "../img/search.svg";
 import { useState } from "react";
+import check from "../img/check.svg";
+import { useNavigate } from "react-router-dom";
 
 function Filter() {
+  const [queryValue, setQueryValue] = useState("");
+
   const [showFilter, setShowFilter] = useState(false);
   const filterName = [
     { name: "Open issues and pull request" },
@@ -13,6 +17,9 @@ function Filter() {
     { name: "Everything assigned to you" },
     { name: "Everything mentioning you" },
   ];
+
+  const navigate = useNavigate();
+
   return (
     <section className="mt-[23px] ml-[0] flex w-[95%] med:m-[0]  med:w-[60%]">
       <div className="flex h-[32px] small:relative small:w-[110px]">
@@ -50,8 +57,16 @@ function Filter() {
           </div>
           {filterName.map((item) => {
             return (
-              <div className="small:h-[33px]flex h-[54px] w-[100%] cursor-pointer items-center justify-between border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7]">
-                <span className=" m-[16px] ml-[36px] text-xs">{item.name}</span>
+              <div
+                onClick={() => navigate(`?query=?creator=emil0519`)}
+                className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[33px]"
+              >
+                <img
+                  src={check}
+                  alt=""
+                  className="mr-[8px] ml-[16px] h-[16px] w-[16px]"
+                ></img>
+                <span className="text-xs">{item.name}</span>
               </div>
             );
           })}
