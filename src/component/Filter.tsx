@@ -2,29 +2,29 @@ import x from "../img/x.svg";
 import solidDown from "../img/solid-down.svg";
 import external from "../img/external.svg";
 import search from "../img/search.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import check from "../img/check.svg";
 import { useNavigate } from "react-router-dom";
-import { isShorthandPropertyAssignment } from "typescript";
 import { useSearchParams } from "react-router-dom";
+import { UserContext } from "../utils/useContext";
 
 function Filter() {
   const [showFilter, setShowFilter] = useState(false);
   const [clickName, setClickName] = useState("");
   const [defaultInput, setDefaultInput] = useState("");
   const [inputValue, setInputValue] = useState("");
-  useEffect(() => console.log(clickName), [clickName]);
+  const { value, setValue } = useContext(UserContext);
 
   const filterName = [
     { name: "Open issues and pull request", query: "" },
-    { name: "Your issues", query: `?query=?creator=emil0519` },
+    { name: "Your issues", query: `creator=emil0519` },
     { name: "Your pull requests", query: "" },
-    { name: "Everything assigned to you", query: "?query=?assignee=emil0519" },
-    { name: "Everything mentioning you", query: "?query=?mentioned=emil0519" },
+    { name: "Everything assigned to you", query: "assignee=emil0519" },
+    { name: "Everything mentioning you", query: "mentioned=emil0519" },
   ];
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("query");
+  const query = searchParams.get("query") as any;
 
   useEffect(() => {
     console.log(query);
@@ -47,6 +47,21 @@ function Filter() {
         setDefaultInput("is:issue is:open");
     }
   }, [query]);
+
+  function navigator(itemQuery: string, itemName: string) {
+    if (
+      itemName === "Open issues and pull request" ||
+      itemName === "Your pull requests"
+    ) {
+      return;
+    } else {
+      console.log(itemName);
+      setValue({
+        ...value,
+        filter: itemQuery,
+      });
+    }
+  }
 
   function handleInput(e: any) {
     if (e.key === "Enter") {
@@ -118,7 +133,9 @@ function Filter() {
                 key={item.name}
                 onClick={() => {
                   setClickName(item.name);
-                  navigate(`${item.query}`);
+
+                  // navigate(`${item.query}`);
+                  navigator(item.query, item.name);
                   setShowFilter(false);
                 }}
                 className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[33px]"
@@ -127,8 +144,8 @@ function Filter() {
                   src={check}
                   alt=""
                   className={`${
-                    item.name === clickName ? "visible" : "invisible"
-                  }mr-[8px] ml-[16px]  h-[16px] w-[16px]`}
+                    item.name === clickName ? "block" : "hidden"
+                  } mr-[8px] ml-[16px]  h-[16px] w-[16px]`}
                 ></img>
                 <span className="text-xs">{item.name}</span>
               </div>
