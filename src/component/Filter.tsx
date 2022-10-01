@@ -63,6 +63,26 @@ function Filter() {
 
   function handleInput(e: any) {
     if (e.key === "Enter") {
+      const searchQuery = `search/issues?q=repo:emil0519/testing-issues ${inputValue}`;
+      setValue({
+        ...value,
+        filter: "",
+        label: [],
+        assignees: "",
+        closed: "",
+        paging: "",
+        search: searchQuery,
+      });
+
+      //   setValue({
+      //     filter: "",
+      // label: [],
+      // assignees: "",
+      // sort: "",
+      // closed: "",
+      // paging: "",
+      // search: "",
+      //   })
       // console.log("enter now");
       // switch (inputValue) {
       //   case "is:issue is:open":
@@ -130,20 +150,33 @@ function Filter() {
                 key={item.name}
                 onClick={() => {
                   setClickName(item.name);
-
-                  // navigate(`${item.query}`);
                   navigator(item.query, item.name);
                   setShowFilter(false);
                 }}
-                className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[33px]"
+                className={`flex h-[54px] w-[100%] ${
+                  item.name === "Open issues and pull request" ||
+                  item.name === "Your pull requests"
+                    ? "cursor-default"
+                    : "cursor-pointer"
+                } items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[33px]`}
               >
-                <img
-                  src={check}
-                  alt=""
-                  className={`${
-                    item.name === clickName ? "block" : "hidden"
-                  } mr-[8px] ml-[16px]  h-[16px] w-[16px]`}
-                ></img>
+                {item.name === "Open issues and pull request" ||
+                item.name === "Your pull requests" ? (
+                  <img
+                    src={check}
+                    alt=""
+                    className={`invisible mr-[8px] ml-[16px]  h-[16px] w-[16px]`}
+                  ></img>
+                ) : (
+                  <img
+                    src={check}
+                    alt=""
+                    className={`${
+                      item.name === clickName ? "visible" : "invisible"
+                    } mr-[8px] ml-[16px]  h-[16px] w-[16px]`}
+                  ></img>
+                )}
+
                 <span className="text-xs">{item.name}</span>
               </div>
             );

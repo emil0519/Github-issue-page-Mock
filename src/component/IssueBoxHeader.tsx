@@ -11,6 +11,9 @@ import { UserContext } from "../utils/useContext";
 
 function IssueBoxHeader() {
   const { value, setValue } = useContext(UserContext);
+  const [clickName, setClickName] = useState<any>([]);
+  const [sortClickName, setSortClickName] = useState("");
+  useEffect(() => console.log(clickName), [clickName]);
   interface GetLebal {
     color: string;
     default: boolean;
@@ -26,14 +29,14 @@ function IssueBoxHeader() {
   const [queryState, setQueryState] = useState<string | null>("");
   const [labelData, setLabelData] = useState<any>();
   const [labelStore, setLabelStore] = useState<any>();
-  const [type, setType] = useState("labels");
+  const [type, setType] = useState("/labels");
   const navigate = useNavigate();
 
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
     baseType: "repos",
     type: type,
-    name: "emil0519",
-    repo: "testing-issues",
+    name: "/emil0519",
+    repo: "/testing-issues",
     query: "",
   });
 
@@ -79,6 +82,8 @@ function IssueBoxHeader() {
 
     setLabelData(found);
   }
+
+  useEffect(() => console.log(labelStore), [labelStore]);
 
   function labelNavigator(name: string) {
     const newLabel = value.label;
@@ -208,12 +213,25 @@ function IssueBoxHeader() {
 
                       {labelData.map((item: any) => (
                         <div
-                          onClick={() => labelNavigator(item.name)}
+                          onClick={() => {
+                            labelNavigator(item.name);
+                            setClickName([...clickName, item.name]);
+                            setLabelListOpen(false);
+                          }}
                           className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]"
                         >
+                          <img
+                            src={check}
+                            alt=""
+                            className={`${
+                              clickName.includes(item.name)
+                                ? "visible"
+                                : "invisible"
+                            } mr-[8px] ml-[16px]  h-[16px] w-[16px]`}
+                          ></img>
                           <div
                             style={{ background: `#${item.color}` }}
-                            className={`mr-[6px] ml-[32px] h-[14px] w-[14px] rounded-full bg-[${item.color}]`}
+                            className={`mr-[6px] h-[14px] w-[14px] rounded-full bg-[${item.color}]`}
                           ></div>
                           <div className="flex flex-col">
                             <span className=" text-xs font-semibold">
@@ -306,13 +324,18 @@ function IssueBoxHeader() {
                             onClick={() => {
                               navigator(`${item.query}`);
                               setSortListOpen(false);
+                              setSortClickName(item.name);
                             }}
                             className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]"
                           >
                             <img
                               src={check}
                               alt=""
-                              className="ml-[16px] mr-[8px] h-[16px] w-[16px]"
+                              className={`${
+                                item.name === sortClickName
+                                  ? "visible"
+                                  : "invisible"
+                              } ml-[16px] mr-[8px] h-[16px] w-[16px]`}
                             ></img>
                             <div className="flex flex-col">
                               <span className=" z-50 text-xs font-semibold">

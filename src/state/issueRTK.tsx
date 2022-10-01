@@ -12,6 +12,7 @@ export type GetLebal = {
   assignees: any;
   closedData: any;
   index: number;
+  items: any;
 };
 
 type Parameter = {
@@ -56,7 +57,7 @@ export const createIssueApi = createApi({
   endpoints: (builder) => ({
     getAllIssues: builder.query<GetLebal[], Parameter>({
       query: ({ baseType, type, name, repo, query }) => ({
-        url: `${baseType}/${name}/${repo}/${type}${query}`,
+        url: `${baseType}${name}${repo}${type}${query}`,
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json",

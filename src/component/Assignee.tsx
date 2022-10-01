@@ -11,14 +11,17 @@ function Assignee() {
 
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
     baseType: "repos",
-    type: "issues",
-    name: "emil0519",
-    repo: "testing-issues",
+    type: "/issues",
+    name: "/emil0519",
+    repo: "/testing-issues",
     query: "",
   });
   const [localData, setLocalData] = useState<any>();
+
   const [renderData, setRenderData] = useState<any>();
   const [showAssignee, setShowAssignee] = useState(false);
+
+  const [foundData, setFoundData] = useState<any>();
 
   useEffect(() => {
     if (data !== undefined) {
@@ -28,6 +31,20 @@ function Assignee() {
       return;
     }
   }, [data, localData]);
+  function labelFilter(input: string) {
+    if (input.length === 0) {
+      setRenderData(foundData);
+    } else {
+      const found = renderData.filter(({ login }: { login: string }) =>
+        new RegExp(input, "i").test(login)
+      );
+      console.log(found);
+
+      setRenderData(found);
+    }
+  }
+
+  useEffect(() => console.log(renderData), [renderData]);
   function handleAssignees() {
     let filteredAssignee = [];
     let uniq: string | any[];
@@ -73,12 +90,12 @@ function Assignee() {
     } else {
       return;
     }
-    //uniq=["x",e]
+
     let found = [];
     for (let x = 0; x <= uniq.length - 1; x++) {
       found.push(filteredAssignee.find((item) => item.login === uniq[x]));
     }
-
+    setFoundData(found);
     setRenderData(found);
   }
 
@@ -125,7 +142,7 @@ function Assignee() {
         <div className="flex h-[65px] w-[100%] items-center justify-center border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] small:h-[49px] ">
           <input
             placeholder="Filter users"
-            // onChange={(e) => labelFilter(e.target.value)}
+            onChange={(e) => labelFilter(e.target.value)}
             className="h-[32px] w-[85%] rounded-md border-[1px] border-solid border-[#d3d9e0] p-[5px_12px] small:w-[95%] small:text-xs"
           ></input>
         </div>
@@ -138,19 +155,21 @@ function Assignee() {
 
           {renderData.map((item: any) => (
             <div
-              onClick={() =>
+              onClick={() => {
+                setShowAssignee(false);
+
                 setValue({
                   ...value,
                   assignees: `assignee=${item.login}`,
-                })
-              }
-              className="flex h-[54px] w-[100%] cursor-pointer flex-row items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]"
+                });
+              }}
+              className="ml-[31px] flex h-[54px] w-[100%] cursor-pointer flex-row items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]"
             >
-              <div className="flex flex-col">
+              <div className="flex flex-row">
                 <img
                   src={item.avatar_url}
                   alt=""
-                  className="mr-[8px] h-[20px] w-[20px]"
+                  className="mr-[8px] h-[20px] w-[20px] rounded-[9999px]"
                 ></img>
                 <span className=" text-xs font-semibold">{item.login}</span>
               </div>

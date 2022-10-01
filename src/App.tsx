@@ -5,8 +5,8 @@ import Option from "./component/Option";
 
 import { createGlobalStyle } from "styled-components";
 
-import IssueHeader from "./component/IssueHeader";
-import IssueContent from "./component/IssueContent";
+import IssueWrapper from "./component/IssueWrapper";
+
 import { UserContext } from "./utils/useContext";
 import { useState } from "react";
 
@@ -24,6 +24,7 @@ function App() {
     closed: "",
     paging: "",
     search: "",
+    dataLength: 0,
   });
   return (
     <>
@@ -32,10 +33,7 @@ function App() {
         <Header />
         <Repo />
         <Option />
-        <IssueHeader />
-        <IssueContent />
-
-        {/* <BoxHeader /> */}
+        <IssueWrapper />
         <Footer />
       </UserContext.Provider>
     </>
