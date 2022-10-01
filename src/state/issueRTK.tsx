@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export type GetLebal = {
+  [x: string]: any;
   color: string;
   default: boolean;
   description: string;
@@ -8,6 +9,9 @@ export type GetLebal = {
   name: string;
   node_id: string;
   url: string;
+  assignees: any;
+  closedData: any;
+  index: number;
 };
 
 type Parameter = {

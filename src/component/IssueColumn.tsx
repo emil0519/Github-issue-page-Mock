@@ -1,92 +1,124 @@
-import { IssueOpenedIcon } from "@primer/octicons-react";
-// import doggy from "../img/doggy.png";
-// import avatar from "../img/avatar.png";
-import comment from "../img/comment.svg";
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import {
+  IssueOpenedIcon,
+  CircleSlashIcon,
+  IssueClosedIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@primer/octicons-react";
 
-// import api from "../utils/api";
-// import { iteratorSymbol } from "immer/dist/internal";
+import comment from "../img/comment.svg";
+import { useState, useEffect, useContext } from "react";
+import { useSearchParams } from "react-router-dom";
+import { UserContext } from "../utils/useContext";
 
 import { hourAdder, timeAgo } from "../utils/horus";
-// import { useGetPokemonByNameQuery } from "../state/issueRTK";
+
 import { useGetAllIssuesQuery } from "../state/issueRTK";
 function IssueColumn() {
-  // const [hoverUser, setHoverUser] = useState(false);
-  // const [issues, setIssues]: any = useState();
-  // const [queryValue, setQueryValue] = useState("");
+  const { value, setValue } = useContext(UserContext);
   const [queryString, setQueryString] = useState("");
-  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
+  const [paging, setPaging] = useState<boolean>(true);
+
+  const { data } = useGetAllIssuesQuery({
     type: "issues",
     name: "emil0519",
     repo: "testing-issues",
     query: `${queryString}`,
   });
+
+  const closedData = useGetAllIssuesQuery<any>({
+    type: "issues",
+    name: "emil0519",
+    repo: "testing-issues",
+    query: `?state=closed`,
+  });
+
+  const nextPage = useGetAllIssuesQuery<any>({
+    type: "issues",
+    name: "emil0519",
+    repo: "testing-issues",
+    query: `?page=2`,
+  });
+
+  useEffect(() => {
+    if (nextPage.data !== undefined) {
+      nextPage.data.length === 0 ? setPaging(false) : setPaging(true);
+    }
+  }, [nextPage]);
+
+  useEffect(() => {
+    console.log(paging);
+  }, [paging]);
+
+  useEffect(() => {
+    let preQuery = [];
+    if (value.filter.length !== 0) {
+      preQuery.push(value.filter);
+    }
+    if (value.label.length !== 0) {
+      preQuery.push(value.label.toString());
+    }
+    if (value.assignees.length !== 0) {
+      preQuery.push(value.assignees);
+    }
+    if (value.sort.length !== 0) {
+      preQuery.push(value.sort);
+    }
+    if (value.closed.length !== 0) {
+      preQuery.push(value.closed);
+    }
+    for (var i = 1; i < preQuery.length; i++) {
+      preQuery[i] = "&" + preQuery[i];
+    }
+    setQueryString(`?${preQuery.join("")}`);
+  }, [value]);
+
   const [searchParams] = useSearchParams();
   const category = searchParams.get("query");
   useEffect(() => {
     if (category !== null) {
       setQueryString(category);
     } else {
+      console.log("setting null");
       setQueryString("");
     }
   }, [category]);
 
-  // const { data, error, isLoading } = useGetPokemonByNameQuery("pikachu");
-  // useEffect(() => console.log(data), [data]);
-  // useEffect(() => {
-  //   api.getIssues("emil0519", "testing-issues").then((data) => setIssues(data));
-  // }, []);
-
-  // function getIssueList() {
-  //   let margin: string = "margin-[5px 0]";
-
-  //   if (issues.labels.length === 0) {
-  //     return;
-  //   } else {
-  //     // 如果有一個label以上，
-  //     if (issues.labels.length === 1) {
-  //       margin = "3px 0";
-  //     } else {
-  //       margin = "3px 3px 0";
-  //     }
-  //     return issues.labels.map((item: any, index: number) => {
-  //       let styling = {
-  //         background: `#${item.color}`,
-  //         margin: margin,
-  //       };
-  //       return (
-  //         <div
-  //           style={styling}
-  //           className={`flex h-[19px] w-[max-content] cursor-pointer items-center justify-center rounded-[15px] pl-[6px] pr-[6px] text-[6px] font-semibold text-[white]`}
-  //         >
-  //           {item.name}
-  //         </div>
-  //       );
-  //     });
-  //   }
-  // }
-
-  if (isSuccess === false) {
+  if (data === undefined || closedData === undefined) {
     return <></>;
   }
   return (
     <>
-      {data.map((item: any, index: number) => {
+      {data!.map((item: any, index: number) => {
         return (
           <section className="flex w-[100%]">
-            {/* <button onClick={() => setQueryValue("?creator=emil0519")}>
-              Change
-            </button> */}
-            {/* <h3>{data.species.name}</h3>
-            <img src={data.sprites.front_shiny} alt={data.species.name} /> */}
-
             <section className="flex h-[fit-content] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#cad1d9] bg-[white] pl-[16px] pr-[16px] hover:bg-[#f5f7f9] small:justify-evenly  small:border-[0.5px] big:justify-between">
               <section className="flex h-[fit-content] w-[100%] cursor-pointer items-center justify-start">
-                <IssueOpenedIcon
-                  fill="#1a7335"
-                  className="mb-[14px] h-[16px] w-[16px]"
-                />
+                {(() => {
+                  if (value.closed.length === 0) {
+                    return (
+                      <IssueOpenedIcon
+                        fill="#1a7335"
+                        className="mb-[14px] h-[16px] w-[16px]"
+                      />
+                    );
+                  } else if (item.state_reason === "completed") {
+                    return (
+                      <IssueClosedIcon
+                        fill="#8251db"
+                        className="mb-[14px] h-[16px] w-[16px]"
+                      />
+                    );
+                  } else {
+                    return (
+                      <CircleSlashIcon
+                        fill="#57606a"
+                        className="mb-[14px] h-[16px] w-[16px]"
+                      />
+                    );
+                  }
+                })()}
+
                 <div className="ml-[14px] flex flex-col">
                   <span className="text-md mt-[10px] font-semibold">
                     {item.title}
@@ -124,8 +156,8 @@ function IssueColumn() {
                     </>
                   </div>
                   <span className="mb-[10px] text-sm text-[#4d555e]">
-                    #{item.number} opened {""}
-                    {/* {item.created_at.slice(0, -1)} */}
+                    #{item.number}{" "}
+                    {value.closed.length === 0 ? "opened" : "closed"} {""}
                     {(() => {
                       let hours = item.created_at.slice(0, -1);
                       let obj = hourAdder(8, new Date(hours));
@@ -199,6 +231,28 @@ function IssueColumn() {
           </section>
         );
       })}
+      <section className="mt-[30px] flex h-[32px] w-[100%] items-center justify-center">
+        <div className="mr-[16px] flex cursor-default items-center">
+          <ChevronLeftIcon
+            fill="#8c959f"
+            className="mr-[4px] h-[16px] w-[16px]"
+          />
+          <span className="text-s text-[#8c959f]">Previous</span>
+        </div>
+        <div
+          // onClick={setValue({
+          //   ...value,
+          //   paging: `?page=2`,
+          // })}
+          className="mt-[1px] flex cursor-pointer items-center"
+        >
+          <span className="text-s text-[#0469d6]">Next</span>
+          <ChevronRightIcon
+            fill="#0469d6"
+            className="mr-[4px] h-[16px] w-[16px]"
+          />
+        </div>
+      </section>
     </>
   );
 }

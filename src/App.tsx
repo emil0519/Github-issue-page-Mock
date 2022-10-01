@@ -7,6 +7,8 @@ import { createGlobalStyle } from "styled-components";
 
 import IssueHeader from "./component/IssueHeader";
 import IssueContent from "./component/IssueContent";
+import { UserContext } from "./utils/useContext";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -14,17 +16,28 @@ const GlobalStyle = createGlobalStyle`
   }`;
 
 function App() {
+  const [value, setValue] = useState({
+    filter: "",
+    label: [],
+    assignees: "",
+    sort: "",
+    closed: "",
+    paging: "",
+    data: [],
+  });
   return (
     <>
       <GlobalStyle />
-      <Header />
-      <Repo />
-      <Option />
-      <IssueHeader />
-      <IssueContent />
+      <UserContext.Provider value={{ value, setValue }}>
+        <Header />
+        <Repo />
+        <Option />
+        <IssueHeader />
+        <IssueContent />
 
-      {/* <BoxHeader /> */}
-      <Footer />
+        {/* <BoxHeader /> */}
+        <Footer />
+      </UserContext.Provider>
     </>
   );
 }

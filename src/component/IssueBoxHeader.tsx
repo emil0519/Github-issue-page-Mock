@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import down from "../img/triangle-down.svg";
-import OpenClosedInHeader from "./OpenClosedInHeader";
+import OpenClosedInHeader from "./OpenClosed/OpenClosedBig";
 import x from "../img/x.svg";
 import { useNavigate } from "react-router-dom";
 import check from "../img/check.svg";
 import { useGetAllIssuesQuery } from "../state/issueRTK";
-
+import Assignee from "./Assignee";
 import { useSearchParams } from "react-router-dom";
+import { UserContext } from "../utils/useContext";
 
 function IssueBoxHeader() {
+  const { value, setValue } = useContext(UserContext);
   interface GetLebal {
     color: string;
     default: boolean;
@@ -24,8 +26,11 @@ function IssueBoxHeader() {
   const [queryState, setQueryState] = useState<string | null>("");
   const [labelData, setLabelData] = useState<any>();
   const [labelStore, setLabelStore] = useState<any>();
+  const [type, setType] = useState("labels");
+  const navigate = useNavigate();
+
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
-    type: "labels",
+    type: type,
     name: "emil0519",
     repo: "testing-issues",
     query: "",
@@ -49,17 +54,17 @@ function IssueBoxHeader() {
   ];
 
   const sortText = [
-    { name: "Newest", query: "?query=?sort=created%26direction=desc" },
-    { name: "Oldest", query: "?query=?sort=created%26direction=asc" },
-    { name: "Most commented", query: "?query=?sort=comments%26direction=desc" },
-    { name: "Least commented", query: "?query=?sort=comments%26direction=asc" },
+    { name: "Newest", query: "sort=created&direction=desc" },
+    { name: "Oldest", query: "sort=created&direction=asc" },
+    { name: "Most commented", query: "sort=comments&direction=desc" },
+    { name: "Least commented", query: "sort=comments&direction=asc" },
     {
       name: "Recently updated",
-      query: "?query=?sort=updated%26direction=desc",
+      query: "?query=?sort=updated&direction=desc",
     },
     {
       name: "Least recently updated",
-      query: "?query=?sort=updated%26direction=asc",
+      query: "?query=?sort=updated&direction=asc",
     },
   ];
 
@@ -74,24 +79,55 @@ function IssueBoxHeader() {
     setLabelData(found);
   }
 
-  // useEffect(() => setQueryState(queryOnUrl), [queryOnUrl]);
+  function labelNavigator(name: string) {
+    const newLabel = value.label;
 
-  function navigator(query: string) {
-    console.log(queryState);
-    let compare = query.replace("%26", "&");
-    console.log(compare);
-    console.log(queryState);
-    console.log(queryState!.includes(compare));
-    if (queryState === null) {
-      navigate(query);
-    } else if (queryState.includes("sort")) {
-      console.log("success");
+    newLabel.length > 0
+      ? newLabel.push(`${name}`)
+      : newLabel.push(`labels=${name}`);
 
-      // console.log(compare.includes(query));
-    }
+    setValue({
+      ...value,
+      label: newLabel,
+    });
+
+    // if (queryOnUrl === null) {
+    //   navigate(`?query=?labels=${name}`);
+    // } else if (!queryOnUrl.includes("labels")) {
+    //   navigate(`?query=?labels=${name}`);
+    // } else if (queryOnUrl.includes(name)) {
+    //   navigate("/");
+    // } else {
+    //   let addedQuery = `?query=${queryOnUrl},${name}`;
+    //   navigate(addedQuery);
+    // }
   }
 
-  const navigate = useNavigate();
+  function navigator(query: string) {
+    setValue({
+      ...value,
+      sort: query,
+    });
+
+    // if (queryOnUrl === null) {
+    //   navigate(query);
+    // } else if (!queryOnUrl.includes("sort")) {
+    //   if (query.includes("query")) {
+    //     let replacedQuery = query.slice(8).replace(/^/, "&");
+    //     let semiFinalQuery = queryOnUrl + replacedQuery;
+    //     let finalQuery = semiFinalQuery.replace(/^/, "?query=");
+    //     navigate(finalQuery);
+    //   }
+    //   // let newQuery = queryOnUrl + query;
+    // } else {
+    //   console.log(queryOnUrl);
+    // }
+    // else if (queryState.includes("sort")) {
+    //   console.log("success");
+
+    //   // console.log(compare.includes(query));
+    // }
+  }
 
   if (labelData === undefined) {
     return <></>;
@@ -170,7 +206,10 @@ function IssueBoxHeader() {
                       </div>
 
                       {labelData.map((item: any) => (
-                        <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]">
+                        <div
+                          onClick={() => labelNavigator(item.name)}
+                          className="flex h-[54px] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]"
+                        >
                           <div
                             style={{ background: `#${item.color}` }}
                             className={`mr-[6px] ml-[32px] h-[14px] w-[14px] rounded-full bg-[${item.color}]`}
@@ -213,6 +252,12 @@ function IssueBoxHeader() {
                       </span>
                     </div>
                   </div>
+                </>
+              );
+            } else if (item.name === "Assignee") {
+              return (
+                <>
+                  <Assignee />
                 </>
               );
             } else if (item.name === "Sort") {

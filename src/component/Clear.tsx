@@ -1,14 +1,30 @@
 import x from "../img/x.svg";
 import { XIcon } from "@primer/octicons-react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../utils/useContext";
 
 function Clear() {
   const navigate = useNavigate();
+  const [showClear, setShowClear] = useState(false);
   const [hover, setHover] = useState(false);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
+  const { value } = useContext(UserContext);
+  useEffect(() => {
+    if (
+      value.filter.length > 0 ||
+      value.label.length > 0 ||
+      value.assignees.length > 0 ||
+      value.sort.length > 0 ||
+      value.closed.length > 0 ||
+      value.paging.length > 0
+    ) {
+      setShowClear(true);
+    }
+  }, [value]);
+
   return (
     <div
       onMouseEnter={() => {
@@ -19,7 +35,7 @@ function Clear() {
       }}
       onClick={() => navigate("/")}
       className={`ml-[0] ${
-        query !== null ? "flex" : "hidden"
+        showClear ? "flex" : "hidden"
       } mt-[16px] items-center`}
     >
       <XIcon
