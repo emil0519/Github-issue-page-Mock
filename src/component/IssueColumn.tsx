@@ -20,39 +20,59 @@ function IssueColumn() {
   const [showPage, setShowPage] = useState<boolean>(true);
   const [previous, setPrevious] = useState<boolean>(false);
   const [nextPageQuery, setNextPageQuery] = useState<any>("");
+  const [baseType, setBaseType] = useState("/repos");
+  const [type, setType] = useState("/issues");
+  const [name, setName] = useState("/emil0519");
+  const [repo, setRepo] = useState("/testing-issues");
+
   const { data } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "issues",
-    name: "emil0519",
-    repo: "testing-issues",
+    baseType: baseType,
+    type: type,
+    name: name,
+    repo: repo,
     query: `${queryString}`,
   });
 
+  useEffect(() => {
+    if (value.search.length !== 0) {
+      setType("");
+      setName("");
+      setRepo("");
+      setQueryString("");
+      if (value.sort.length === 0) {
+        setBaseType(value.search);
+      } else {
+        setBaseType(value.search.concat("&", value.sort));
+      }
+    }
+  }, [value]);
+
   const closedData = useGetAllIssuesQuery<any>({
     baseType: "repos",
-    type: "issues",
-    name: "emil0519",
-    repo: "testing-issues",
+    type: "/issues",
+    name: "/emil0519",
+    repo: "/testing-issues",
     query: `?state=closed`,
   });
 
   const nextPage = useGetAllIssuesQuery<any>({
     baseType: "repos",
-    type: "issues",
-    name: "emil0519",
-    repo: "testing-issues",
+    type: "/issues",
+    name: "/emil0519",
+    repo: "/testing-issues",
     query: nextPageQuery,
   });
 
-  // useEffect(() => {
-  //   console.log(nextPageQuery);
-  // }, [nextPageQuery]);
-
   useEffect(() => {
-    if (nextPage.data !== undefined) {
-      console.log(nextPage.data);
+    if (data !== undefined) {
+      setValue({
+        ...value,
+        dataLength: data.length,
+      });
     }
-  }, [nextPage, data]);
+  }, [queryString]);
+
+  useEffect(() => console.log(value), [value]);
 
   useEffect(() => {
     if (value.paging.length !== 0 && data !== undefined && data.length === 0) {
@@ -155,28 +175,32 @@ function IssueColumn() {
   useEffect(() => {
     // 將useContext的資料轉為query string
     let preQuery = [];
-    if (value.filter.length !== 0) {
-      preQuery.push(value.filter);
+    if (value.search.length === 0) {
+      if (value.filter.length !== 0) {
+        preQuery.push(value.filter);
+      }
+      if (value.label.length !== 0) {
+        preQuery.push(value.label.toString());
+      }
+      if (value.assignees.length !== 0) {
+        preQuery.push(value.assignees);
+      }
+      if (value.sort.length !== 0) {
+        preQuery.push(value.sort);
+      }
+      if (value.closed.length !== 0) {
+        preQuery.push(value.closed);
+      }
+      if (value.paging.length !== 0) {
+        preQuery.push(value.paging);
+      }
+      for (var i = 1; i < preQuery.length; i++) {
+        preQuery[i] = "&" + preQuery[i];
+      }
+      setQueryString(`?${preQuery.join("")}`);
+    } else {
+      return;
     }
-    if (value.label.length !== 0) {
-      preQuery.push(value.label.toString());
-    }
-    if (value.assignees.length !== 0) {
-      preQuery.push(value.assignees);
-    }
-    if (value.sort.length !== 0) {
-      preQuery.push(value.sort);
-    }
-    if (value.closed.length !== 0) {
-      preQuery.push(value.closed);
-    }
-    if (value.paging.length !== 0) {
-      preQuery.push(value.paging);
-    }
-    for (var i = 1; i < preQuery.length; i++) {
-      preQuery[i] = "&" + preQuery[i];
-    }
-    setQueryString(`?${preQuery.join("")}`);
   }, [value]);
 
   const [searchParams] = useSearchParams();
@@ -250,7 +274,7 @@ function IssueColumn() {
                                   background: `#${item.color}`,
                                   margin: margin,
                                 }}
-                                className={`flex h-[19px] w-[max-content] cursor-pointer items-center justify-center pl-[6px] pr-[6px] text-[6px] font-semibold text-[white] hover:rounded-lg`}
+                                className={`flex h-[19px] w-[max-content] cursor-pointer items-center justify-center rounded-lg pl-[6px] pr-[6px] text-[6px] font-semibold text-[white]`}
                               >
                                 {item.name}
                               </div>
@@ -269,7 +293,7 @@ function IssueColumn() {
                       let timeStamp = obj.toString().substring(4, 24);
                       let differences = Date.now() - Date.parse(timeStamp);
                       return timeAgo(new Date(Date.now() - differences));
-                    })()}
+                    })()}{" "}
                     by {item.user.login}
                   </span>
                 </div>
@@ -289,7 +313,7 @@ function IssueColumn() {
                                 <img
                                   src={item.avatar_url}
                                   alt=""
-                                  className="z-[2] h-[20px] w-[25px]  rounded-[9999px]"
+                                  className="z-[2] h-[20px] w-[29px]  rounded-[9999px]"
                                 ></img>
                               </>
                             );
@@ -305,7 +329,7 @@ function IssueColumn() {
                                 <img
                                   src={item.avatar_url}
                                   alt=""
-                                  className="z-[2]  float-left mr-[-4px] h-[20px] w-[20px] -translate-x-[3px] rounded-[9999px]  duration-300 ease-in-out hover:ml-[11px]"
+                                  className="z-[2]  h-[20px] w-[20px] rounded-[9999px] big:float-left big:mr-[-4px] big:-translate-x-[3px]  big:duration-300 big:ease-in-out big:hover:ml-[11px]"
                                 ></img>
                               );
                             } else if (index === 0) {
@@ -313,7 +337,7 @@ function IssueColumn() {
                                 <img
                                   src={item.avatar_url}
                                   alt=""
-                                  className="z-[2]  float-left mr-[-8px] h-[20px] w-[20px] -translate-x-[6px] rounded-[9999px]  duration-300 ease-in-out "
+                                  className="z-[2] h-[20px] w-[20px] rounded-[9999px] big:float-left big:mr-[-8px] big:-translate-x-[6px] big:rounded-[9999px]  big:duration-300 big:ease-in-out "
                                 ></img>
                               );
                             }
