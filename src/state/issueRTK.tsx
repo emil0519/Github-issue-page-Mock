@@ -15,6 +15,7 @@ export type GetLebal = {
 };
 
 type Parameter = {
+  baseType: string;
   type: string;
   name: string;
   repo: string;
@@ -49,13 +50,13 @@ type CreateLabelParameter = {
 export const createIssueApi = createApi({
   reducerPath: "createLabelApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.github.com/repos",
+    baseUrl: "https://api.github.com/",
   }),
   tagTypes: ["issues"],
   endpoints: (builder) => ({
     getAllIssues: builder.query<GetLebal[], Parameter>({
-      query: ({ type, name, repo, query }) => ({
-        url: `/${name}/${repo}/${type}${query}`,
+      query: ({ baseType, type, name, repo, query }) => ({
+        url: `${baseType}/${name}/${repo}/${type}${query}`,
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json",

@@ -30,6 +30,7 @@ function IssueBoxHeader() {
   const navigate = useNavigate();
 
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
+    baseType: "repos",
     type: type,
     name: "emil0519",
     repo: "testing-issues",

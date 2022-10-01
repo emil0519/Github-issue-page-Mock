@@ -5,6 +5,7 @@ import { useGetAllIssuesQuery } from "../../state/issueRTK";
 
 function OpenClosedInHeader() {
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
+    baseType: "repos",
     type: "issues",
     name: "emil0519",
     repo: "testing-issues",
