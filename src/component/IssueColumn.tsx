@@ -17,8 +17,9 @@ import { useGetAllIssuesQuery } from "../state/issueRTK";
 function IssueColumn() {
   const { value, setValue } = useContext(UserContext);
   const [queryString, setQueryString] = useState("");
-  const [paging, setPaging] = useState<boolean>(true);
-
+  const [showPage, setShowPage] = useState<boolean>(true);
+  const [previous, setPrevious] = useState<boolean>(false);
+  const [nextPageQuery, setNextPageQuery] = useState<any>("");
   const { data } = useGetAllIssuesQuery({
     type: "issues",
     name: "emil0519",
@@ -37,20 +38,119 @@ function IssueColumn() {
     type: "issues",
     name: "emil0519",
     repo: "testing-issues",
-    query: `?page=2`,
+    query: nextPageQuery,
   });
+
+  // useEffect(() => {
+  //   console.log(nextPageQuery);
+  // }, [nextPageQuery]);
 
   useEffect(() => {
     if (nextPage.data !== undefined) {
-      nextPage.data.length === 0 ? setPaging(false) : setPaging(true);
+      console.log(nextPage.data);
+    }
+  }, [nextPage, data]);
+
+  useEffect(() => {
+    if (value.paging.length !== 0 && data !== undefined && data.length === 0) {
+      //當回傳的結果是0的時候，移除page2，目的是用戶有可能在page2，然後點選沒有page2的內容
+      //屆時會因為query string已經有page2而無法render出正確的資料
+      console.log(nextPage.data);
+
+      // setValue({
+      //   ...value,
+      //   paging: `page=1`,
+      // });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    //在render之前，提前知道page2的內容，以決定是否顯示paging按鈕
+    if (queryString.length === 0) {
+      setNextPageQuery("?page=2");
+    } else if (queryString.length !== 0 && !queryString.includes("page")) {
+      setNextPageQuery(`${queryString}&page=2`);
+    } else if (queryString.includes("page")) {
+      let pageNow = value.paging.charAt(value.paging.length - 1);
+      pageNow = parseInt(pageNow);
+      setNextPageQuery(`?page=${pageNow + 1}`);
+    }
+  }, [queryString]);
+
+  useEffect(() => {
+    //1.當已經設定為第二頁的時候，顯示page按鈕
+    //2.如果沒有下一頁，隱藏按鈕
+    if (nextPage.data === undefined) {
+      return;
+    } else {
+      if (value.paging.length !== 0) {
+        setShowPage(true);
+      } else if (nextPage.data.length === 0) {
+        setShowPage(false);
+      } else {
+        setShowPage(true);
+      }
     }
   }, [nextPage]);
 
   useEffect(() => {
-    console.log(paging);
-  }, [paging]);
+    //1.若不在第一頁，換按鈕顏色及限制按鈕功能
+    if (nextPage.data === undefined) {
+      return;
+    } else {
+      if (value.paging.length !== 0 && nextPage.data.length === 0) {
+        setPrevious(true);
+      } else {
+        setPrevious(false);
+      }
+    }
+  }, [nextPage]);
+
+  // useEffect(() => {
+  //   console.log(value.filter === "creator=emil0519" || value.filter === "");
+  //   if (
+  //     (value.filter === "creator=emil0519" || value.filter === "") &&
+  //     value.label.length === 0 &&
+  //     value.assignees.length === 0 &&
+  //     value.sort.length === 0 &&
+  //     value.closed.length === 0 &&
+  //     value.paging === "page=2"
+  //   ) {
+  //     console.log("set false");
+  //   } else {
+  //     console.log("set true");
+  //   }
+  //   // if (nextPage.data === undefined) {
+  //   //   return;
+  //   // } else if (data !== undefined) {
+  //   //   console.log(nextPage.data.length);
+  //   // }
+  // }, [nextPageQuery, queryString]);
+
+  // else if (nextPage.data.length !== 0) {
+  //   console.log(nextPage.data);
+  //   console.log("set true");
+  // } else {
+  //   console.log(nextPage.data);
+  //   console.log("set false");
+  // }
+
+  // useEffect(() => {
+  //   if (nextPage.data !== undefined) {
+  //     console.log(nextPageQuery);
+  //   }
+  //   if (nextPage.data !== undefined && nextPage.data.length === 0) {
+  //     console.log("set false");
+
+  //     setPaging(false);
+  //   } else {
+  //     console.log("set true");
+  //     setPaging(true);
+  //   }
+  // }, [nextPageQuery]);
 
   useEffect(() => {
+    // 將useContext的資料轉為query string
     let preQuery = [];
     if (value.filter.length !== 0) {
       preQuery.push(value.filter);
@@ -67,6 +167,9 @@ function IssueColumn() {
     if (value.closed.length !== 0) {
       preQuery.push(value.closed);
     }
+    if (value.paging.length !== 0) {
+      preQuery.push(value.paging);
+    }
     for (var i = 1; i < preQuery.length; i++) {
       preQuery[i] = "&" + preQuery[i];
     }
@@ -79,7 +182,6 @@ function IssueColumn() {
     if (category !== null) {
       setQueryString(category);
     } else {
-      console.log("setting null");
       setQueryString("");
     }
   }, [category]);
@@ -145,7 +247,7 @@ function IssueColumn() {
                                   background: `#${item.color}`,
                                   margin: margin,
                                 }}
-                                className={`flex h-[19px] w-[max-content] cursor-pointer items-center justify-center rounded-[15px] pl-[6px] pr-[6px] text-[6px] font-semibold text-[white]`}
+                                className={`flex h-[19px] w-[max-content] cursor-pointer items-center justify-center pl-[6px] pr-[6px] text-[6px] font-semibold text-[white] hover:rounded-lg`}
                               >
                                 {item.name}
                               </div>
@@ -231,22 +333,56 @@ function IssueColumn() {
           </section>
         );
       })}
-      <section className="mt-[30px] flex h-[32px] w-[100%] items-center justify-center">
-        <div className="mr-[16px] flex cursor-default items-center">
+      <section
+        className={`${
+          showPage ? "flex" : "hidden"
+        } mt-[30px] h-[32px] w-[100%] items-center justify-center`}
+      >
+        <div
+          onClick={() =>
+            setValue({
+              ...value,
+              paging: `page=1`,
+            })
+          }
+          className={`${
+            previous ? "pointer-events-all" : "pointer-events-none"
+          } ${
+            previous ? "cursor-pointer" : "cursor-default"
+          }  mr-[16px] flex h-[32px] w-[96px] items-center justify-center hover:rounded-sm hover:border-[1px] hover:border-solid hover:border-[#d0d7de]`}
+        >
           <ChevronLeftIcon
             fill="#8c959f"
             className="mr-[4px] h-[16px] w-[16px]"
           />
-          <span className="text-s text-[#8c959f]">Previous</span>
+          <span
+            className={`${
+              previous ? "text-[#0469d6]" : "text-[#8c959f]"
+            } text-s `}
+          >
+            Previous
+          </span>
         </div>
         <div
-          // onClick={setValue({
-          //   ...value,
-          //   paging: `?page=2`,
-          // })}
-          className="mt-[1px] flex cursor-pointer items-center"
+          onClick={() =>
+            setValue({
+              ...value,
+              paging: `page=2`,
+            })
+          }
+          className={`${
+            previous ? "pointer-events-none" : "pointer-events-all"
+          } ${
+            previous ? "cursor-default" : "cursor-pointer"
+          }  mt-[1px] flex h-[32px] w-[96px] cursor-pointer items-center justify-center hover:rounded-sm hover:border-[1px] hover:border-solid hover:border-[#d0d7de]`}
         >
-          <span className="text-s text-[#0469d6]">Next</span>
+          <span
+            className={`${
+              previous ? "text-[#8c959f]" : "text-[#0469d6]"
+            } text-s hover:`}
+          >
+            Next
+          </span>
           <ChevronRightIcon
             fill="#0469d6"
             className="mr-[4px] h-[16px] w-[16px]"

@@ -27,8 +27,6 @@ function Filter() {
   const query = searchParams.get("query") as any;
 
   useEffect(() => {
-    console.log(query);
-
     switch (query) {
       case "?creator=emil0519": {
         console.log("set");

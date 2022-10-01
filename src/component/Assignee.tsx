@@ -18,7 +18,7 @@ function Assignee() {
   const [localData, setLocalData] = useState<any>();
   const [renderData, setRenderData] = useState<any>();
   const [showAssignee, setShowAssignee] = useState(false);
-  useEffect(() => console.log(renderData), [renderData]);
+
   useEffect(() => {
     if (data !== undefined) {
       handleAssignees();
@@ -30,9 +30,10 @@ function Assignee() {
   function handleAssignees() {
     let filteredAssignee = [];
     let uniq: string | any[];
+
     if (data !== undefined && localData !== null && localData !== undefined) {
       let assignees = data
-        .map((item: any) => item.assignees)
+        .map((item) => item.assignees)
         .filter((item) => item.length >= 1);
       let allAssignees = [];
       for (let i = 0; i <= assignees.length - 1; i++) {
@@ -45,6 +46,7 @@ function Assignee() {
           allAssignees.push(assignees[i][0].login);
         }
       }
+
       uniq = [...new Set(allAssignees)];
 
       let allObj = [];
@@ -75,6 +77,7 @@ function Assignee() {
     for (let x = 0; x <= uniq.length - 1; x++) {
       found.push(filteredAssignee.find((item) => item.login === uniq[x]));
     }
+
     setRenderData(found);
   }
 
