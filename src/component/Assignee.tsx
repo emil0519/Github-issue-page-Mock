@@ -10,6 +10,7 @@ function Assignee() {
   const { value, setValue } = useContext(UserContext);
 
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
+    baseType: "repos",
     type: "issues",
     name: "emil0519",
     repo: "testing-issues",

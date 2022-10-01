@@ -21,6 +21,7 @@ function IssueColumn() {
   const [previous, setPrevious] = useState<boolean>(false);
   const [nextPageQuery, setNextPageQuery] = useState<any>("");
   const { data } = useGetAllIssuesQuery({
+    baseType: "repos",
     type: "issues",
     name: "emil0519",
     repo: "testing-issues",
@@ -28,6 +29,7 @@ function IssueColumn() {
   });
 
   const closedData = useGetAllIssuesQuery<any>({
+    baseType: "repos",
     type: "issues",
     name: "emil0519",
     repo: "testing-issues",
@@ -35,6 +37,7 @@ function IssueColumn() {
   });
 
   const nextPage = useGetAllIssuesQuery<any>({
+    baseType: "repos",
     type: "issues",
     name: "emil0519",
     repo: "testing-issues",

@@ -23,7 +23,7 @@ function App() {
     sort: "",
     closed: "",
     paging: "",
-    data: [],
+    search: "",
   });
   return (
     <>

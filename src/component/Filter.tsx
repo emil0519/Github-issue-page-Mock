@@ -63,30 +63,29 @@ function Filter() {
 
   function handleInput(e: any) {
     if (e.key === "Enter") {
-      console.log("enter now");
-
-      switch (inputValue) {
-        case "is:issue is:open":
-        case "is:issue is:open ":
-        case " is:issue is:open": {
-          navigate("/");
-          break;
-        }
-        case "is:open assignee:@me":
-        case "is:open assignee:@me ":
-        case " is:open assignee:@me": {
-          navigate("?query=?assignee=emil0519");
-          break;
-        }
-        case "is:open mentions:@me":
-        case "is:open mentions:@me ":
-        case " is:open mentions:@me": {
-          navigate("?query=?assignee=emil0519");
-          break;
-        }
-        default:
-          return;
-      }
+      // console.log("enter now");
+      // switch (inputValue) {
+      //   case "is:issue is:open":
+      //   case "is:issue is:open ":
+      //   case " is:issue is:open": {
+      //     navigate("/");
+      //     break;
+      //   }
+      //   case "is:open assignee:@me":
+      //   case "is:open assignee:@me ":
+      //   case " is:open assignee:@me": {
+      //     navigate("?query=?assignee=emil0519");
+      //     break;
+      //   }
+      //   case "is:open mentions:@me":
+      //   case "is:open mentions:@me ":
+      //   case " is:open mentions:@me": {
+      //     navigate("?query=?assignee=emil0519");
+      //     break;
+      //   }
+      //   default:
+      //     return;
+      // }
     }
   }
 
