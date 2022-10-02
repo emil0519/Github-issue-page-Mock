@@ -1,7 +1,7 @@
 import { Header } from "./Github-Header";
 
 export default {
-  title: "Github/Header",
+  title: "Label-List/Header",
   component: Header,
 
   argTypes: {},

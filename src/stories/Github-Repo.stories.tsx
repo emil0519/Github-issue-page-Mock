@@ -1,7 +1,7 @@
 import { Repo } from "./Github-Repo";
 
 export default {
-  title: "Github/Repo",
+  title: "Label-List/Repo",
   component: Repo,
 
   argTypes: {},

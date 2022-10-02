@@ -1,7 +1,7 @@
 import { Option } from "./Github-Option";
 
 export default {
-  title: "Github/Option",
+  title: "Label-List/Option",
   component: Option,
 
   argTypes: {},

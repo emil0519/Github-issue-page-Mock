@@ -1,7 +1,7 @@
 import { LabelPreviews } from "./Github-LabelPreview";
 
 export default {
-  title: "Github/LabelPreview",
+  title: "Label-List/LabelPreview",
   component: LabelPreviews,
 
   argTypes: {},
