@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import api from "../utils/api";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 import { useOnClickOutside } from "usehooks-ts";
-
+import { useGetAllIssuesQuery } from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
 
 function useComponentVisible(initialIsVisible: any) {
@@ -97,11 +97,11 @@ function Refer(props: any) {
       "Are you sure? Deleting a label will remove it from all issues and pull requests."
     );
     if (confirm) {
-      const response = api.deleteLabel(
-        "emil0519",
-        "testing-issues",
-        props.updateLabelInfo[index].name
-      );
+      // const response = api.deleteLabel(
+      //   "emil0519",
+      //   "testing-issues",
+      //   props.updateLabelInfo[index].name
+      // );
 
       dispatch({
         type: "deleteItem",
@@ -264,20 +264,18 @@ function LabelList() {
   const updatedLabels: any = useSelector((state) => state);
 
   const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
-
+  const { data } = useGetAllIssuesQuery({
+    baseType: "repos",
+    type: "/labels",
+    name: "/emil0519",
+    repo: "/testing-issues",
+    query: "",
+  });
   useEffect(() => {
-    (async () => {
-      setLabel(await api.getLabels("emil0519", "testing-issues"));
-    })().catch((error) => console.log(error));
-  }, []);
-  //第一次setLabel
-
-  useEffect(() => {
-    if (label === undefined) {
-      return;
-    } else {
+    console.log(data);
+    if (data !== undefined) {
       setUpdateLabelInfo(
-        label.map((item: any) => {
+        data.map((item: any) => {
           return {
             name: item.name,
             description: item.description,
@@ -287,80 +285,117 @@ function LabelList() {
         })
       );
     }
-  }, [label]);
+  }, [data]);
 
   useEffect(() => {
-    if (updatedLabels === undefined) {
-      return;
-    } else {
-      setUpdateLabelInfo(updatedLabels);
-      setLabel(updatedLabels);
-    }
-  }, [updatedLabels]);
+    console.log(updateLabelInfo);
+  }, [updateLabelInfo]);
 
-  if (label === undefined || updateLabelInfo === undefined) {
-    return (
-      <NoLabelWrapper>
-        <NoLabelText>Loading</NoLabelText>
-      </NoLabelWrapper>
-    );
-  } else if (label.length === 0) {
-    return (
-      <>
-        <NoLabelWrapper>
-          <NoLabelText>
-            There is no label yet. Click New Label to create one.
-          </NoLabelText>
-        </NoLabelWrapper>
-      </>
-    );
-  } else {
-    return (
-      <>
-        {label.map((item: any, index: any) => {
-          return (
-            <Wrapper
+  if (data === undefined || updateLabelInfo === undefined) {
+    return <></>;
+  }
+  // return <>{data.map((item) => item.color)}</>;
+
+  // useEffect(() => {
+  //   console.log(label);
+  // }, [label]);
+  // useEffect(() => {
+  //   (async () => {
+  //     setLabel(await api.getLabels("emil0519", "testing-issues"));
+  //   })().then((error) => console.log(error));
+  // }, []);
+  //第一次setLabel
+
+  // useEffect(() => {
+  //   if (label === undefined) {
+  //     return;
+  //   } else {
+  //     setUpdateLabelInfo(
+  //       label.map((item: any) => {
+  //         return {
+  //           name: item.name,
+  //           description: item.description,
+  //           color: item.color,
+  //           new_name: item.name,
+  //         };
+  //       })
+  //     );
+  //   }
+  // }, [label]);
+
+  // useEffect(() => {
+  //   if (updatedLabels === undefined) {
+  //     return;
+  //   } else {
+  //     setUpdateLabelInfo(updatedLabels);
+  //     setLabel(updatedLabels);
+  //   }
+  // }, [updatedLabels]);
+
+  // if (data === undefined) {
+  //   return (
+  //     <NoLabelWrapper>
+  //       <NoLabelText>Loading</NoLabelText>
+  //     </NoLabelWrapper>
+  //   );
+  // } else if (data.length === 0) {
+  //   return (
+  //     <>
+  //       {/* <h1>Hello from label</h1> */}
+  //       <NoLabelWrapper>
+  //         <NoLabelText>
+  //           There is no label yet. Click New Label to create one.
+  //         </NoLabelText>
+  //       </NoLabelWrapper>
+  //     </>
+  //   );
+  // } else {
+  return (
+    <>
+      {data.map((item: any, index: any) => {
+        return (
+          <Wrapper
+            key={item.id}
+            index={index}
+            labelIndex={labelIndex}
+            areaOpen={areaOpen}
+          >
+            <OuterWrapper>
+              <LabelWrap>
+                <Label color={updateLabelInfo[index].color}>
+                  <LabelText color={item.color}>
+                    {updateLabelInfo[index].new_name}
+                  </LabelText>
+                </Label>
+              </LabelWrap>
+            </OuterWrapper>
+            <LabelDes>{updateLabelInfo[index].description}</LabelDes>
+            <Notification></Notification>
+
+            <Refer
               key={item.id}
               index={index}
-              labelIndex={labelIndex}
+              itemName={item.name}
+              itemDescription={item.description}
+              itemColor={item.color}
+              updateLabelInfo={updateLabelInfo}
+              setUpdateLabelInfo={setUpdateLabelInfo}
+              test={test}
+              setTest={setTest}
               areaOpen={areaOpen}
-            >
-              <OuterWrapper>
-                <LabelWrap>
-                  <Label color={updateLabelInfo[index].color}>
-                    <LabelText color={item.color}>
-                      {updateLabelInfo[index].new_name}
-                    </LabelText>
-                  </Label>
-                </LabelWrap>
-              </OuterWrapper>
-              <LabelDes>{updateLabelInfo[index].description}</LabelDes>
-              <Notification></Notification>
-
-              <Refer
-                key={item.id}
-                index={index}
-                itemName={item.name}
-                itemDescription={item.description}
-                itemColor={item.color}
-                updateLabelInfo={updateLabelInfo}
-                setUpdateLabelInfo={setUpdateLabelInfo}
-                test={test}
-                setTest={setTest}
-                areaOpen={areaOpen}
-                setAreaOpen={setAreaOpen}
-                labelIndex={labelIndex}
-                setLabelIndex={setLabelIndex}
-                refresh={refresh}
-                setRefresh={setRefresh}
-              />
-            </Wrapper>
-          );
-        })}
-      </>
-    );
-  }
+              setAreaOpen={setAreaOpen}
+              labelIndex={labelIndex}
+              setLabelIndex={setLabelIndex}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
+          </Wrapper>
+        );
+      })}
+    </>
+  );
 }
+// }
 
 const BigWrapper = styled.section`
   @media screen and (min-width: 768px) {

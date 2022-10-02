@@ -8,11 +8,11 @@ function BoxHeader() {
   let updatedLabels: any = useSelector((state) => state);
   const [labels, setLabel]: any = useState();
   useEffect(() => setLabel(labels), []);
-  useEffect(() => {
-    (async () => {
-      setLabel(await api.getLabels("emil0519", "testing-issues"));
-    })().catch((error) => console.log(error));
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     setLabel(await api.getLabels("emil0519", "testing-issues"));
+  //   })().catch((error) => console.log(error));
+  // }, []);
   useEffect(() => {
     setLabel(updatedLabels);
     // 每次有新label的時候會re-render一次
