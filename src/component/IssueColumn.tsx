@@ -379,7 +379,7 @@ function IssueColumn() {
           }  mr-[16px] flex h-[32px] w-[96px] items-center justify-center hover:rounded-sm hover:border-[1px] hover:border-solid hover:border-[#d0d7de]`}
         >
           <ChevronLeftIcon
-            fill="#8c959f"
+            fill={`${previous ? "#0469d6" : "#8c959f"}`}
             className="mr-[4px] h-[16px] w-[16px]"
           />
           <span
@@ -411,7 +411,7 @@ function IssueColumn() {
             Next
           </span>
           <ChevronRightIcon
-            fill="#0469d6"
+            fill={`${previous ? "#8c959f" : "#0469d6"}`}
             className="mr-[4px] h-[16px] w-[16px]"
           />
         </div>
