@@ -1,7 +1,7 @@
 import { BoxHeader } from "./Github-BoxHeader";
 
 export default {
-  title: "Github/BoxHeader",
+  title: "Label-List/BoxHeader",
   component: BoxHeader,
 
   argTypes: {},
