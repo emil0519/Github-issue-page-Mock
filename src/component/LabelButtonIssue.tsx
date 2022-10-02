@@ -4,6 +4,7 @@ import {
   MilestoneIcon,
   IssueReopenedIcon,
   SearchIcon,
+  TagIcon,
 } from "@primer/octicons-react";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -11,6 +12,7 @@ import ColorBricks from "./ColorBricks";
 import api from "../utils/api";
 import useGenerateRandomColor from "../utils/useGenerateRandomColor";
 import Filter from "./Filter";
+import { useNavigate } from "react-router-dom";
 
 export interface opener {
   labelOpen: boolean;
@@ -18,6 +20,7 @@ export interface opener {
 
 function LabelButtonsIssues() {
   const [labelOpen, setLabelOpen] = useState(false);
+  const navigate = useNavigate();
   const [defaultColor, setDefaultColor] = useState("#e99695");
   const [newLabelInfo, setNewLabelInfo] = useState({
     name: "",
@@ -90,9 +93,9 @@ function LabelButtonsIssues() {
     <Wrapper>
       <UpperWrapper>
         <SubWrapOne>
-          <LabelSection>
+          <LabelSection onClick={() => navigate("/Label")}>
             <LabelSubSection>
-              <LabelIcon alt="" src={labelIcon}></LabelIcon>
+              <LabelTag />
               <LabelText>Labels</LabelText>
             </LabelSubSection>
           </LabelSection>
@@ -111,6 +114,12 @@ function LabelButtonsIssues() {
     </Wrapper>
   );
 }
+
+const LabelTag = styled(TagIcon)`
+  width: 14.78px;
+  height: 14.78px;
+  margin-right: 5px;
+`;
 
 const SearchIconIMG = styled(SearchIcon)`
   width: 21px;
@@ -476,7 +485,7 @@ const MileStoneIMG = styled(MilestoneIcon)`
 const LabelText = styled.span`
   font-size: 14px;
   font-weight: 600;
-  color: white;
+  color: black;
   @media screen and (min-width: 768px) {
   }
 `;
@@ -496,16 +505,20 @@ const LabelSubSection = styled.div`
 `;
 
 const LabelSection = styled.section`
-  background: #1760cf;
+  background: white;
   width: 97px;
   height: 32px;
   align-items: center;
   display: flex;
   justify-content: center;
+  border: 1px solid #d1d2d5;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   /* margin-left: 16px; */
   cursor: pointer;
+  &:hover {
+    background: #f5f7f9;
+  }
   @media screen and (min-width: 768px) {
   }
 `;

@@ -1,9 +1,9 @@
 import api from "../utils/api";
 let initState: any;
-async function startResult() {
-  initState = await api.getLabels("emil0519", "testing-issues");
-}
-startResult();
+// async function startResult() {
+//   initState = await api.getLabels("emil0519", "testing-issues");
+// }
+// startResult();
 const reducer = (state = initState, action: any) => {
   switch (action.type) {
     case "getList": {
