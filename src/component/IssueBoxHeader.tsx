@@ -206,7 +206,17 @@ function IssueBoxHeader() {
                     </div>
                     <div className="h-[416px] overflow-y-auto overflow-x-hidden">
                       <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-between border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]">
-                        <span className=" m-[16px] ml-[52px] text-xs font-semibold">
+                        <span
+                          onClick={() => {
+                            setClickName("");
+                            setValue({
+                              ...value,
+                              label: "",
+                            });
+                            setLabelListOpen(false);
+                          }}
+                          className=" m-[16px] ml-[52px] text-xs font-semibold"
+                        >
                           Unlabeled
                         </span>
                       </div>

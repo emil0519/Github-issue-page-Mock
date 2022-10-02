@@ -1,40 +1,36 @@
+import { useState } from "react";
 import down from "../img/triangle-down.svg";
-import { useGetAllIssuesQuery } from "../state/issueRTK";
 import x from "../img/x.svg";
 import check from "../img/check.svg";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../utils/useContext";
 
-function Assignee() {
-  const navigate = useNavigate();
-  const { value, setValue } = useContext(UserContext);
-
-  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
-  const [localData, setLocalData] = useState<any>();
-  const [itemName, setItemName] = useState<string>();
-  const [renderData, setRenderData] = useState<any>();
+function IssueAssignee() {
   const [showAssignee, setShowAssignee] = useState(false);
+  const [renderData, setRenderData] = useState<any>([
+    {
+      login: "emil0519",
+      url: "https://avatars.githubusercontent.com/u/97882056?v=4",
+    },
+    {
+      login: "Xie-MS",
+      url: "https://avatars.githubusercontent.com/u/82010307?v=4",
+    },
+  ]);
+  const [localData, setLocalData] = useState<any>([
+    {
+      login: "emil0519",
+      url: "https://avatars.githubusercontent.com/u/97882056?v=4",
+    },
+    {
+      login: "Xie-MS",
+      url: "https://avatars.githubusercontent.com/u/82010307?v=4",
+    },
+  ]);
 
-  const [foundData, setFoundData] = useState<any>();
+  const [itemName, setItemName] = useState<string>();
 
-  useEffect(() => {
-    if (data !== undefined) {
-      handleAssignees();
-      setLocalData(data);
-    } else {
-      return;
-    }
-  }, [data, localData]);
   function labelFilter(input: string) {
     if (input.length === 0) {
-      setRenderData(foundData);
+      setRenderData(localData);
     } else {
       const found = renderData.filter(({ login }: { login: string }) =>
         new RegExp(input, "i").test(login)
@@ -43,65 +39,6 @@ function Assignee() {
 
       setRenderData(found);
     }
-  }
-
-  useEffect(() => console.log(renderData), [renderData]);
-  function handleAssignees() {
-    let filteredAssignee = [];
-    let uniq: string | any[];
-
-    if (data !== undefined && localData !== null && localData !== undefined) {
-      let assignees = data
-        .map((item) => item.assignees)
-        .filter((item) => item.length >= 1);
-      let allAssignees = [];
-      for (let i = 0; i <= assignees.length - 1; i++) {
-        allAssignees.push(assignees[i][0].login);
-        if (assignees[i].length > 1) {
-          for (let x = 0; x <= assignees[i].length - 1; x++) {
-            allAssignees.push(assignees[i][x].login);
-          }
-        } else {
-          allAssignees.push(assignees[i][0].login);
-        }
-      }
-
-      uniq = [...new Set(allAssignees)];
-
-      let allObj = [];
-      for (let i = 0; i <= data.length - 1; i++) {
-        if (localData[i].assignees.length !== 0) {
-          allObj.push(localData[i].assignees);
-        } else {
-          for (let x = 0; x <= data[i].assignees.length - 1; x++) {
-            allObj.push(localData[i][x].assignees);
-          }
-        }
-      }
-
-      for (let x = 0; x <= allObj.length - 1; x++) {
-        if (allObj[x].length > 1) {
-          for (let y = 0; y <= allObj[x].length - 1; y++) {
-            filteredAssignee.push(allObj[x][y]);
-          }
-        } else {
-          filteredAssignee.push(allObj[x][0]);
-        }
-      }
-    } else {
-      return;
-    }
-
-    let found = [];
-    for (let x = 0; x <= uniq.length - 1; x++) {
-      found.push(filteredAssignee.find((item) => item.login === uniq[x]));
-    }
-    setFoundData(found);
-    setRenderData(found);
-  }
-
-  if (renderData === undefined) {
-    return <></>;
   }
   return (
     <>
@@ -152,10 +89,6 @@ function Assignee() {
             <span
               onClick={() => {
                 setItemName("");
-                setValue({
-                  ...value,
-                  assignees: ``,
-                });
                 setShowAssignee(false);
               }}
               className=" m-[16px] ml-[52px] text-xs font-semibold"
@@ -168,10 +101,7 @@ function Assignee() {
             <div
               onClick={() => {
                 setShowAssignee(false);
-                setValue({
-                  ...value,
-                  assignees: `assignee=${item.login}`,
-                });
+
                 setItemName(item.login);
               }}
               className="ml-[31px] flex h-[54px] w-[100%] cursor-pointer flex-row items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]"
@@ -185,7 +115,7 @@ function Assignee() {
                   } ml-[16px] mr-[8px] h-[16px] w-[16px]`}
                 ></img>
                 <img
-                  src={item.avatar_url}
+                  src={item.url}
                   alt=""
                   className="mr-[8px] h-[20px] w-[20px] rounded-[9999px]"
                 ></img>
@@ -199,4 +129,4 @@ function Assignee() {
   );
 }
 
-export default Assignee;
+export default IssueAssignee;
