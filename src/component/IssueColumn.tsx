@@ -312,7 +312,7 @@ function IssueColumn() {
                               <>
                                 <img
                                   src={item.avatar_url}
-                                  alt=""
+                                  alt="hi"
                                   className="z-[2] h-[20px] w-[29px]  rounded-[9999px]"
                                 ></img>
                               </>
