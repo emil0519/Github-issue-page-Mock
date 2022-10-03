@@ -39,8 +39,6 @@ function Assignee() {
       const found = renderData.filter(({ login }: { login: string }) =>
         new RegExp(input, "i").test(login)
       );
-      console.log(found);
-
       setRenderData(found);
     }
   }
