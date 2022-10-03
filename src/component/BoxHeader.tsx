@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { TriangleDownIcon } from "@primer/octicons-react";
-import LabelList from "./LabelList";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import api from "../utils/api";
@@ -9,11 +8,11 @@ function BoxHeader() {
   let updatedLabels: any = useSelector((state) => state);
   const [labels, setLabel]: any = useState();
   useEffect(() => setLabel(labels), []);
-  useEffect(() => {
-    (async () => {
-      setLabel(await api.getLabels("emil0519", "testing-issues"));
-    })().catch((error) => console.log(error));
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     setLabel(await api.getLabels("emil0519", "testing-issues"));
+  //   })().catch((error) => console.log(error));
+  // }, []);
   useEffect(() => {
     setLabel(updatedLabels);
     // 每次有新label的時候會re-render一次
@@ -37,7 +36,6 @@ function BoxHeader() {
             <SortDown />
           </SortSection>
         </Header>
-        <LabelList />
       </Wrapper>
     </>
   );

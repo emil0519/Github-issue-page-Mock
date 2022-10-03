@@ -96,6 +96,15 @@ const api = {
 
     return response;
   },
+  async getIssues(user: string, repo: string) {
+    const response = await fetch(`${this.hostname}/${user}/${repo}/issues`);
+    if (response.status === 403) {
+      alert(
+        "API rate limit exceeded, please use another IP Address or try again later."
+      );
+    }
+    return response.json();
+  },
 };
 
 export default api;

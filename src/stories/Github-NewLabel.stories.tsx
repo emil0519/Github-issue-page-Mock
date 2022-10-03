@@ -1,7 +1,7 @@
 import { NewLabels } from "./Github-NewLabel";
 
 export default {
-  title: "Github/LabelPreview",
+  title: "Label-List/LabelPreview",
   component: NewLabels,
   argTypes: {},
 };

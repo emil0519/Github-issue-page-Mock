@@ -2,9 +2,13 @@ import Header from "./component/Header";
 import Footer from "./component/Footer";
 import Repo from "./component/Repo";
 import Option from "./component/Option";
-import LabelButtons from "./component/LabelButtons";
-import BoxHeader from "./component/BoxHeader";
+
 import { createGlobalStyle } from "styled-components";
+
+import IssueWrapper from "./component/IssueWrapper";
+
+import { UserContext } from "./utils/useContext";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -12,15 +16,26 @@ const GlobalStyle = createGlobalStyle`
   }`;
 
 function App() {
+  const [value, setValue] = useState({
+    filter: "",
+    label: [],
+    assignees: "",
+    sort: "",
+    closed: "",
+    paging: "",
+    search: "",
+    dataLength: 0,
+  });
   return (
     <>
       <GlobalStyle />
-      <Header />
-      <Repo />
-      <Option />
-      <LabelButtons />
-      <BoxHeader />
-      <Footer />
+      <UserContext.Provider value={{ value, setValue }}>
+        <Header />
+        <Repo />
+        <Option />
+        <IssueWrapper />
+        <Footer />
+      </UserContext.Provider>
     </>
   );
 }

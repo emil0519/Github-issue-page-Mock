@@ -1,7 +1,7 @@
 import { Footer } from "./Github-Footer";
 
 export default {
-  title: "Github/Footer",
+  title: "Label-List/Footer",
   component: Footer,
 
   argTypes: {},

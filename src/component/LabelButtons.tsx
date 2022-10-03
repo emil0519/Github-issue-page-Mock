@@ -251,7 +251,7 @@ const BigWrapper = styled.section`
     display: flex;
     align-items: center;
     margin-top: 20px;
-    margin-right: 6px;
+    /* margin-right: 6px; */
   }
 `;
 
@@ -468,7 +468,7 @@ const UpperWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   /* margin-right: 16px; */
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
   @media screen and (min-width: 768px) {
   }
@@ -590,6 +590,9 @@ const LabelSection = styled.section`
 const Wrapper = styled.section`
   background: white;
   margin-top: 20px;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
   @media screen and (min-width: 768px) {
   }
 `;

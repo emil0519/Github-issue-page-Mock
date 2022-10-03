@@ -3,9 +3,20 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   IssueOpenedIcon,
+  GitPullRequestIcon,
+  CommentDiscussionIcon,
+  PlayIcon,
+  TableIcon,
+  BookIcon,
+  ShieldIcon,
+  GraphIcon,
+  GearIcon,
 } from "@primer/octicons-react";
+import { useNavigate } from "react-router-dom";
 
 function Option() {
+  const navigate = useNavigate();
+  const iconList = [{ name: "Issues", icon: IssueIMG }];
   return (
     <Wrapper>
       <CodeSection>
@@ -13,7 +24,7 @@ function Option() {
         <CodeRightIMG />
         <CodeText>Code</CodeText>
       </CodeSection>
-      <CodeSection>
+      <CodeSection onClick={() => navigate("/App")}>
         <IssueIMG />
         <CodeText>Issues</CodeText>
       </CodeSection>
