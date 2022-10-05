@@ -51,8 +51,8 @@ function Assignee() {
 
     if (data !== undefined && localData !== null && localData !== undefined) {
       let assignees = data
-        .map((item) => item.assignees)
-        .filter((item) => item.length >= 1);
+        .map((item: any) => item.assignees)
+        .filter((item: any) => item.length >= 1);
       let allAssignees = [];
       for (let i = 0; i <= assignees.length - 1; i++) {
         allAssignees.push(assignees[i][0].login);

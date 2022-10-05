@@ -70,17 +70,3 @@ export const createIssueApi = createApi({
 });
 
 export const { useGetAllIssuesQuery } = createIssueApi;
-
-//   baseQuery: fetchBaseQuery({
-//     baseUrl: "https://api.github.com/repos/emil0519/testing-issues/issues",
-//   }),
-//   tagTypes: [],
-//   endpoints: (builder) => ({
-//     getPokemonByName: builder.query({
-//       query: (name: string) => `pokemon/${name}`,
-//     }),
-//   }),
-// });
-
-// // Export hooks for usage in functional components
-// export const { useGetPokemonByNameQuery } = pokemonApi;

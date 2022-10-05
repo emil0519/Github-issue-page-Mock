@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import InputOptions from "./InputOptions";
+import InputOptions from "../Reusable/InputOptions";
 import {
   ChevronUpIcon,
   ChevronDownIcon,
@@ -165,7 +165,7 @@ function EditSection() {
             </div>
           </section>
           {/* </section> */}
-          <section className="mt-[10px] flex h-[max-content] w-[95%] justify-between">
+          <section className="mt-[10px] flex h-[max-content] w-[95%] justify-end">
             <details
               onMouseEnter={() => setHoverOnA(true)}
               onMouseOut={() => setHoverOnA(false)}

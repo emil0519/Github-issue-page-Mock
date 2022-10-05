@@ -1,7 +1,7 @@
 import EditSection from "./EditSection";
-import NewAssignee from "./NewAssignee";
+
 import Submit from "./Submit";
-import PopUpsWrapper from "./PopUpsWrapper";
+import PopUpDataProcessor from "./PopUpDataProcessor";
 import avatar from "../../img/github-avatar.png";
 
 function NewIssueWrapper() {
@@ -13,7 +13,7 @@ function NewIssueWrapper() {
         className="mt-[36px] hidden med:mr-[19px] med:block med:h-[40px] med:w-[40px] med:rounded-full"
       ></img>
       <EditSection />
-      <PopUpsWrapper />
+      <PopUpDataProcessor />
       <Submit />
     </section>
   );
