@@ -1,4 +1,5 @@
 import { GearIcon } from "@primer/octicons-react";
+import { createNextState } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import avatar from "../../img/avatar.png";
 import x from "../../img/x.svg";
@@ -24,16 +25,35 @@ function NewAssignee({ controller }: controllerProps) {
   const [mouseOver, setMouseOver] = useState("");
   const [showAssignee, setShowAssignee] = useState(false);
   const [mainHeader, setMainHeader] = useState<string[]>([]);
+  const [fetchedData, setFetchedData] = useState<any>();
+  const [clickIndex, setClickIndex] = useState(0);
 
+  useEffect(() => {
+    const newData = controller.map((item) => item.data);
+    if (newData !== undefined) {
+      setFetchedData(newData);
+    }
+    // if (controller !== undefined) {
+    // const newData = controller.map((item) => item.data.map(() => item));
+    // setFetchedData(newData);
+    // }
+  }, [controller]);
+
+  useEffect(() => console.log(controller[1].data), [controller]);
+
+  if (controller[0].data === undefined) {
+    console.log("controller is  undefined");
+    return <></>;
+  }
   return (
     <>
-      {controller.map((item: any) => {
-        // console.log(item.default.mainHeader);
+      {controller.map((item: any, index: number) => {
         return (
           <section className="mt-[10px] flex w-[100%] cursor-pointer flex-col items-center justify-center med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap">
             <section
               onClick={() => {
                 setShowAssignee(true);
+                setClickIndex(index);
                 setMainHeader([
                   item.default.mainHeader,
                   item.default.inputPlaceholder,
@@ -85,6 +105,7 @@ function NewAssignee({ controller }: controllerProps) {
               <div className="right-[5vw] flex h-[54px] w-[100%] items-center justify-between small:h-[33px]">
                 <span className="ml-[16px] text-xs font-semibold small:p-0 ">
                   {mainHeader[0]}
+                  {/* {item.default.mainHeader} */}
                 </span>
                 <img
                   src={x}
@@ -107,22 +128,29 @@ function NewAssignee({ controller }: controllerProps) {
                   </span>
                 </div>
               )}
-
-              <div className="h-[202px] overflow-y-auto overflow-x-hidden small:h-[416px]">
+              {controller[clickIndex].data.map((item: any) => (
                 <div className="flex h-[54px] w-[100%] cursor-pointer items-center  border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]">
-                  <img
-                    src={avatar}
-                    className="ml-[40px] mr-[5px] h-[20px] w-[20px] rounded-full"
-                    alt=""
-                  ></img>
+                  {item.icon.includes("http") ? (
+                    <img
+                      src={item.icon}
+                      className="ml-[40px] mr-[5px] h-[20px] w-[20px] rounded-full"
+                      alt=""
+                    ></img>
+                  ) : (
+                    <div
+                      style={{ background: `#${item.icon}` }}
+                      className={`mr-[6px] h-[14px] w-[14px] rounded-full `}
+                    ></div>
+                  )}
+
                   <span className=" mr-[6px] text-[14px] font-semibold">
-                    emil0519
+                    {item.title}
                   </span>
                   <span className=" mr-[6px] text-[12px] text-[#737a81]">
-                    emil0519
+                    {item.title}
                   </span>
                 </div>
-              </div>
+              ))}
             </div>
           </section>
         );
