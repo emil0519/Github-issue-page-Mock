@@ -2,8 +2,11 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Repo from "./Repo";
 import Option from "./Option";
-import { createGlobalStyle } from "styled-components";
 import EditSection from "./NewIssue/EditSection";
+import NewAssignee from "./NewIssue/NewAssignee";
+import Submit from "./NewIssue/Submit";
+import NewIssueWrapper from "./NewIssue/NewIssueWrapper";
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -14,11 +17,10 @@ function NewIssue() {
   return (
     <>
       <GlobalStyle />
-
       <Header />
       <Repo />
       <Option />
-      <EditSection />
+      <NewIssueWrapper />
       <Footer />
     </>
   );
