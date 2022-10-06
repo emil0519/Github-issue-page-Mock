@@ -165,7 +165,7 @@ function EditSection() {
             </div>
           </section>
           {/* </section> */}
-          <section className="mt-[10px] flex h-[max-content] w-[95%] justify-end">
+          <section className="mt-[10px] flex h-[max-content] w-[95%] justify-between med:justify-end">
             <details
               onMouseEnter={() => setHoverOnA(true)}
               onMouseOut={() => setHoverOnA(false)}
