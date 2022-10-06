@@ -21,10 +21,12 @@ type controllerProps = {
     data: any;
     defaultData: any;
     selected: string[];
+    showSelectedData: { title: string; icon: string };
   }[];
   clickIndex: number;
   inputValue: string;
   clickRate: number;
+
   setClickIndex: React.Dispatch<React.SetStateAction<number>>;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
@@ -45,7 +47,7 @@ function NewAssignee({
   const [showAssignee, setShowAssignee] = useState(false);
   const [mainHeader, setMainHeader] = useState<string[]>([]);
   const [fetchedData, setFetchedData] = useState<any>();
-  // useEffect(() => console.log(controller), [controller]);
+
   useEffect(() => {
     const newData = controller.map((item) => item.data);
     if (newData !== undefined) {
@@ -94,14 +96,40 @@ function NewAssignee({
               />
             </section>
             <div className="mt-[8px] w-[95%] text-[12px] text-[#6c737a]">
-              {item.default.descriptionWithoutLink}
-              {item.default.descriptionWithLink && (
+              {item.selected.length === 0 &&
+                item.default.descriptionWithoutLink}
+              {item.selected.length === 0 && item.default.descriptionWithLink && (
                 <>
                   <span className="hover:text-[#3e7bd7]">
                     <a href={item.default.desLink}>assign yourself</a>
                   </span>
                 </>
               )}
+              {/* {item.selected.length !== 0 &&
+                item.selected.map((selected: any, index: number) => (
+                  <div className="flex">
+                    <img
+                      src={x}
+                      className="ml-[4px] mr-[5px] h-[20px] w-[20px] rounded-full"
+                      alt=""
+                    ></img>
+                  </div>
+                ))} */}
+              {(() => {
+                if (item.selected.length !== 0) {
+                  item.selected
+                    .map((selected: any, _index: number) =>
+                      item.data.filter((item: any) => item.title === selected)
+                    )
+                    .map((item: any) => <>{item.title}</>);
+
+                  // filteredData.map((item: any) => (
+                  //   <>
+                  //     <span>{item.title}</span>
+                  //   </>
+                  // ));
+                }
+              })()}{" "}
             </div>
             <div className="mt-[16px] h-[0.4px] w-[92%] bg-[#cdd4db]"></div>
             <div
@@ -218,7 +246,6 @@ function NewAssignee({
                     {!item.icon.includes("http") && (
                       <img
                         src={x}
-                        onClick={() => setShowAssignee(false)}
                         className="mr-[13px] h-[16px] w-[16px] cursor-pointer"
                         alt=""
                       ></img>

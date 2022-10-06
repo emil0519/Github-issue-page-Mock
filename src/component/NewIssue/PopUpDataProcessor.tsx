@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import NewAssignee from "../Reusable/NewAssignee";
 import { useGetAllIssuesQuery } from "../../state/issueRTK";
 
-function PopUpDataProcessor() {
+export type ControllerProps = {
+  controller: any;
+  setController: any;
+};
+
+function PopUpDataProcessor({ controller, setController }: ControllerProps) {
   const [defaultAssigneesData, setDefaultAssigneesData] = useState<any>();
   const [defaultLabelData, setDefaultLabelData] = useState<any>();
   const [assigneesData, setAssigneesData] = useState<any>();
   const [labelData, setLabelData] = useState<any>();
   const [inputValue, setInputValue] = useState<string>("");
-  const [clickIndex, setClickIndex] = useState(0);
+  const [clickIndex, setClickIndex] = useState<number>(0);
   const [selectedValue, setSelectedValue] = useState<string>("");
-  const [controller, setController] = useState<any>();
   const [clickRate, setClickRate] = useState<number>(0);
   // 用來偵測是否有點擊選單內的元素，如有就加一，目前想不到更好的方法
 
@@ -33,6 +37,7 @@ function PopUpDataProcessor() {
         data: assigneesData,
         defaultData: defaultAssigneesData,
         selected: [] as string[],
+        showSelectedData: [],
       },
       {
         title: "Labels",
@@ -46,6 +51,7 @@ function PopUpDataProcessor() {
         data: labelData,
         defaultData: defaultLabelData,
         selected: [] as string[],
+        showSelectedData: [],
       },
     ]);
   }, [assigneesData, labelData]);
@@ -57,34 +63,39 @@ function PopUpDataProcessor() {
     repo: "/testing-issues",
     query: "",
   });
+
   useEffect(() => {
     //處理每張選單勾選的element
     if (controller !== undefined && controller[clickIndex].data !== undefined) {
       if (!controller[clickIndex].selected.includes(selectedValue)) {
-        console.log("not included");
+        const filteredData = controller[clickIndex].data.filter(
+          (item: any) => item.title === selectedValue
+        );
         const newController = controller.map((item: any, index: number) => {
           //update element in array of objects
           if (index === clickIndex) {
             return {
               ...item,
               selected: [...item.selected, selectedValue],
+              showSelectedData: [...item.showSelectedData, filteredData],
             };
           }
           return { ...item };
         });
-
         setController(newController);
-
-        // setController([
-        //   ...controller,
-        //   (controller[clickIndex].selected = [
-        //     ...controller[clickIndex].selected,
-        //     selected,
-        //   ]),
-        // ]);
       } else if (controller[clickIndex].selected.includes(selectedValue)) {
         const num = controller[clickIndex].selected.indexOf(selectedValue);
         controller[clickIndex].selected.splice(num, 1);
+        const newController = controller.map((item: any, index: number) => {
+          if (index === clickIndex) {
+            return {
+              ...item,
+              selected: controller[clickIndex].selected,
+            };
+          }
+          return { ...item };
+        });
+        setController(newController);
       }
     }
   }, [selectedValue, clickRate]);
@@ -93,7 +104,7 @@ function PopUpDataProcessor() {
     if (controller !== undefined) {
       console.log(controller);
     }
-  }, [selectedValue, clickRate]);
+  }, [controller]);
 
   const fetchedLabelData = useGetAllIssuesQuery({
     baseType: "repos",
@@ -104,6 +115,7 @@ function PopUpDataProcessor() {
   });
 
   useEffect(() => {
+    //處理fetch回來的label data
     if (fetchedLabelData.data !== undefined) {
       const processedLabelData = fetchedLabelData.data.map((item: any) => ({
         icon: item.color,
@@ -116,6 +128,7 @@ function PopUpDataProcessor() {
   }, [fetchedLabelData]);
 
   useEffect(() => {
+    //處理fetch回來的assignee data
     if (fetchedAssigneeData.data !== undefined) {
       const processedAssigneeData = fetchedAssigneeData.data.map(
         (item: any) => ({
@@ -139,6 +152,7 @@ function PopUpDataProcessor() {
         setClickIndex={setClickIndex}
         inputValue={inputValue}
         setInputValue={setInputValue}
+        // selectedValue={selectedValue}
         setSelectedValue={setSelectedValue}
         clickRate={clickRate}
         setClickRate={setClickRate}

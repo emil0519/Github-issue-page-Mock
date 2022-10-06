@@ -19,10 +19,10 @@ import {
   CrossReferenceIcon,
   MarkdownIcon,
 } from "@primer/octicons-react";
-
+import { ControllerProps } from "./PopUpDataProcessor";
 import info from "../../img/info.svg";
 
-function EditSection() {
+function EditSection({ controller, setController }: ControllerProps) {
   const [clickName, setClickName] = useState("write");
   const [hoverOnA, setHoverOnA] = useState(false);
   const [clickOnA, setClickOnA] = useState(false);
