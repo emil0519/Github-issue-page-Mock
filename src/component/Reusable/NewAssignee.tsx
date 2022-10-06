@@ -27,7 +27,7 @@ type controllerProps = {
   clickRate: number;
   setClickIndex: React.Dispatch<React.SetStateAction<number>>;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
-  setSelected: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
   setClickRate: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -37,7 +37,7 @@ function NewAssignee({
   setInputValue,
   clickIndex,
   setClickIndex,
-  setSelected,
+  setSelectedValue,
   clickRate,
   setClickRate,
 }: controllerProps) {
@@ -45,7 +45,7 @@ function NewAssignee({
   const [showAssignee, setShowAssignee] = useState(false);
   const [mainHeader, setMainHeader] = useState<string[]>([]);
   const [fetchedData, setFetchedData] = useState<any>();
-  useEffect(() => console.log(controller), [controller]);
+  // useEffect(() => console.log(controller), [controller]);
   useEffect(() => {
     const newData = controller.map((item) => item.data);
     if (newData !== undefined) {
@@ -62,7 +62,6 @@ function NewAssignee({
   return (
     <>
       {controller.map((item: any, index: number) => {
-        console.log(controller);
         return (
           <section className="mt-[10px] flex w-[100%] cursor-pointer flex-col items-center justify-center  med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap">
             <section
@@ -163,7 +162,7 @@ function NewAssignee({
                 <div
                   onClick={() => {
                     setInputValue("");
-                    setSelected(item.title);
+                    setSelectedValue(item.title);
                     setClickRate(clickRate + 1);
                   }}
                   className={`${

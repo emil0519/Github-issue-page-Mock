@@ -9,7 +9,7 @@ function PopUpDataProcessor() {
   const [labelData, setLabelData] = useState<any>();
   const [inputValue, setInputValue] = useState<string>("");
   const [clickIndex, setClickIndex] = useState(0);
-  const [selected, setSelected] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<string>("");
   const [controller, setController] = useState<any>();
   const [clickRate, setClickRate] = useState<number>(0);
   // 用來偵測是否有點擊選單內的元素，如有就加一，目前想不到更好的方法
@@ -60,28 +60,40 @@ function PopUpDataProcessor() {
   useEffect(() => {
     //處理每張選單勾選的element
     if (controller !== undefined && controller[clickIndex].data !== undefined) {
-      if (!controller[clickIndex].selected.includes(selected)) {
+      if (!controller[clickIndex].selected.includes(selectedValue)) {
         console.log("not included");
+        const newController = controller.map((item: any, index: number) => {
+          //update element in array of objects
+          if (index === clickIndex) {
+            return {
+              ...item,
+              selected: [...item.selected, selectedValue],
+            };
+          }
+          return { ...item };
+        });
 
-        setController([
-          ...controller,
-          (controller[clickIndex].selected = [
-            ...controller[clickIndex].selected,
-            selected,
-          ]),
-        ]);
-      } else if (controller[clickIndex].selected.includes(selected)) {
-        const num = controller[clickIndex].selected.indexOf(selected);
+        setController(newController);
+
+        // setController([
+        //   ...controller,
+        //   (controller[clickIndex].selected = [
+        //     ...controller[clickIndex].selected,
+        //     selected,
+        //   ]),
+        // ]);
+      } else if (controller[clickIndex].selected.includes(selectedValue)) {
+        const num = controller[clickIndex].selected.indexOf(selectedValue);
         controller[clickIndex].selected.splice(num, 1);
       }
     }
-  }, [selected, clickRate]);
+  }, [selectedValue, clickRate]);
 
   useEffect(() => {
     if (controller !== undefined) {
       console.log(controller);
     }
-  }, [selected, clickRate]);
+  }, [selectedValue, clickRate]);
 
   const fetchedLabelData = useGetAllIssuesQuery({
     baseType: "repos",
@@ -127,7 +139,7 @@ function PopUpDataProcessor() {
         setClickIndex={setClickIndex}
         inputValue={inputValue}
         setInputValue={setInputValue}
-        setSelected={setSelected}
+        setSelectedValue={setSelectedValue}
         clickRate={clickRate}
         setClickRate={setClickRate}
       />
