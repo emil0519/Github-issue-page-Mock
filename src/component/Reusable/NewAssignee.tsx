@@ -65,7 +65,7 @@ function NewAssignee({
     <>
       {controller.map((item: any, index: number) => {
         return (
-          <section className="mt-[10px] flex w-[100%] cursor-pointer flex-col items-center justify-center  med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap">
+          <section className="mt-[10px] flex w-[100%] cursor-pointer flex-col items-start justify-center  med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap">
             <section
               onClick={() => {
                 setShowAssignee(true);
@@ -79,7 +79,7 @@ function NewAssignee({
               }}
               onMouseOver={() => setMouseOver(item.title)}
               onMouseOut={() => setMouseOver("")}
-              className="flex w-[95%] items-center justify-between med:relative"
+              className="ml-auto mr-auto mb-[5px] flex w-[95%] items-center justify-between med:relative"
             >
               <span
                 className={`text-[12px] font-semibold ${
@@ -95,42 +95,53 @@ function NewAssignee({
                 className="h-[16px] w-[16px]"
               />
             </section>
-            <div className="mt-[8px] w-[95%] text-[12px] text-[#6c737a]">
+            {(() => {
+              if (item.selected.length !== 0) {
+                const showSelected = item.selected.map(
+                  (selected: any, _index: number) =>
+                    item.data.filter((item: any) => item.title === selected)
+                );
+                let renderData = [];
+                for (let x = 0; x < showSelected.length; x++) {
+                  renderData.push(showSelected[x][0]);
+                }
+                return renderData.map((item) => {
+                  console.log(item.title);
+                  return (
+                    <>
+                      <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
+                        {item.icon.includes("http") ? (
+                          <img
+                            src={item.icon}
+                            className="ml-[4px] mr-[5px] mt-[5px] h-[20px] w-[20px] rounded-full"
+                            alt=""
+                          ></img>
+                        ) : (
+                          <div
+                            style={{ background: `#${item.icon}` }}
+                            className={`mr-[6px] h-[14px] w-[14px] rounded-full `}
+                          ></div>
+                        )}
+                        <span className="text-xs font-semibold">
+                          {item.title}
+                        </span>
+                      </div>
+                    </>
+                  );
+                });
+              }
+            })()}
+            <div className="mt-[8px] mr-auto ml-auto w-[95%] text-[12px] text-[#6c737a]">
               {item.selected.length === 0 &&
                 item.default.descriptionWithoutLink}
-              {item.selected.length === 0 && item.default.descriptionWithLink && (
-                <>
-                  <span className="hover:text-[#3e7bd7]">
-                    <a href={item.default.desLink}>assign yourself</a>
-                  </span>
-                </>
-              )}
-              {/* {item.selected.length !== 0 &&
-                item.selected.map((selected: any, index: number) => (
-                  <div className="flex">
-                    <img
-                      src={x}
-                      className="ml-[4px] mr-[5px] h-[20px] w-[20px] rounded-full"
-                      alt=""
-                    ></img>
-                  </div>
-                ))} */}
-              {(() => {
-                if (item.selected.length !== 0) {
-                  const showSelected = item.selected.map(
-                    (selected: any, _index: number) =>
-                      item.data.filter((item: any) => item.title === selected)
-                  );
-                  showSelected.unshift();
-                  // .map((item: any) => <>{item.title}</>);
-
-                  // filteredData.map((item: any) => (
-                  //   <>
-                  //     <span>{item.title}</span>
-                  //   </>
-                  // ));
-                }
-              })()}{" "}
+              {item.selected.length === 0 &&
+                item.default.descriptionWithLink && (
+                  <>
+                    <span className="hover:text-[#3e7bd7]">
+                      <a href={item.default.desLink}>assign yourself</a>
+                    </span>
+                  </>
+                )}{" "}
             </div>
             <div className="mt-[16px] h-[0.4px] w-[92%] bg-[#cdd4db]"></div>
             <div
