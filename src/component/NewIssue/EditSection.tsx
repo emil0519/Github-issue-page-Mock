@@ -120,7 +120,7 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
   //  這邊還沒能讓pop up text放到文字的左邊，之後要修
 
   return (
-    <section className="mr-auto ml-auto flex h-[max-content] w-[95%] flex-col med:flex med:flex-col">
+    <section className="mr-auto ml-auto flex h-[max-content] w-[95%] flex-col med:m-0 med:flex med:max-w-[862px] med:flex-col">
       <section className="med:border[#cad1d9] mt-[36px] flex h-[max-content] w-[100%] flex-col items-center med:relative med:mr-[12px] med:items-start med:rounded-md med:border-[0.5px] med:border-solid med:p-[3px] med:pt-[8px]">
         <div className="med:leftward-triangle med:border[#cad1d9] hidden med:absolute med:top-[10px] med:left-[-10px] med:block med:h-[18px] med:w-[10px] med:bg-[#c3cbd3] ">
           <div className="med:leftward-triangle med:border[#cad1d9] hidden med:absolute med:top-[1px] med:left-[1px] med:block med:h-[16px] med:w-[8px] med:bg-[white]"></div>

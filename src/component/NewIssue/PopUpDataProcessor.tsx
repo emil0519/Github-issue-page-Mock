@@ -16,7 +16,8 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
   const [clickIndex, setClickIndex] = useState<number>(0);
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [clickRate, setClickRate] = useState<number>(0);
-  // 用來偵測是否有點擊選單內的元素，如有就加一，目前想不到更好的方法
+  const [clearAssigneeRate, setClearAssigneeRate] = useState<number>(0);
+  // 用來偵測是否有點擊選單內的元素，如有就加一，目前想不到更好的方法]
 
   useEffect(() => {
     //Options for reusable component
@@ -33,7 +34,7 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
           subHeader: "Suggestion",
           clearText: "clear assignee",
           isOpen: true,
-          isCancel: false, //can be cancel by"x" button or not
+          isGear: true, //can be cancel by"x" button or not
         },
         data: assigneesData,
         defaultData: defaultAssigneesData,
@@ -47,7 +48,7 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
           inputPlaceholder: "Filter labels",
           mainHeader: "Apply labels to this issue",
           isOpen: true,
-          isCancel: true,
+          isGear: true,
         },
         data: labelData,
         defaultData: defaultLabelData,
@@ -61,7 +62,41 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
           inputPlaceholder: "",
           mainHeader: "",
           isOpen: false,
-          isCancel: false,
+          isGear: true,
+          selected: [] as string[],
+        },
+      },
+      {
+        title: "Milestone",
+        default: {
+          descriptionWithoutLink: "No milestone",
+          inputPlaceholder: "",
+          mainHeader: "",
+          isOpen: false,
+          isGear: true,
+          selected: [] as string[],
+        },
+      },
+      {
+        title: "Development",
+        default: {
+          descriptionWithoutLink:
+            "Shows branches and pull requests linked to this issue.",
+          inputPlaceholder: "",
+          mainHeader: "",
+          isOpen: false,
+          isGear: false,
+          selected: [] as string[],
+        },
+      },
+      {
+        title: "Helpful resources",
+        default: {
+          descriptionWithLink: "GitHub Community Guidelines",
+          inputPlaceholder: "",
+          mainHeader: "",
+          isOpen: false,
+          isGear: false,
           selected: [] as string[],
         },
       },
@@ -151,7 +186,8 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
     // Search function within dropdown menu
     if (controller === undefined) {
       return;
-    } else if (
+    }
+    if (
       controller[0] !== undefined &&
       controller[0].hasOwnProperty("data") &&
       controller[0].data !== undefined &&
@@ -186,13 +222,47 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
     }
   }, [inputValue]);
 
-  useEffect(() => console.log(inputValue.length), [inputValue]);
+  useEffect(() => {
+    if (controller === undefined) {
+      return;
+    } else {
+      let copyController = JSON.parse(JSON.stringify(controller));
+      const newController = copyController.map((item: any, index: number) => {
+        if (index === clickIndex) {
+          item.selected = [];
+        }
+        //清空
+        return { ...item };
+      });
+      console.log(newController);
+      setController(newController);
+    }
+
+    //處理Clear選項
+    // if (
+    //   controller[0] !== undefined &&
+    //   controller[0].hasOwnProperty("data") &&
+    //   controller[0].data !== undefined &&
+    //   clearAssignee
+    // ) {
+    // let copyController = JSON.parse(JSON.stringify(controller));
+    // const newController = copyController.map((item: any, index: number) => {
+    //   if (index === clickIndex) {
+    //     item.selected = [];
+    //   }
+    //   //清空
+    //   return { ...item };
+    // });
+    // console.log(newController);
+    // setController(newController);
+    // }
+  }, [clearAssigneeRate]);
 
   if (controller === undefined) {
     return <></>;
   }
   return (
-    <section className="mt-[48px] flex flex-col">
+    <section className="mt-[48px] mr-auto ml-auto flex w-[95%] flex-col med:m-0 med:w-[fit-content]">
       <NewAssignee
         controller={controller}
         clickIndex={clickIndex}
@@ -202,6 +272,8 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
         setSelectedValue={setSelectedValue}
         clickRate={clickRate}
         setClickRate={setClickRate}
+        clearAssigneeRate={clearAssigneeRate}
+        setClearAssigneeRate={setClearAssigneeRate}
       />
     </section>
   );

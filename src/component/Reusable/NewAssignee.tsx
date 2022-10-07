@@ -16,7 +16,7 @@ type controllerProps = {
       subHeader?: string;
       clearText?: string;
       isOpen: boolean;
-      isCancel: boolean;
+      isGear?: boolean;
     };
     data?: any;
     defaultData?: any;
@@ -26,11 +26,12 @@ type controllerProps = {
   clickIndex: number;
   inputValue: string;
   clickRate: number;
-
+  clearAssigneeRate: number;
   setClickIndex: React.Dispatch<React.SetStateAction<number>>;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
   setClickRate: React.Dispatch<React.SetStateAction<number>>;
+  setClearAssigneeRate: React.Dispatch<React.SetStateAction<number>>;
 };
 
 function NewAssignee({
@@ -42,6 +43,8 @@ function NewAssignee({
   setSelectedValue,
   clickRate,
   setClickRate,
+  clearAssigneeRate,
+  setClearAssigneeRate,
 }: controllerProps) {
   const [mouseOver, setMouseOver] = useState("");
   const [showDropDown, setShowDropDown] = useState("");
@@ -65,7 +68,11 @@ function NewAssignee({
     <>
       {controller.map((item: any, index: number) => {
         return (
-          <section className="mt-[10px] flex w-[100%] cursor-pointer flex-col items-start justify-center  med:relative med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap">
+          <section
+            className={`mt-[10px] flex w-[100%] ${
+              item.default.isGear ? "cursor-pointer" : "cursor-text"
+            } flex-col items-start justify-center  med:relative med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap`}
+          >
             <section
               onClick={() => {
                 setShowDropDown(item.title);
@@ -83,20 +90,23 @@ function NewAssignee({
             >
               <span
                 className={`text-[12px] font-semibold ${
-                  mouseOver === item.title
+                  mouseOver === item.title && item.default.isGear
                     ? "text-[#1e65d0] "
                     : "text-[#6c737a]"
                 }`}
               >
                 {item.title}
               </span>
-              <GearIcon
-                fill={`${mouseOver === item.title ? "#1e65d0" : "#4d555e"}`}
-                className="h-[16px] w-[16px]"
-              />
+              {item.default.isGear && (
+                <GearIcon
+                  fill={`${mouseOver === item.title ? "#1e65d0" : "#4d555e"}`}
+                  className="h-[16px] w-[16px]"
+                />
+              )}
             </section>
             {(() => {
               if (!item.default.isOpen) {
+                //不能打開的選單中，title下面的description
                 return (
                   <>
                     <span className="mt-[8px] mr-auto ml-auto w-[95%] text-[12px] text-[#6c737a]">
@@ -104,11 +114,14 @@ function NewAssignee({
                     </span>
                     {item.default.descriptionWithLink && (
                       <>
-                        <span className="hover:text-[#3e7bd7]">
-                          <a href={item.default.desLink}>assign yourself</a>
+                        <span className="ml-[11px] flex cursor-pointer text-xs text-[#6c737a] hover:text-[#3e7bd7]">
+                          <a href={item.default.desLink}>
+                            {item.default.descriptionWithLink}
+                          </a>
                         </span>
                       </>
                     )}{" "}
+                    <div className="mt-[16px] h-[0.4px] w-[92%] bg-[#cdd4db]"></div>
                   </>
                 );
               } else if (item.selected.length !== 0) {
@@ -155,7 +168,9 @@ function NewAssignee({
                     item.default.descriptionWithLink && (
                       <>
                         <span className="hover:text-[#3e7bd7]">
-                          <a href={item.default.desLink}>assign yourself</a>
+                          <a href={item.default.desLink}>
+                            {item.default.descriptionWithLink}
+                          </a>
                         </span>
                       </>
                     )}{" "}
@@ -212,15 +227,37 @@ function NewAssignee({
                           </div>
                         )}
                         {mainHeader[3] && (
-                          <div className="flex h-[54px] w-[100%] cursor-pointer items-center border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]">
+                          <div
+                            onClick={() =>
+                              setClearAssigneeRate(clearAssigneeRate + 1)
+                            }
+                            className="flex h-[54px] w-[100%] cursor-pointer items-center border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]"
+                          >
                             <img
                               src={x}
                               onClick={() => setShowDropDown("")}
                               className="ml-[40px] mr-[4px] h-[16px] w-[16px] cursor-pointer"
                               alt=""
                             ></img>
-                            <span className="ml-[9px] text-xs">
-                              Clear assignees
+                            <span
+                              className="ml-[9px] text-xs"
+                              // onClick={() => {
+                              //   const newController = controller.map(
+                              //     (item: any, index: number) => {
+                              //       if (index === clickIndex) {
+                              //         return {
+                              //           ...item,
+                              //           selected: [],
+                              //         };
+                              //       }
+                              //       return { ...item };
+                              //     }
+                              //   );
+                              //   // console.log(newController);
+                              //   setController(newController);
+                              // }}
+                            >
+                              {mainHeader[3]}
                             </span>
                           </div>
                         )}

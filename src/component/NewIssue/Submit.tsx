@@ -1,7 +1,6 @@
 import { PostDataProps } from "./NewIssueWrapper";
 import { useCreateIssueMutation } from "../../state/issueRTK";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 function Submit({ postData }: PostDataProps) {
   const [createIssue] = useCreateIssueMutation();
@@ -25,7 +24,7 @@ function Submit({ postData }: PostDataProps) {
   return (
     <section
       onClick={() => handleSubmit()}
-      className="mt-[32px] flex w-[100%] justify-center med:absolute med:top-[74%] med:right-[250px] med:h-[32px] med:w-[147px] med:cursor-default"
+      className="mt-[32px] flex w-[100%] justify-center med:absolute med:top-[74%] med:right-[250px] med:h-[32px] med:w-[147px] med:cursor-default big:absolute big:top-[74%] big:right-[250px]"
     >
       <section
         className={`flex h-[32px] w-[95%] items-center justify-center rounded-md border-[0.3px] border-solid border-[#79b288] ${
@@ -38,7 +37,7 @@ function Submit({ postData }: PostDataProps) {
             : "hover:bg-[#2c9750]"
         } ${
           postData !== undefined && postData.title.length === 0
-            ? ""
+            ? "cursor-default"
             : "cursor-pointer"
         }`}
       >
