@@ -100,12 +100,6 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
     }
   }, [selectedValue, clickRate]);
 
-  useEffect(() => {
-    if (controller !== undefined) {
-      console.log(controller);
-    }
-  }, [controller]);
-
   const fetchedLabelData = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/labels",
@@ -141,6 +135,47 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
     }
   }, [fetchedAssigneeData]);
 
+  useEffect(() => {
+    // Search function within dropdown menu
+    if (controller === undefined) {
+      return;
+    } else if (
+      controller[0] !== undefined &&
+      controller[0].hasOwnProperty("data") &&
+      controller[0].data !== undefined &&
+      inputValue.length !== 0
+    ) {
+      let copyController = JSON.parse(JSON.stringify(controller));
+      //deep copy
+
+      const found = copyController[clickIndex].data.filter(
+        ({ title }: { title: string }) =>
+          new RegExp(inputValue, "i").test(title)
+      );
+      console.log(found);
+      const newController = copyController.map((item: any, index: number) => {
+        if (index === clickIndex) {
+          item.data = found;
+        }
+        return { ...item };
+      });
+      setController(newController);
+    } else if (inputValue.length === 0) {
+      console.log("no input");
+      let copyController = JSON.parse(JSON.stringify(controller));
+      const newController = copyController.map((item: any, index: number) => {
+        if (index === clickIndex) {
+          item.data = item.defaultData;
+        }
+        return { ...item };
+      });
+      console.log(newController);
+      setController(newController);
+    }
+  }, [inputValue]);
+
+  useEffect(() => console.log(inputValue.length), [inputValue]);
+
   if (controller === undefined) {
     return <></>;
   }
@@ -152,7 +187,6 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
         setClickIndex={setClickIndex}
         inputValue={inputValue}
         setInputValue={setInputValue}
-        // selectedValue={selectedValue}
         setSelectedValue={setSelectedValue}
         clickRate={clickRate}
         setClickRate={setClickRate}

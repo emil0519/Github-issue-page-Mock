@@ -117,11 +117,12 @@ function NewAssignee({
                 ))} */}
               {(() => {
                 if (item.selected.length !== 0) {
-                  item.selected
-                    .map((selected: any, _index: number) =>
+                  const showSelected = item.selected.map(
+                    (selected: any, _index: number) =>
                       item.data.filter((item: any) => item.title === selected)
-                    )
-                    .map((item: any) => <>{item.title}</>);
+                  );
+                  showSelected.unshift();
+                  // .map((item: any) => <>{item.title}</>);
 
                   // filteredData.map((item: any) => (
                   //   <>

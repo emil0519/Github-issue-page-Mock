@@ -19,10 +19,20 @@ import {
   CrossReferenceIcon,
   MarkdownIcon,
 } from "@primer/octicons-react";
-
 import info from "../../img/info.svg";
+import { PostDataProps } from "./NewIssueWrapper";
 
-function EditSection() {
+type EditSectionProps = {
+  postData: {
+    title: string;
+    body: string;
+    assignees?: string[] | undefined;
+    labels?: string[] | undefined;
+  };
+  setPostData: React.Dispatch<any>;
+};
+
+function EditSection({ postData, setPostData }: EditSectionProps) {
   const [clickName, setClickName] = useState("write");
   const [hoverOnA, setHoverOnA] = useState(false);
   const [clickOnA, setClickOnA] = useState(false);
@@ -118,6 +128,12 @@ function EditSection() {
         <input
           placeholder="Title"
           className="ml-[5px] w-[95%] rounded-md border-[1px] border-solid  border-[#cad1d9] bg-[#f6f8fa] p-[7px] med:w-[98%]"
+          onChange={(e) =>
+            setPostData({
+              ...postData,
+              title: e.target.value,
+            })
+          }
         ></input>
         {/* <section className="z-20 mb-[-1px] hidden w-[100%] border-b-[1px] border-[#cad1d9] med:block"> */}
         <section className="ml-[34px] w-[100%] med:m-0 big:flex big:w-[100%] big:items-center big:justify-center">
@@ -203,6 +219,12 @@ function EditSection() {
         <input
           className="flex h-[200px] w-[95%] rounded-md border-[1px] border-solid border-[#cad1d9] bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0"
           placeholder="Leave a comment"
+          onChange={(e) =>
+            setPostData({
+              ...postData,
+              body: e.target.value,
+            })
+          }
         ></input>
         <div className="hidden med:flex med:h-[44px] med:w-[98%] med:cursor-pointer med:items-center med:justify-between med:border-t-[1px] med:border-dashed med:border-[#cad1d9] med:bg-[#f6f8fa]">
           <span className="ml-[4px] text-[14px] text-[#57606a]">
