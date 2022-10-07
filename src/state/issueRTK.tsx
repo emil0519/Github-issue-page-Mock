@@ -48,7 +48,7 @@ type CreateLabelParameter = {
   createLabelDescription: string;
 };
 
-export const createIssueApi = createApi({
+export const createIssueApi: any = createApi({
   reducerPath: "createLabelApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.github.com/",
@@ -66,7 +66,20 @@ export const createIssueApi = createApi({
       }),
       providesTags: ["issues"],
     }),
+    createIssue: builder.mutation({
+      query: ({ baseType, type, name, repo, query, newIssue }) => ({
+        url: `${baseType}${name}${repo}${type}${query}`,
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+        }),
+        body: newIssue,
+        providesTags: ["create"],
+      }),
+    }),
   }),
 });
 
 export const { useGetAllIssuesQuery } = createIssueApi;
+export const { useCreateIssueMutation } = createIssueApi;

@@ -47,7 +47,7 @@ function IssueColumn() {
     }
   }, [value]);
 
-  const closedData = useGetAllIssuesQuery<any>({
+  const closedData = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/issues",
     name: "/emil0519",
@@ -55,7 +55,7 @@ function IssueColumn() {
     query: `?state=closed`,
   });
 
-  const nextPage = useGetAllIssuesQuery<any>({
+  const nextPage = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/issues",
     name: "/emil0519",
