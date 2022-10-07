@@ -19,6 +19,7 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
   // 用來偵測是否有點擊選單內的元素，如有就加一，目前想不到更好的方法
 
   useEffect(() => {
+    //Options for reusable component
     setController([
       {
         title: "Assignee",
@@ -52,6 +53,17 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
         defaultData: defaultLabelData,
         selected: [] as string[],
         showSelectedData: [],
+      },
+      {
+        title: "Projects",
+        default: {
+          descriptionWithoutLink: "None yet",
+          inputPlaceholder: "",
+          mainHeader: "",
+          isOpen: false,
+          isCancel: false,
+          selected: [] as string[],
+        },
       },
     ]);
   }, [assigneesData, labelData]);
