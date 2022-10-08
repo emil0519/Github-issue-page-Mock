@@ -5,7 +5,7 @@ import {
   SearchIcon,
 } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
-import { useComponentVisible } from "../utils/useComponentVisible";
+import { useComponentVisible } from "../../utils/useComponentVisible";
 
 type ColorType = {
   colors: string;
@@ -265,7 +265,6 @@ export const NewLabels = ({ ...props }: NewLabelProps) => {
   const handleClickOutside = () => {
     setEditOpen(false);
     setIsComponentVisible(false);
-
   };
   useOnClickOutside(ref, handleClickOutside);
   const solidColorList: any = [
@@ -327,7 +326,6 @@ export const NewLabels = ({ ...props }: NewLabelProps) => {
   useEffect(() => {
     input.length >= 1 ? setChangeColor(true) : setChangeColor(false);
   }, [input]);
-
 
   return (
     <>

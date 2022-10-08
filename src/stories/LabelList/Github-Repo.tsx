@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import repo from "../img/repo.png";
+import repo from "../../img/repo.png";
 
 const RepoType = styled.span`
   font-size: 14px;

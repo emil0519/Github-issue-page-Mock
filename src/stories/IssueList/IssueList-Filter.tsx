@@ -1,9 +1,9 @@
-import x from "../img/x.svg";
-import solidDown from "../img/solid-down.svg";
-import external from "../img/external.svg";
-import search from "../img/search.svg";
+import x from "../../img/x.svg";
+import solidDown from "../../img/solid-down.svg";
+import external from "../../img/external.svg";
+import search from "../../img/search.svg";
 import { useState } from "react";
-import check from "../img/check.svg";
+import check from "../../img/check.svg";
 
 function IssueListFilter() {
   const [showFilter, setShowFilter] = useState(false);

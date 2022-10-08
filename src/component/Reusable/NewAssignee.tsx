@@ -1,5 +1,5 @@
 import { GearIcon } from "@primer/octicons-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import x from "../../img/x.svg";
 import check from "../../img/check.svg";
 

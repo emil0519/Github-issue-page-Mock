@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import hamburger from "../img/hamburger.png";
-import icon from "../img/icon.png";
-import bell from "../img/bell.png";
-import plus from "../img/plus.png";
-import avatar from "../img/avatar.png";
-import down from "../img/down.png";
+import hamburger from "../../img/hamburger.png";
+import icon from "../../img/icon.png";
+import bell from "../../img/bell.png";
+import plus from "../../img/plus.png";
+import avatar from "../../img/avatar.png";
+import down from "../../img/down.png";
 
 const Down = styled.img`
   display: none;
