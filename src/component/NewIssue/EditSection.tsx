@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import InputOptions from "../Reusable/InputOptions";
+import Dropzone from "./Dropzone";
 import {
   ChevronUpIcon,
   ChevronDownIcon,
@@ -20,8 +21,9 @@ import {
   MarkdownIcon,
 } from "@primer/octicons-react";
 import info from "../../img/info.svg";
-import { PostDataProps } from "./NewIssueWrapper";
+
 import SubmitBig from "./SubmitBig";
+import ImageUploading, { ImageListType } from "react-images-uploading";
 
 export type EditSectionProps = {
   postData: {
@@ -40,8 +42,44 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
   const [clickOnACount, setClickOnACount] = useState(0);
   const [hoverOnMarkDown, setHoverOnMarkDown] = useState(false);
   const [hoverOnLowerMarkDown, setHoverOnLowerMarkDown] = useState(false);
+  const [images, setImages] = useState([]);
+  const [localImage, setLocalImage] = useState<string[][]>([]);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [defaultAttach, setDefaultAttach] = useState<string>(
+    "Attach files by dragging & dropping, selecting or pasting them."
+  );
 
-  useEffect(() => console.log(clickOnA), [clickOnA]);
+  // Drop and preview image
+  const maxNumber = 69;
+
+  const onChange = (
+    imageList: ImageListType,
+    addUpdateIndex: number[] | undefined
+  ) => {
+    setDefaultAttach(
+      "Attach files by dragging & dropping, selecting or pasting them."
+    );
+    setLocalImage(
+      imageList.map((item) => [
+        `<img width="1000" alt="${
+          item.file!.name
+        }" src="${item.dataURL!.substring(0, 50)}...">
+        `,
+      ])
+    );
+    setImages(imageList as never[]);
+  };
+
+  useEffect(() => {
+    const inputToSet = localImage.join();
+    const newInput = inputValue.concat(inputToSet);
+    console.log(newInput);
+    setInputValue(newInput);
+  }, [localImage]);
+
+  useEffect(() => {
+    console.log(inputValue);
+  }, [inputValue]);
   useEffect(
     () => (clickOnACount % 2 !== 0 ? setClickOnA(true) : setClickOnA(false)),
     [clickOnACount]
@@ -216,42 +254,103 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
             <InputOptions array={rightIconsArray} />
           </section>
         </section>
+        <ImageUploading
+          multiple
+          value={images}
+          onChange={onChange}
+          maxNumber={maxNumber}
+          resolutionWidth={10}
+        >
+          {({
+            imageList,
+            onImageUpload,
+            onImageRemoveAll,
+            onImageUpdate,
+            onImageRemove,
+            isDragging,
+            dragProps,
+            errors,
+          }) => (
+            <>
+              {imageList.map((image, index) => (
+                <div key={index} className="image-item">
+                  <img src={image.dataURL} alt="" width="100" />
+                  <div className="image-item__btn-wrapper">
+                    <span>
+                      {image.dataURL?.substring(0, 50)}......<br></br>,
+                      {image.file!.name}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              {errors &&
+                errors.acceptType &&
+                setDefaultAttach("We don't support that file type.")}
+              {/* {errors && console.log(errors)}
+              {errors &&
+                !errors.acceptType &&
+                setDefaultAttach(
+                  "Attach files by dragging & dropping, selecting or pasting them."
+                )} */}
+              {/* Validation for image type */}
+              <textarea
+                {...dragProps}
+                key="input"
+                id="input"
+                name="input"
+                className="flex h-[200px] w-[95%] rounded-md border-[1px] border-solid border-[#cad1d9] bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0"
+                placeholder="Leave a comment"
+                value={inputValue ?? ""}
+                onChange={(e) => {
+                  setPostData({
+                    ...postData,
+                    body: e.target.value,
+                  });
+                  setInputValue(e.target.value);
+                }}
+              ></textarea>
+              <div
+                onClick={onImageUpload}
+                onError={() => console.log("error")}
+                className="hidden med:flex med:h-[44px] med:w-[98%] med:cursor-pointer med:items-center med:justify-between med:border-t-[1px] med:border-dashed med:border-[#cad1d9] med:bg-[#f6f8fa]"
+              >
+                <span
+                  className={`${
+                    defaultAttach ===
+                    "Attach files by dragging & dropping, selecting or pasting them."
+                      ? "text-[#57606a]"
+                      : "text-[#d23641]"
+                  } ml-[4px] text-[14px] `}
+                >
+                  {defaultAttach}
+                </span>
 
-        <input
-          className="flex h-[200px] w-[95%] rounded-md border-[1px] border-solid border-[#cad1d9] bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0"
-          placeholder="Leave a comment"
-          onChange={(e) =>
-            setPostData({
-              ...postData,
-              body: e.target.value,
-            })
-          }
-        ></input>
-        <div className="hidden med:flex med:h-[44px] med:w-[98%] med:cursor-pointer med:items-center med:justify-between med:border-t-[1px] med:border-dashed med:border-[#cad1d9] med:bg-[#f6f8fa]">
-          <span className="ml-[4px] text-[14px] text-[#57606a]">
-            Attach files by dragging {"&"} dropping, selecting or pasting them.
-          </span>
-          <section
-            onMouseOver={() => setHoverOnMarkDown(true)}
-            onMouseOut={() => setHoverOnMarkDown(false)}
-          >
-            <MarkdownIcon
-              fill={`${hoverOnMarkDown ? "#0469d6" : "#57606a"}`}
-              className="relative"
-            />
-            <div
-              className={`
+                <section
+                  onMouseOver={() => setHoverOnMarkDown(true)}
+                  onMouseOut={() => setHoverOnMarkDown(false)}
+                >
+                  <MarkdownIcon
+                    fill={`${hoverOnMarkDown ? "#0469d6" : "#57606a"}`}
+                    className="relative"
+                  />
+                  <div
+                    className={`
             ${hoverOnMarkDown ? "med:flex" : "hidden"}  
             absolute top-[66%] right-[21px] w-[max-content] cursor-text items-center justify-center rounded-md bg-black p-[5px_9px]`}
-            >
-              <span className="downward-triangle absolute top-[100%] left-[200px] h-[9px] w-[9px] bg-black"></span>
-              <span className="text-xs text-[white]">
-                {" "}
-                Styling with Markdown is supported
-              </span>
-            </div>
-          </section>
-        </div>
+                  >
+                    <span className="downward-triangle absolute top-[100%] left-[200px] h-[9px] w-[9px] bg-black"></span>
+                    <span className="text-xs text-[white]">
+                      {" "}
+                      Styling with Markdown is supported
+                    </span>
+                  </div>
+                  {/* here */}
+                </section>
+              </div>
+            </>
+          )}
+        </ImageUploading>
+
         <section className="hidden med:flex med:h-[45px] med:w-[100%] med:items-center">
           <div
             className="ml-[4px] mt-[10px] flex w-[217px] cursor-pointer items-center justify-between med:w-[100%]"
@@ -270,7 +369,7 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
                   hoverOnLowerMarkDown ? "text-[#0469d6]" : "text-[#57606a]"
                 }`}
               >
-                Styling with Markdown is supported?
+                Styling with Markdown is supported
               </span>
             </div>
             <SubmitBig postData={postData} />
@@ -296,6 +395,7 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
           </a>
         </span>
       </div>
+      <Dropzone />
     </section>
   );
 }

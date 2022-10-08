@@ -1,5 +1,5 @@
 import { GearIcon } from "@primer/octicons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import x from "../../img/x.svg";
 import check from "../../img/check.svg";
 
@@ -49,7 +49,7 @@ function NewAssignee({
   const [mouseOver, setMouseOver] = useState("");
   const [showDropDown, setShowDropDown] = useState("");
   const [mainHeader, setMainHeader] = useState<string[]>([]);
-
+  useEffect(() => console.log(controller[0].data), [controller]);
   if (
     controller[0].data === undefined ||
     controller[0].default.descriptionWithoutLink === undefined

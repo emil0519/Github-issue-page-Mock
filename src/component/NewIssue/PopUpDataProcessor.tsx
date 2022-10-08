@@ -103,6 +103,8 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
     ]);
   }, [assigneesData, labelData]);
 
+  useEffect(() => console.log(assigneesData), [assigneesData]);
+
   const fetchedAssigneeData = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/assignees",
