@@ -41,7 +41,7 @@ function NewIssueWrapper() {
   }, [controller]);
 
   return (
-    <section className="flex flex-col med:relative med:m-[0_auto] med:w-[95%] med:flex-row med:justify-center big:relative">
+    <section className="flex flex-col med:relative med:m-[0_auto] med:w-[95%] med:flex-row med:justify-center">
       <img
         src={avatar}
         alt=""

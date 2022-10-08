@@ -21,8 +21,9 @@ import {
 } from "@primer/octicons-react";
 import info from "../../img/info.svg";
 import { PostDataProps } from "./NewIssueWrapper";
+import SubmitBig from "./SubmitBig";
 
-type EditSectionProps = {
+export type EditSectionProps = {
   postData: {
     title: string;
     body: string;
@@ -253,21 +254,33 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
         </div>
         <section className="hidden med:flex med:h-[45px] med:w-[100%] med:items-center">
           <div
-            className="ml-[4px] mt-[10px] flex w-[217px] cursor-pointer"
+            className="ml-[4px] mt-[10px] flex w-[217px] cursor-pointer items-center justify-between med:w-[100%]"
             onMouseOver={() => setHoverOnLowerMarkDown(true)}
             onMouseOut={() => setHoverOnLowerMarkDown(false)}
           >
-            <MarkdownIcon
-              fill={`${hoverOnLowerMarkDown ? "#0469d6" : "#57606a"} ml-[5px]`}
-              className="relative"
-            />
-            <span
-              className={`ml-[4px] text-[12px] ${
-                hoverOnLowerMarkDown ? "text-[#0469d6]" : "text-[#57606a]"
-              }`}
+            <div className="flex items-center justify-start">
+              <MarkdownIcon
+                fill={`${
+                  hoverOnLowerMarkDown ? "#0469d6" : "#57606a"
+                } ml-[5px]`}
+                className="relative"
+              />
+              <span
+                className={`ml-[4px] text-[12px] ${
+                  hoverOnLowerMarkDown ? "text-[#0469d6]" : "text-[#57606a]"
+                }`}
+              >
+                Styling with Markdown is supported?
+              </span>
+            </div>
+            <SubmitBig postData={postData} />
+            {/* <section
+              className={`flex h-[32px] w-[95%] items-center justify-center rounded-md border-[0.3px] border-solid border-[#79b288] `}
             >
-              Styling with Markdown is supported
-            </span>
+              <span className="text-[16px] font-semibold text-[#e8f5eb]">
+                Submit new issue
+              </span>
+            </section> */}
           </div>
         </section>
       </section>

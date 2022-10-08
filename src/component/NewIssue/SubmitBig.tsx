@@ -2,7 +2,7 @@ import { PostDataProps } from "./NewIssueWrapper";
 import { useCreateIssueMutation } from "../../state/issueRTK";
 import { useNavigate } from "react-router-dom";
 
-function Submit({ postData }: PostDataProps) {
+function SubmitTest({ postData }: PostDataProps) {
   const [createIssue] = useCreateIssueMutation();
   const navigate = useNavigate();
 
@@ -24,10 +24,10 @@ function Submit({ postData }: PostDataProps) {
   return (
     <section
       onClick={() => handleSubmit()}
-      className="mt-[32px] flex w-[100%] justify-center med:absolute med:top-[74%] med:right-[250px] med:h-[32px] med:w-[147px] med:cursor-default"
+      className="hidden med:mr-[8px] med:flex med:h-[32px] med:w-[147px] med:cursor-default med:justify-center"
     >
       <section
-        className={`flex h-[32px] w-[95%] items-center justify-center rounded-md border-[0.3px] border-solid border-[#79b288] ${
+        className={`${
           postData !== undefined && postData.title.length === 0
             ? "bg-[#8acd9a]"
             : "bg-[#2da454]"
@@ -39,7 +39,7 @@ function Submit({ postData }: PostDataProps) {
           postData !== undefined && postData.title.length === 0
             ? "cursor-default"
             : "cursor-pointer"
-        }`}
+        } flex h-[32px] w-[95%] items-center justify-center rounded-md border-[0.3px] border-solid border-[#79b288] `}
       >
         <span className="text-[16px] font-semibold text-[#e8f5eb]">
           Submit new issue
@@ -48,4 +48,4 @@ function Submit({ postData }: PostDataProps) {
     </section>
   );
 }
-export default Submit;
+export default SubmitTest;

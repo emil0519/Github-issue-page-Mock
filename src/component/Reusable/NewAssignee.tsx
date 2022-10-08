@@ -49,14 +49,6 @@ function NewAssignee({
   const [mouseOver, setMouseOver] = useState("");
   const [showDropDown, setShowDropDown] = useState("");
   const [mainHeader, setMainHeader] = useState<string[]>([]);
-  const [fetchedData, setFetchedData] = useState<any>();
-
-  useEffect(() => {
-    const newData = controller.map((item) => item.data);
-    if (newData !== undefined) {
-      setFetchedData(newData);
-    }
-  }, [controller]);
 
   if (
     controller[0].data === undefined ||
@@ -261,7 +253,7 @@ function NewAssignee({
                             </span>
                           </div>
                         )}
-                        <div className="flex max-h-[204px] flex-col overflow-y-auto">
+                        <div className="flex h-[204px] flex-col overflow-y-auto overflow-x-hidden">
                           {controller[clickIndex].data.map((item: any) => (
                             //data start to loop here
                             <div

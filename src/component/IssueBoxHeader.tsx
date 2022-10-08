@@ -238,7 +238,7 @@ function IssueBoxHeader() {
                               {item.name}
                             </span>
                             {item.description.length !== 0 ? (
-                              <span className=" mt-[3px] w-[max-content] text-xs text-[#57606a] small:inline-block small:h-[15px] small:w-[220px] small:overflow-hidden small:whitespace-nowrap">
+                              <span className=" small:-nowrap mt-[3px] w-[max-content] text-xs text-[#57606a] small:inline-block small:h-[15px] small:w-[220px] small:overflow-hidden">
                                 {item.description}
                               </span>
                             ) : (
