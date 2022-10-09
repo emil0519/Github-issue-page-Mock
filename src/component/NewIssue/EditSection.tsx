@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import InputOptions from "../Reusable/InputOptions";
 import Dropzone from "./Dropzone";
 import Markdown from "./Markdown";
+import ReactMarkdown from "react-markdown";
 import {
   ChevronUpIcon,
   ChevronDownIcon,
@@ -59,7 +60,6 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
     imageList: ImageListType,
     addUpdateIndex: number[] | undefined
   ) => {
-    console.log(addUpdateIndex);
     setDefaultAttach(
       "Attach files by dragging & dropping, selecting or pasting them."
     );
@@ -81,10 +81,10 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
     setImages(imageList as never[]);
   };
 
-  useEffect(() => {
-    console.log(inputValue.split(">"));
-    console.log(images.map((item) => item.file.name));
-  }, [inputValue]);
+  // useEffect(() => {
+  //   console.log(inputValue.split(">"));
+  //   console.log(images.map((item) => item.file.name));
+  // }, [inputValue]);
 
   useEffect(() => {
     //add image name & src into input
@@ -93,9 +93,9 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
     setInputValue(newInput);
   }, [localImage]);
 
-  useEffect(() => {
-    console.log(inputValue);
-  }, [inputValue]);
+  // useEffect(() => {
+  //   console.log(inputValue);
+  // }, [inputValue]);
   useEffect(
     () => (clickOnACount % 2 !== 0 ? setClickOnA(true) : setClickOnA(false)),
     [clickOnACount]
