@@ -1,14 +1,34 @@
 import { useState } from "react";
 
 // type arrayProps = { array: (string | number | JSX.Element)[][] };
-type arrayProps = { array: any };
+type arrayProps = {
+  array: any;
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+};
 
-function InputOptions({ array }: arrayProps) {
+function InputOptions({ array, inputValue, setInputValue }: arrayProps) {
   const [mouseOver, setMouseOver] = useState("");
   return (
     <div className={`ml-[13px] flex cursor-pointer`}>
       {array.map((item: any) => (
         <div
+          onClick={() => {
+            if (
+              item[2] === "ordered-list" ||
+              item[2] === "unordered-list" ||
+              item[2] === "quote"
+            ) {
+              setInputValue(item[4] + " " + inputValue);
+            } else if (item[2] === "link") {
+              setInputValue(`[${inputValue}](url)`);
+            } else if (item[4] === "") {
+              console.log("return");
+              return;
+            } else {
+              setInputValue(item[4] + inputValue + item[4]);
+            }
+          }}
           onMouseOver={() => setMouseOver(item[2])}
           onMouseOut={() => setMouseOver("")}
           className={`${item[3] === "med" ? "hidden" : "block"} ${

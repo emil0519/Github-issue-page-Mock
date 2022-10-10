@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 import InputOptions from "../Reusable/InputOptions";
-import Dropzone from "./Dropzone";
-import Markdown from "./Markdown";
-import ReactMarkdown from "react-markdown";
 import {
   ChevronUpIcon,
   ChevronDownIcon,
@@ -72,19 +69,8 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
         `,
       ])
     );
-
-    // localImage.map((item,index)=>{
-    //   // if (!inputValue.includes(item)){
-
-    //   // }
-    // })
     setImages(imageList as never[]);
   };
-
-  // useEffect(() => {
-  //   console.log(inputValue.split(">"));
-  //   console.log(images.map((item) => item.file.name));
-  // }, [inputValue]);
 
   useEffect(() => {
     //add image name & src into input
@@ -93,61 +79,92 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
     setInputValue(newInput);
   }, [localImage]);
 
-  // useEffect(() => {
-  //   console.log(inputValue);
-  // }, [inputValue]);
   useEffect(
     () => (clickOnACount % 2 !== 0 ? setClickOnA(true) : setClickOnA(false)),
     [clickOnACount]
   );
 
   const inputIconsArray = [
-    //[0]=JSX component,[1]=Pop-up message, [2]=item name
-    [<HeadingIcon fill="#4d555e" />, "Add heading text", "title"],
-    [<BoldIcon fill="#4d555e" />, "Add bold text, <Cmd+b>", "bold"],
-    [<ItalicIcon fill="#4d555e" />, "Add italic text, <Cmd+i>", "italic"],
+    //[0]=JSX component,[1]=Pop-up message, [2]=item name , [3]=Showing condition (Non-applicable),
+    //[4]=onClick event parameter
+    [<HeadingIcon fill="#4d555e" />, "Add heading text", "title", "", ""],
+    [<BoldIcon fill="#4d555e" />, "Add bold text, <Cmd+b>", "bold", "", "**"],
+    [
+      <ItalicIcon fill="#4d555e" />,
+      "Add italic text, <Cmd+i>",
+      "italic",
+      "",
+      "_",
+    ],
     [
       <ListUnorderedIcon fill="#4d555e" />,
       "Add a bulleted list, <Cmd+Shift+8>",
       "ordered-list",
+      "",
+      "-",
     ],
     [
       <ListOrderedIcon fill="#4d555e" />,
       "Add a numbered list, <Cmd+Shift+7>",
       "unordered-list",
+      "",
+      "1.",
     ],
     [
       <TasklistIcon fill="#4d555e" />,
       "Add a task list, <Cmd+Shift+l>",
       "task-list",
+      "",
+      "",
     ],
   ];
 
   const rightIconsArray = [
     //[0]=JSX component,[1]=Pop-up message, [2]=item name, [3]=Showing condition,
-    //[4]= interchangeable style
-    [<HeadingIcon fill="#4d555e" />, "Add heading text", "title", "med"],
-    [<BoldIcon fill="#4d555e" />, "Add bold text, <Cmd+b>", "bold", "med"],
+    //[4]= interchangeable style, [5]=onClick event parameter
+    [<HeadingIcon fill="#4d555e" />, "Add heading text", "title", "med", ""],
+    [
+      <BoldIcon fill="#4d555e" />,
+      "Add bold text, <Cmd+b>",
+      "bold",
+      "med",
+      "**",
+    ],
     [
       <ItalicIcon fill="#4d555e" />,
       "Add italic text, <Cmd+i>",
       "italic",
       "med",
+      "_",
     ],
-    [<QuoteIcon fill="#4d555e" />, "Add a quote, <Cmd+Shift+.>", "quote", ""],
-    [<CodeIcon fill="#4d555e" />, "Add code, <Cmd+e>", "code", ""],
-    [<LinkIcon fill="#4d555e" />, "Add a link, <Cmd+k>", "link", "pop-des"],
+    [
+      <QuoteIcon fill="#4d555e" />,
+      "Add a quote, <Cmd+Shift+.>",
+      "quote",
+      "",
+      ">",
+    ],
+    [<CodeIcon fill="#4d555e" />, "Add code, <Cmd+e>", "code", "", "`"],
+    [
+      <LinkIcon fill="#4d555e" />,
+      "Add a link, <Cmd+k>",
+      "link",
+      "pop-des",
+      "[](url)",
+    ],
     [
       <ListUnorderedIcon fill="#4d555e" />,
       "Add a bulleted list, <Cmd+Shift+8>",
       "ordered-list",
       "med",
+      "-",
     ],
     [
       <ListOrderedIcon fill="#4d555e" />,
       "Add a numbered list, <Cmd+Shift+7>",
       "unordered-list",
       "med",
+      "1.",
     ],
     [
       <TasklistIcon fill="#4d555e" />,
@@ -172,8 +189,6 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
     [<ReplyIcon fill="#4d555e" />, "Add saved reply", "reply", ""],
   ];
 
-  //  這邊還沒能讓pop up text放到文字的左邊，之後要修
-
   return (
     <section className="mr-auto ml-auto flex h-[max-content] w-[95%] flex-col med:m-0 med:flex med:max-w-[862px] med:flex-col">
       <section className="med:border[#cad1d9] mt-[36px] flex h-[max-content] w-[100%] flex-col items-center med:relative med:mr-[12px] med:items-start med:rounded-md med:border-[0.5px] med:border-solid med:p-[3px] med:pt-[8px]">
@@ -191,7 +206,7 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
           }
         ></input>
         {/* <section className="z-20 mb-[-1px] hidden w-[100%] border-b-[1px] border-[#cad1d9] med:block"> */}
-        <section className="ml-[34px] w-[100%] med:m-0 big:flex big:w-[100%] big:items-center big:justify-center">
+        <section className="ml-[34px] w-[100%] flex-col med:m-0 big:flex big:w-[100%] big:items-center big:justify-center">
           <section className="mt-[12px] flex w-[95%] med:relative med:z-[2]">
             <div className="z-[1] hidden med:absolute med:top-[100%] med:block med:h-[0.7px] med:w-[100%] med:bg-[#cad1d9] "></div>
             <div
@@ -243,7 +258,9 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
             images={images}
           />
           <section
-            className={`${clickName === "preview" ? "hidden" : "block"}`}
+            className={`${
+              clickName === "preview" ? "hidden" : "block"
+            } w-[100%]`}
           >
             {/* hidden here */}
             <section className="mt-[10px] h-[max-content] w-[95%] justify-between med:justify-end">
@@ -275,9 +292,17 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
                   />
                 </summary>
 
-                <InputOptions array={inputIconsArray} />
+                <InputOptions
+                  array={inputIconsArray}
+                  inputValue={inputValue}
+                  setInputValue={setInputValue}
+                />
               </details>
-              <InputOptions array={rightIconsArray} />
+              <InputOptions
+                array={rightIconsArray}
+                inputValue={inputValue}
+                setInputValue={setInputValue}
+              />
             </section>
             <ImageUploading
               multiple
@@ -286,28 +311,8 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
               maxNumber={maxNumber}
               resolutionWidth={10}
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageRemoveAll,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-                errors,
-              }) => (
+              {({ onImageUpload, isDragging, dragProps, errors }) => (
                 <>
-                  {/* {imageList.map((image, index) => (
-                <div key={index} className="image-item">
-                  <img src={image.dataURL} alt="" className="h-auto w-auto" />
-                  <div className="image-item__btn-wrapper">
-                    <span>
-                      {image.dataURL?.substring(0, 50)}......<br></br>,
-                      {image.file!.name}
-                    </span>
-                  </div>
-                </div>
-              ))} */}
                   {errors &&
                     errors.acceptType &&
                     setDefaultAttach("We don't support that file type.")}
@@ -316,7 +321,9 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
                     key="input"
                     id="input"
                     name="input"
-                    className="flex h-[200px] w-[95%] rounded-md border-[1px] border-solid border-[#cad1d9] bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0"
+                    className={`${
+                      isDragging ? "border-[#dcff85]" : "border-[#cad1d9]"
+                    } flex h-[200px] w-[95%] rounded-md border-[1px] border-solid  bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0`}
                     placeholder="Leave a comment"
                     value={inputValue ?? ""}
                     onChange={(e) => {
@@ -413,8 +420,6 @@ function EditSection({ postData, setPostData }: EditSectionProps) {
           </a>
         </span>
       </div>
-      <Dropzone />
-      <Markdown />
     </section>
   );
 }

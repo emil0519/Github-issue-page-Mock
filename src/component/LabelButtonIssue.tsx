@@ -106,7 +106,7 @@ function LabelButtonsIssues() {
             </MileStoneSubSection>
           </MileSection>
         </SubWrapOne>
-        <NewLabel onClick={() => navigate("/")}>
+        <NewLabel onClick={() => navigate("/NewIssue")}>
           <NewLabelText>New</NewLabelText>
         </NewLabel>
       </UpperWrapper>

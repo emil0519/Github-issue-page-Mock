@@ -1,47 +1,16 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import NewAssignee from "../../component/Reusable/NewAssignee";
+import NewAssigneeStories from "./NewAssigneeStory";
 
 export default {
   title: "New-Issue/NewAssignee",
-  component: NewAssignee,
+  component: NewAssigneeStories,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen",
   },
 };
 
-const Template = (args) => <NewAssignee {...args} />;
-
-// type controllerProps = {
-//     controller: {
-//       title: string;
-//       default: {
-//         descriptionWithoutLink: string;
-//         descriptionWithLink?: string;
-//         desLink?: string;
-//         isLinkDecoration?: boolean;
-//         inputPlaceholder: string;
-//         mainHeader: string;
-//         subHeader?: string;
-//         clearText?: string;
-//         isOpen: boolean;
-//         isGear?: boolean;
-//       };
-//       data?: any;
-//       defaultData?: any;
-//       selected?: string[];
-//       showSelectedData: { title: string; icon: string };
-//     }[];
-//     clickIndex: number;
-//     inputValue: string;
-//     clickRate: number;
-//     clearAssigneeRate: number;
-//     setClickIndex: React.Dispatch<React.SetStateAction<number>>;
-//     setInputValue: React.Dispatch<React.SetStateAction<string>>;
-//     setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
-//     setClickRate: React.Dispatch<React.SetStateAction<number>>;
-//     setClearAssigneeRate: React.Dispatch<React.SetStateAction<number>>;
-//   };
+const Template = (args) => <NewAssigneeStories {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

@@ -16,10 +16,10 @@ root.render(
   <BrowserRouter>
     <Provider store={store}>
       <Routes>
-        {/* <Route path="/" element={<SignIn />}></Route> */}
+        <Route path="/" element={<SignIn />}></Route>
         <Route path="/App" element={<App />}></Route>
         <Route path="/Label" element={<Label />}></Route>
-        <Route path="/" element={<NewIssue />}></Route>
+        <Route path="/NewIssue" element={<NewIssue />}></Route>
       </Routes>
     </Provider>
   </BrowserRouter>

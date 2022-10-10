@@ -34,22 +34,56 @@ type controllerProps = {
   setClearAssigneeRate: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function NewAssignee({
-  controller,
-  inputValue,
-  setInputValue,
-  clickIndex,
-  setClickIndex,
-  setSelectedValue,
-  clickRate,
-  setClickRate,
-  clearAssigneeRate,
-  setClearAssigneeRate,
-}: controllerProps) {
+function NewAssigneeStories() {
   const [mouseOver, setMouseOver] = useState("");
   const [showDropDown, setShowDropDown] = useState("");
   const [mainHeader, setMainHeader] = useState<string[]>([]);
-  useEffect(() => console.log(controller[0].data), [controller]);
+  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [clickRate, setClickRate] = useState<number>(0);
+  const [clearAssigneeRate, setClearAssigneeRate] = useState<number>(0);
+
+  const [controller, setController] = useState<any>([
+    {
+      title: "Assignee",
+      default: {
+        descriptionWithoutLink: "No one- ",
+        descriptionWithLink: "assign yourself",
+        desLink: "https://github.com/emil0519?tab=repositories",
+        isLinkDecoration: false,
+        inputPlaceholder: "Type or choose a user",
+        mainHeader: "Assign up to 10 people to this issue",
+        subHeader: "Suggestion",
+        clearText: "clear assignee",
+        isOpen: true,
+        isGear: true, //can be cancel by"x" button or not
+      },
+      data: [
+        {
+          icon: "https://avatars.githubusercontent.com/u/97882056?v=4",
+          title: "emil0519",
+        },
+        {
+          icon: "https://avatars.githubusercontent.com/u/82010307?v=4",
+          title: "Xie-MS",
+        },
+      ],
+      defaultData: [
+        {
+          icon: "https://avatars.githubusercontent.com/u/97882056?v=4",
+          title: "emil0519",
+        },
+        {
+          icon: "https://avatars.githubusercontent.com/u/82010307?v=4",
+          title: "Xie-MS",
+        },
+      ],
+      selected: [] as string[],
+      showSelectedData: [],
+    },
+  ]);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [clickIndex, setClickIndex] = useState<number>(0);
+
   if (
     controller[0].data === undefined ||
     controller[0].default.descriptionWithoutLink === undefined
@@ -61,7 +95,7 @@ function NewAssignee({
       {controller.map((item: any, index: number) => {
         return (
           <section
-            className={`mt-[10px] flex w-[100%] ${
+            className={`mt-[10px] flex w-[100%] m-auto ${
               item.default.isGear ? "cursor-pointer" : "cursor-text"
             } flex-col items-start justify-center  med:relative med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap`}
           >
@@ -128,14 +162,7 @@ function NewAssignee({
                 return renderData.map((item) => {
                   return (
                     <>
-                      <div
-                        onClick={() => {
-                          console.log("hello world");
-                          setSelectedValue(item.title);
-                          setClickRate(clickRate + 1);
-                        }}
-                        className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center"
-                      >
+                      <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
                         {item.icon.includes("http") ? (
                           <img
                             src={item.icon}
@@ -238,14 +265,31 @@ function NewAssignee({
                               className="ml-[40px] mr-[4px] h-[16px] w-[16px] cursor-pointer"
                               alt=""
                             ></img>
-                            <span className="ml-[9px] text-xs">
+                            <span
+                              className="ml-[9px] text-xs"
+                              // onClick={() => {
+                              //   const newController = controller.map(
+                              //     (item: any, index: number) => {
+                              //       if (index === clickIndex) {
+                              //         return {
+                              //           ...item,
+                              //           selected: [],
+                              //         };
+                              //       }
+                              //       return { ...item };
+                              //     }
+                              //   );
+                              //   // console.log(newController);
+                              //   setController(newController);
+                              // }}
+                            >
                               {mainHeader[3]}
                             </span>
                           </div>
                         )}
                         <div className="flex h-[204px] flex-col overflow-y-auto overflow-x-hidden">
                           {controller[clickIndex].data.map((item: any) => (
-                            //每一項data
+                            //data start to loop here
                             <div
                               onClick={() => {
                                 setInputValue("");
@@ -319,6 +363,7 @@ function NewAssignee({
                                   ></img>
                                 )}
                               </div>
+
                               {item.description === undefined ? (
                                 <span className=" mr-[6px] text-[12px] text-[#737a81]">
                                   {item.title}
@@ -348,4 +393,4 @@ function NewAssignee({
   );
 }
 
-export default NewAssignee;
+export default NewAssigneeStories;
