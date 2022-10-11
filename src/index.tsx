@@ -8,6 +8,7 @@ import { store } from "./state/store";
 import SignIn from "./component/SignIn";
 import Label from "./component/Label";
 import NewIssue from "./component/NewIssue";
+import IssuePage from "./IssuePage/IssuePage";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -20,6 +21,7 @@ root.render(
         <Route path="/App" element={<App />}></Route>
         <Route path="/Label" element={<Label />}></Route>
         <Route path="/NewIssue" element={<NewIssue />}></Route>
+        <Route path="/IssuePage" element={<IssuePage />}></Route>
       </Routes>
     </Provider>
   </BrowserRouter>

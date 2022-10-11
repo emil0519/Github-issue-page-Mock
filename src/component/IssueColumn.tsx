@@ -5,15 +5,14 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@primer/octicons-react";
-
+import { useNavigate } from "react-router-dom";
 import comment from "../img/comment.svg";
 import { useState, useEffect, useContext } from "react";
 import { useSearchParams } from "react-router-dom";
 import { UserContext } from "../utils/useContext";
-
 import { hourAdder, timeAgo } from "../utils/horus";
-
 import { useGetAllIssuesQuery } from "../state/issueRTK";
+
 function IssueColumn() {
   const { value, setValue } = useContext(UserContext);
   const [queryString, setQueryString] = useState("");
@@ -24,7 +23,7 @@ function IssueColumn() {
   const [type, setType] = useState("/issues");
   const [name, setName] = useState("/emil0519");
   const [repo, setRepo] = useState("/testing-issues");
-
+  const navigate = useNavigate();
   const { data } = useGetAllIssuesQuery({
     baseType: baseType,
     type: type,
@@ -249,7 +248,10 @@ function IssueColumn() {
                 })()}
 
                 <div className="ml-[14px] flex flex-col">
-                  <span className="text-md mt-[10px] font-semibold">
+                  <span
+                    onClick={() => navigate("/IssuePage")}
+                    className="text-md mt-[10px] font-semibold hover:text-[#1b62cd]"
+                  >
                     {item.title}
                   </span>
                   <div className="flex flex-nowrap">
