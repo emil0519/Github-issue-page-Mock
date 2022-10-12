@@ -13,6 +13,7 @@ function AssigneeLabel() {
         <span className="mr-[72px] text-xs text-[#6b7279]">Labels</span>
         <PreviewLabel />
       </div>
+      <div className="mt-[16px] h-[0.5px] w-[95%] bg-[#d2d8de]"></div>
     </section>
   );
 }

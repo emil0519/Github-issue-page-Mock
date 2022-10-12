@@ -68,7 +68,7 @@ function NewAssignee({
             <section
               onClick={() => {
                 setShowDropDown(item.title);
-                setClickIndex(index);
+                setClickIndex!(index);
                 setMainHeader([
                   item.default.mainHeader,
                   item.default.inputPlaceholder,
