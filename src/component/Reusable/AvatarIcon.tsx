@@ -8,7 +8,8 @@ type AvatarProps = {
 };
 
 function AvatarIcon({ data, render }: AvatarProps) {
-  useEffect(() => console.log(data), [data]);
+  //data - to compare owner of this repo and issue
+  //render- for actual render in this component
 
   const [hover, setHover] = useState<string>("");
   if (render === undefined) {
@@ -38,7 +39,7 @@ function AvatarIcon({ data, render }: AvatarProps) {
             <span className="mt-[8px] ml-[14px] text-xs font-semibold">
               {item.login}
             </span>
-            {item.login === data.assignee.login ? (
+            {item.login === data.user.login ? (
               // 若這個component要render的用戶同時擁有這個創立issue跟擁有這個repo，會在hover的pop up message中顯示
               <>
                 <div className="ml-[14px] mt-[5px] flex items-center">

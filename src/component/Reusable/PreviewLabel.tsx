@@ -6,7 +6,7 @@ type LabelProps = {
 
 function PreviewLabel({ labels }: LabelProps) {
   const [mouseOver, setMouseOver] = useState<string>("");
-
+  useEffect(() => console.log(labels), [labels]);
   return (
     <>
       {labels.map((item: any) => (
@@ -20,7 +20,9 @@ function PreviewLabel({ labels }: LabelProps) {
             {item.name}
           </span>
           <>
-            {item.description.length === 0 ? (
+            {item.description === undefined ? (
+              ""
+            ) : item.description.length === 0 ? (
               ""
             ) : (
               <div

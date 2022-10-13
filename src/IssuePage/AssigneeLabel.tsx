@@ -10,6 +10,7 @@ function AssigneeLabel({ data }: DataProps) {
       setAvatarData(data.assignees);
     }
   }, [data]);
+
   if (data === undefined) {
     return <></>;
   }

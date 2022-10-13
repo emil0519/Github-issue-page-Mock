@@ -1,4 +1,3 @@
-import { time } from "console";
 import { useEffect, useState } from "react";
 import AssigneeLabelTimeline from "./AssigneeLabelTimeline";
 import InitialContent from "./InitialContent";
@@ -10,13 +9,6 @@ export type DataCommentProps = {
 
 function IssuePageProcessor({ data, timeline }: DataCommentProps) {
   const [avatarData, setAvatarData] = useState();
-  useEffect(() => {
-    if (timeline.data !== undefined) {
-      const dataForAvatar = timeline.data.map((item: any) => item.actor);
-      console.log(dataForAvatar);
-      setAvatarData(dataForAvatar);
-    }
-  }, [timeline]);
 
   const optionData = [];
 
@@ -50,8 +42,7 @@ function IssuePageProcessor({ data, timeline }: DataCommentProps) {
                 stateReason: item.event === "closed" ? item.state_reason : null,
               },
             ];
-            // const dataForAvatar = item.avatar.map((item: any) => item);
-            console.log(typeof item.actor);
+
             return (
               <>
                 <AssigneeLabelTimeline
@@ -63,6 +54,7 @@ function IssuePageProcessor({ data, timeline }: DataCommentProps) {
             );
           }
         })}
+        <aside className="ml-auto mr-auto h-[1.5px] w-[95%] bg-[#d3d9e0]"></aside>
       </>
     );
   }
