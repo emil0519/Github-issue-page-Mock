@@ -78,7 +78,6 @@ function Preview({
   }
 
   const [storeInput, setStoreInput] = useState<string>("");
-  useEffect(() => console.log(storeInput), [storeInput]);
 
   useEffect(() => {
     //在preview時將input顯示
@@ -92,13 +91,13 @@ function Preview({
         const differences = inputValue.indexOf(`>`) - startingValue + 1;
         const searcher = inputValue.substring(startingValue, differences);
         const newInput = inputValue.replace(searcher, "");
-        console.log(newInput);
+
         setStoreInput(inputValue);
         setInputValue(newInput);
       }
     } else {
       //回到write時顯示原本的input
-      console.log(storeInput);
+
       setInputValue(storeInput);
     }
   }, [clickName]);

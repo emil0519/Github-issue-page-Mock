@@ -71,14 +71,10 @@ function IssueColumn() {
     }
   }, [queryString]);
 
-  useEffect(() => console.log(value), [value]);
-
   useEffect(() => {
     if (value.paging.length !== 0 && data !== undefined && data.length === 0) {
       //當回傳的結果是0的時候，移除page2，目的是用戶有可能在page2，然後點選沒有page2的內容
       //屆時會因為query string已經有page2而無法render出正確的資料
-      console.log(nextPage.data);
-
       // setValue({
       //   ...value,
       //   paging: `page=1`,
@@ -127,49 +123,6 @@ function IssueColumn() {
       }
     }
   }, [nextPage]);
-
-  // useEffect(() => {
-  //   console.log(value.filter === "creator=emil0519" || value.filter === "");
-  //   if (
-  //     (value.filter === "creator=emil0519" || value.filter === "") &&
-  //     value.label.length === 0 &&
-  //     value.assignees.length === 0 &&
-  //     value.sort.length === 0 &&
-  //     value.closed.length === 0 &&
-  //     value.paging === "page=2"
-  //   ) {
-  //     console.log("set false");
-  //   } else {
-  //     console.log("set true");
-  //   }
-  //   // if (nextPage.data === undefined) {
-  //   //   return;
-  //   // } else if (data !== undefined) {
-  //   //   console.log(nextPage.data.length);
-  //   // }
-  // }, [nextPageQuery, queryString]);
-
-  // else if (nextPage.data.length !== 0) {
-  //   console.log(nextPage.data);
-  //   console.log("set true");
-  // } else {
-  //   console.log(nextPage.data);
-  //   console.log("set false");
-  // }
-
-  // useEffect(() => {
-  //   if (nextPage.data !== undefined) {
-  //     console.log(nextPageQuery);
-  //   }
-  //   if (nextPage.data !== undefined && nextPage.data.length === 0) {
-  //     console.log("set false");
-
-  //     setPaging(false);
-  //   } else {
-  //     console.log("set true");
-  //     setPaging(true);
-  //   }
-  // }, [nextPageQuery]);
 
   useEffect(() => {
     // 將useContext的資料轉為query string
@@ -249,7 +202,7 @@ function IssueColumn() {
 
                 <div className="ml-[14px] flex flex-col">
                   <span
-                    onClick={() => navigate("/IssuePage")}
+                    onClick={() => navigate(`/IssuePage?query=${item.number}`)}
                     className="text-md mt-[10px] font-semibold hover:text-[#1b62cd]"
                   >
                     {item.title}

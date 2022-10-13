@@ -13,7 +13,7 @@ function IssueBoxHeader() {
   const { value, setValue } = useContext(UserContext);
   const [clickName, setClickName] = useState<any>([]);
   const [sortClickName, setSortClickName] = useState("");
-  useEffect(() => console.log(clickName), [clickName]);
+
   interface GetLebal {
     color: string;
     default: boolean;
@@ -73,17 +73,12 @@ function IssueBoxHeader() {
   ];
 
   function labelFilter(value: string) {
-    console.log(value);
-
     const found = labelStore.filter(({ name }: { name: string }) =>
       new RegExp(value, "i").test(name)
     );
-    console.log(found);
 
     setLabelData(found);
   }
-
-  useEffect(() => console.log(labelStore), [labelStore]);
 
   function labelNavigator(name: string) {
     const newLabel = value.label;
@@ -114,25 +109,6 @@ function IssueBoxHeader() {
       ...value,
       sort: query,
     });
-
-    // if (queryOnUrl === null) {
-    //   navigate(query);
-    // } else if (!queryOnUrl.includes("sort")) {
-    //   if (query.includes("query")) {
-    //     let replacedQuery = query.slice(8).replace(/^/, "&");
-    //     let semiFinalQuery = queryOnUrl + replacedQuery;
-    //     let finalQuery = semiFinalQuery.replace(/^/, "?query=");
-    //     navigate(finalQuery);
-    //   }
-    //   // let newQuery = queryOnUrl + query;
-    // } else {
-    //   console.log(queryOnUrl);
-    // }
-    // else if (queryState.includes("sort")) {
-    //   console.log("success");
-
-    //   // console.log(compare.includes(query));
-    // }
   }
 
   if (labelData === undefined) {

@@ -1,6 +1,20 @@
-import { IssueClosedIcon } from "@primer/octicons-react";
+import {
+  CircleSlashIcon,
+  IssueClosedIcon,
+  IssueOpenedIcon,
+} from "@primer/octicons-react";
+import { useEffect, useState } from "react";
+import { hourAdder, timeAgo } from "../utils/horus";
 
-function Title() {
+export type DataProps = {
+  data: any;
+  comments?: any;
+};
+
+function Title({ data, comments }: DataProps) {
+  if (data === undefined || comments.data === undefined) {
+    return <></>;
+  }
   return (
     <section className="mt-[24px] mr-auto ml-auto flex h-[max-content] w-[95%] flex-col items-start justify-between">
       <div className="flex w-[100%] items-center justify-between">
@@ -17,23 +31,53 @@ function Title() {
         </div>
       </div>
       <div className="flex items-center">
-        <span className="mt-[16px] text-[26px]">One more to Closed</span>
+        <span className="mt-[16px] text-[26px]">{data.title}</span>
         <span className="ml-[3px] mt-[19px] text-[26px] text-[#4d555e]">
-          #9
+          #{data.number}
         </span>
       </div>
-      <div className="mr-[8px] flex h-[32px] w-[max-content] items-center justify-center rounded-[2em] bg-[#7849d5] ">
-        <div className="p-[5px_12px]">
-          <IssueClosedIcon fill="white" />
-          <span className="text=[14px] ml-[3px] text-white">Closed</span>
-        </div>
-      </div>
+
+      <>
+        {data.state === "open" ? (
+          <>
+            <div className="mr-[8px] flex h-[32px] w-[max-content] items-center justify-center rounded-[2em] bg-[#1a7335] ">
+              <div className="p-[5px_12px]">
+                <IssueOpenedIcon fill="white" />
+                <span className="text=[14px] ml-[3px] text-white">Open</span>
+              </div>
+            </div>
+          </>
+        ) : data.state_reason === "completed" ? (
+          <div className="mr-[8px] flex h-[32px] w-[max-content] items-center justify-center rounded-[2em] bg-[#8251db] ">
+            <div className="p-[5px_12px]">
+              <IssueClosedIcon fill="white" />
+              <span className="text=[14px] ml-[3px] text-white">Closed</span>
+            </div>
+          </div>
+        ) : (
+          <div className="mr-[8px] flex h-[32px] w-[max-content] items-center justify-center rounded-[2em] bg-[#57606a] ">
+            <div className="p-[5px_12px]">
+              <CircleSlashIcon fill="white" />
+              <span className="text=[14px] ml-[3px] text-white">Closed</span>
+            </div>
+          </div>
+        )}
+      </>
       <div className="flex h-[32px] items-center">
         <span className="mr-[3px] cursor-pointer text-[14px] font-bold text-[#4d555e] hover:text-[#558bdc] hover:underline">
-          emil0519
+          {data.user.login}
         </span>
         <span className="text-[14px] text-[#5c646c]">
-          opened this issue 10 days ago · 3 comments
+          opened this issue{" "}
+          {(() => {
+            let hours = data.created_at.slice(0, -1);
+            let obj = hourAdder(8, new Date(hours));
+            let timeStamp = obj.toString().substring(4, 24);
+            let differences = Date.now() - Date.parse(timeStamp);
+            return timeAgo(new Date(Date.now() - differences));
+          })()}{" "}
+          · {comments.data.length} comment
+          {comments.data.length === 0 || comments.data.length === 1 ? "" : "s"}
         </span>
       </div>
       <div className="mt-[16px] h-[0.5px] w-[95%] bg-[#d2d8de]"></div>
