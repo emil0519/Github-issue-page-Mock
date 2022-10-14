@@ -19,7 +19,7 @@ import {
   CrossReferenceIcon,
   MarkdownIcon,
 } from "@primer/octicons-react";
-
+import { useCreateIssueMutation } from "../../state/issueRTK";
 import SubmitBig from "./SubmitBig";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import Preview from "./Preview";
@@ -36,6 +36,7 @@ export type EditSectionProps = {
 };
 
 function EditSection({ postData, setPostData, page }: EditSectionProps) {
+  const [createIssue] = useCreateIssueMutation();
   const [clickName, setClickName] = useState("write");
   const [hoverOnA, setHoverOnA] = useState(false);
   const [clickOnA, setClickOnA] = useState(false);
@@ -83,6 +84,20 @@ function EditSection({ postData, setPostData, page }: EditSectionProps) {
     () => (clickOnACount % 2 !== 0 ? setClickOnA(true) : setClickOnA(false)),
     [clickOnACount]
   );
+
+  const toCreate = async () => {
+    // if (postData.title.length === 0) {
+    //   return;
+    // }
+    // await createIssue({
+    //   baseType: "repos",
+    //   type: "/issues",
+    //   name: "/emil0519",
+    //   repo: "/testing-issues",
+    //   query: "",
+    //   newIssue: JSON.stringify(postData),
+    // });
+  };
 
   const inputIconsArray = [
     //[0]=JSX component,[1]=Pop-up message, [2]=item name , [3]=Showing condition (Non-applicable),

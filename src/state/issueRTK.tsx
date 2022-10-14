@@ -62,6 +62,7 @@ export const createIssueApi: any = createApi({
         headers: new Headers({
           "Content-Type": "application/json",
           Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          "if-none-match": "",
         }),
       }),
       providesTags: ["issues"],
@@ -73,13 +74,29 @@ export const createIssueApi: any = createApi({
         headers: new Headers({
           "Content-Type": "application/json",
           Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          "if-none-match": "",
         }),
         body: newIssue,
-        providesTags: ["create"],
+        providesTags: ["issues"],
+        // change position of providesTag if needed
       }),
+    }),
+    update: builder.mutation({
+      query: ({ baseType, type, name, repo, query, content }) => ({
+        url: `${baseType}${name}${repo}${type}${query}`,
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          "if-none-match": "",
+        }),
+        body: content,
+      }),
+      invalidatesTags: ["issues"],
     }),
   }),
 });
 
 export const { useGetAllIssuesQuery } = createIssueApi;
 export const { useCreateIssueMutation } = createIssueApi;
+export const { useUpdateMutation } = createIssueApi;

@@ -45,7 +45,7 @@ function IssuePageWrap() {
         setPostData={setPostData}
         page={"issue"}
       />
-      <EditNote />
+      <EditNote postData={postData} />
     </section>
   );
 }
