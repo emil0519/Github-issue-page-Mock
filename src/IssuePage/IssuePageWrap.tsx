@@ -10,6 +10,8 @@ import { useSearchParams } from "react-router-dom";
 function IssuePageWrap() {
   const [postData, setPostData] = useState<any>();
   const [searchParams] = useSearchParams();
+  const [inputValue, setInputValue] = useState<string>("");
+
   const query = searchParams.get("query");
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
     baseType: "repos",
@@ -41,11 +43,13 @@ function IssuePageWrap() {
       <AssigneeLabel data={data} />
       <IssuePageProcessor data={data} timeline={timeline} />
       <EditSection
+        inputValue={inputValue}
+        setInputValue={setInputValue}
         postData={postData}
         setPostData={setPostData}
         page={"issue"}
       />
-      <EditNote postData={postData} />
+      <EditNote setInputValue={setInputValue} postData={postData} />
     </section>
   );
 }

@@ -39,6 +39,7 @@ function NewIssueWrapper() {
   const [controller, setController] = useState<any>();
   const [postData, setPostData] = useState<any>();
   const [hoverOnLowerMarkDown, setHoverOnLowerMarkDown] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
 
   useEffect(() => {
     if (controller !== undefined) {
@@ -85,6 +86,8 @@ function NewIssueWrapper() {
             }
           ></input>
           <EditSection
+            inputValue={inputValue}
+            setInputValue={setInputValue}
             postData={postData}
             setPostData={setPostData}
             page={"new"}

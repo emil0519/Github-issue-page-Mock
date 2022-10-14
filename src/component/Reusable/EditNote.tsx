@@ -10,9 +10,11 @@ type EditNoteProps = {
     assignees?: string[] | undefined;
     labels?: string[] | undefined;
   };
+
+  setInputValue?: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function EditNote({ postData }: EditNoteProps) {
+function EditNote({ postData, setInputValue }: EditNoteProps) {
   const [update] = useUpdateMutation();
   useEffect(() => console.log(postData), [postData]);
   const [searchParams] = useSearchParams();
@@ -30,6 +32,7 @@ function EditNote({ postData }: EditNoteProps) {
       query: `/${query}/comments`,
       content: JSON.stringify(postData),
     });
+    setInputValue!("");
   };
   return (
     <div className="mt-[16px] flex h-[fit-content] w-[95%]">

@@ -33,9 +33,11 @@ export type EditSectionProps = {
   };
   setPostData: React.Dispatch<any>;
   page?: string;
+  inputValue:string;
+  setInputValue:React.Dispatch<React.SetStateAction<string>>;
 };
 
-function EditSection({ postData, setPostData, page }: EditSectionProps) {
+function EditSection({ postData, setPostData, page,inputValue,setInputValue }: EditSectionProps) {
   const [createIssue] = useCreateIssueMutation();
   const [clickName, setClickName] = useState("write");
   const [hoverOnA, setHoverOnA] = useState(false);
@@ -45,7 +47,6 @@ function EditSection({ postData, setPostData, page }: EditSectionProps) {
   const [hoverOnLowerMarkDown, setHoverOnLowerMarkDown] = useState(false);
   const [images, setImages] = useState<any[]>([]);
   const [localImage, setLocalImage] = useState<string[][]>([]);
-  const [inputValue, setInputValue] = useState<string>("");
 
   const [defaultAttach, setDefaultAttach] = useState<string>(
     "Attach files by dragging & dropping, selecting or pasting them."

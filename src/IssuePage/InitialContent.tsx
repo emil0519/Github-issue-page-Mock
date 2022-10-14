@@ -14,6 +14,7 @@ function InitialContent({ data }: DataCommentProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [clickOnDots, setClickOnDots] = useState<boolean>(false);
   const [editOpen, setEditOpen] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
 
   const controller = [
     { content: "Copy link", hoverColor: "red" },
@@ -152,6 +153,8 @@ function InitialContent({ data }: DataCommentProps) {
             </div>
             <section className={`${editOpen ? "block" : "hidden"}`}>
               <EditSection
+                inputValue={inputValue}
+                setInputValue={setInputValue}
                 postData={postData}
                 setPostData={setPostData}
                 page={"issue"}
