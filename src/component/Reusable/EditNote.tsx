@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import info from "../../img/info.svg";
 import { useUpdateMutation } from "../../state/issueRTK";
 import { useSearchParams } from "react-router-dom";
+import CheckDrop from "../../IssuePage/CheckDrop";
 
 type EditNoteProps = {
   postData?: {
@@ -15,6 +16,28 @@ type EditNoteProps = {
 };
 
 function EditNote({ postData, setInputValue }: EditNoteProps) {
+  const checkControl = [
+    {
+      title: "Close issue",
+      data: [
+        {
+          message: "Closed as planned",
+          description: "Done, closed, fixed, resolved",
+        },
+        {
+          message: "Closed as not planned",
+          description: "Won't fix, can't repro, duplicate, stale",
+        },
+      ],
+    },
+    {
+      title: "Reopen",
+      data: [
+        { message: "Reopen issue", description: "" },
+        { message: "Closed as not planned", description: "" },
+      ],
+    },
+  ];
   const [update] = useUpdateMutation();
   useEffect(() => console.log(postData), [postData]);
   const [searchParams] = useSearchParams();
@@ -46,13 +69,20 @@ function EditNote({ postData, setInputValue }: EditNoteProps) {
           GitHub Community Guidelines.
         </a>
       </span>
+
       <div className="flex h-[49px] items-center justify-end">
-        <div className="h-[32px] w-[79px] cursor-pointer rounded-md border-[0.5px] border-solid border-[#e2e5ea] bg-[#f5f7f9] p-[5px_16px] text-[#991026] hover:bg-[#991026] hover:text-white">
-          Close Issue
-        </div>
+        <CheckDrop checkControl={checkControl} />
         <div
           onClick={() => toCreate()}
-          className="mr-[12px] ml-[12px] flex h-[32px] w-[148px] cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-[#278644] bg-[#29994a]  hover:bg-[#288c46]"
+          className={`${
+            postData !== undefined && postData.body.length === 0
+              ? "bg-[#8acd9a]"
+              : "bg-[#29994a]"
+          } ${
+            postData !== undefined && postData.body.length === 0
+              ? "pointer-events-none	"
+              : ""
+          } relative mr-[12px] ml-[12px] flex h-[32px] w-[98px] cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-[#278644]  hover:bg-[#288c46]`}
         >
           <span className="text-white">Comment</span>
         </div>
