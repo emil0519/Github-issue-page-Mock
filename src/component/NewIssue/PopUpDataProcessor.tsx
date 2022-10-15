@@ -30,6 +30,7 @@ function PopUpDataProcessor({
   const [clickIndex, setClickIndex] = useState<number>(0);
   // 用來偵測是否有點擊選單內的元素，如有就加一，目前想不到更好的方法]
   const [searchParams] = useSearchParams();
+  const [reRender, setreRender] = useState<number>(0);
   const query = searchParams.get("query");
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
     baseType: "repos",
@@ -41,7 +42,6 @@ function PopUpDataProcessor({
   // 改進: call in condition or else it will return 404 in new issue page
 
   // useEffect(() => console.log(data), [data]);
-  // useEffect(() => console.log(controller), [controller]);
 
   useEffect(() => {
     //Options for reusable component
@@ -137,6 +137,7 @@ function PopUpDataProcessor({
 
   useEffect(() => {
     //處理每張選單勾選的element
+    console.log("invoke");
     if (controller !== undefined && controller[clickIndex].data !== undefined) {
       if (!controller[clickIndex].selected.includes(selectedValue)) {
         const filteredData = controller[clickIndex].data.filter(
@@ -157,23 +158,17 @@ function PopUpDataProcessor({
       } else if (controller[clickIndex].selected.includes(selectedValue)) {
         const num = controller[clickIndex].selected.indexOf(selectedValue);
         controller[clickIndex].selected.splice(num, 1);
-
-        // const newController = controller.map((item: any, index: number) => {
-        //   if (index === clickIndex) {
-        //     return {
-        //       ...item,
-        //       selected: controller[clickIndex].selected.splice(num, 1),
-        //     };
-        //   }
-        //   return { ...item };
-        // });
         const newController = controller;
         newController[0].selected = controller[clickIndex].selected.splice(
           num,
           1
         );
-
+        console.log(newController);
+        // 改進：這邊console.log的話會看到controller改變了，但不會重新render
+        //可能因為改變了object react會沒有反應，目前先讓NewAssignee吃一個number，強制讓它rerender
+        //參見 https://stackoverflow.com/questions/71185474/component-not-re-rendering-after-change-in-an-array-state-in-react
         setController(newController);
+        setreRender(reRender + 1);
       }
     }
   }, [selectedValue, clickRate]);
@@ -289,6 +284,7 @@ function PopUpDataProcessor({
         setClearAssigneeRate={setClearAssigneeRate}
         setController={setController}
         data={data}
+        reRender={reRender}
       />
     </section>
   );

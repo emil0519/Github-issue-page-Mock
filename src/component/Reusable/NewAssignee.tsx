@@ -36,6 +36,7 @@ type controllerProps = {
   setShowDropDown: React.Dispatch<React.SetStateAction<string>>;
   setController: any;
   data?: any;
+  reRender?: number;
 };
 
 function NewAssignee({
@@ -53,16 +54,27 @@ function NewAssignee({
   showDropDown,
   setController,
   data,
+  reRender,
 }: controllerProps) {
+  useEffect(() => console.log(controller, "outside"), [controller]);
   useEffect(() => {
-    if (controller !== undefined && data !== undefined) {
-      let newController = controller;
-      if (data.assignees.length !== 0) {
-        data.assignees.map((item: any) => {
-          newController[0].selected!.push(item.login);
-        });
-        setController(newController);
+    switch (showDropDown) {
+      case "Assignee":
+      case "Label": {
+        if (controller !== undefined && data !== undefined) {
+          let newController = controller;
+          if (data.assignees.length !== 0) {
+            data.assignees.map((item: any) => {
+              newController[0].selected!.push(item.login);
+            });
+            console.log(newController);
+            setController(newController);
+          }
+        }
+        break;
       }
+      default:
+        return;
     }
   }, [showDropDown]);
 
@@ -351,13 +363,9 @@ function NewAssignee({
                                       className={`${
                                         controller[
                                           clickIndex
-                                        ].selected!.includes(item.title)
-                                          ? // (data.assignees.length !== 0 &&
-                                            //   data.assignees.some(
-                                            //     (eachData: any) =>
-                                            //       eachData.login === item.title
-                                            //   ))
-                                            "visible"
+                                        ].selected!.includes(item.title) ||
+                                        reRender === -1
+                                          ? "visible"
                                           : "invisible"
                                       } mr-[8px] ml-[40px]  h-[16px] w-[16px]`}
                                     ></img>

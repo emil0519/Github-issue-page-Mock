@@ -16,17 +16,16 @@ function IssuePageWrap() {
   const [showDropDown, setShowDropDown] = useState("");
   const [update] = useUpdateMutation();
   const [selectedValue, setSelectedValue] = useState<string>("");
-
   useEffect(() => {
     const updateSideBar = async () => {
       let body: any;
-
       switch (showDropDown) {
         case "Assignee post": {
-          console.log("post start now");
+          console.log(controller, "in assignee");
           let selected = controller.filter(
             (item: any) => item.title === "Assignee"
           );
+          console.log(selected);
 
           let newSelected = selected[0].selected;
           body = { assignees: newSelected };
