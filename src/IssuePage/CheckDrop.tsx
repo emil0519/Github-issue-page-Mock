@@ -21,9 +21,9 @@ type CheckDropProps = {
 };
 
 function CheckDrop({ checkControl }: CheckDropProps) {
-  const [searchParams] = useSearchParams();
   const [update] = useUpdateMutation();
   const [state, setState] = useState<any>();
+  const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
     baseType: "repos",
@@ -78,13 +78,6 @@ function CheckDrop({ checkControl }: CheckDropProps) {
       });
   }, [data]);
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
-  useEffect(() => {
-    console.log(checkControl);
-  }, [checkControl]);
   if (state === undefined) {
     return <></>;
   }

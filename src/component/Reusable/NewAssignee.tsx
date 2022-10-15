@@ -32,6 +32,10 @@ type controllerProps = {
   setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
   setClickRate: React.Dispatch<React.SetStateAction<number>>;
   setClearAssigneeRate: React.Dispatch<React.SetStateAction<number>>;
+  showDropDown: string;
+  setShowDropDown: React.Dispatch<React.SetStateAction<string>>;
+  setController: any;
+  data?: any;
 };
 
 function NewAssignee({
@@ -45,14 +49,31 @@ function NewAssignee({
   setClickRate,
   clearAssigneeRate,
   setClearAssigneeRate,
+  setShowDropDown,
+  showDropDown,
+  setController,
+  data,
 }: controllerProps) {
+  useEffect(() => {
+    if (controller !== undefined && data !== undefined) {
+      let newController = controller;
+      if (data.assignees.length !== 0) {
+        data.assignees.map((item: any) => {
+          newController[0].selected!.push(item.login);
+        });
+        setController(newController);
+      }
+    }
+  }, [showDropDown]);
+
   const [mouseOver, setMouseOver] = useState("");
-  const [showDropDown, setShowDropDown] = useState("");
+
   const [mainHeader, setMainHeader] = useState<string[]>([]);
-  useEffect(() => console.log(controller[0].data), [controller]);
+
   if (
     controller[0].data === undefined ||
-    controller[0].default.descriptionWithoutLink === undefined
+    controller[0].default.descriptionWithoutLink === undefined ||
+    data === undefined
   ) {
     return <></>;
   }
@@ -61,6 +82,7 @@ function NewAssignee({
       {controller.map((item: any, index: number) => {
         return (
           <section
+            key={item.title}
             className={`mt-[10px] flex w-[100%] ${
               item.default.isGear ? "cursor-pointer" : "cursor-text"
             } flex-col items-start justify-center  med:relative med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap`}
@@ -116,7 +138,51 @@ function NewAssignee({
                     <div className="mt-[16px] h-[0.4px] w-[92%] bg-[#cdd4db]"></div>
                   </>
                 );
+              } else if (
+                data.assignees.length !== 0 ||
+                data.labels.length !== 0
+              ) {
+                //在issue page 裡面會展示的內容
+                if (data.assignees.length !== 0 && index === 0) {
+                  //改進：這邊寫死了，研究有沒有更好的方法
+                  return (
+                    <>
+                      {data.assignees.map((item: any) => (
+                        <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
+                          <img
+                            src={item.avatar_url}
+                            className="ml-[4px] mr-[5px] mt-[5px] h-[20px] w-[20px] rounded-full"
+                            alt=""
+                          ></img>
+                          <span className="text-xs font-semibold">
+                            {item.login}
+                          </span>
+                        </div>
+                      ))}
+                    </>
+                  );
+                }
+                if (data.labels.length !== 0 && index === 1) {
+                  return (
+                    <>
+                      {data.labels.map((item: any) => (
+                        <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
+                          <div
+                            style={{ background: `#${item.color}` }}
+                            className={`mr-[6px] flex h-[14px] w-[max-content] items-center justify-center rounded-full p-[5px]`}
+                          >
+                            <span className="text-xs font-semibold">
+                              {item.name}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  );
+                }
+                // return <></>;
               } else if (item.selected.length !== 0) {
+                // 在new issue page內，未點擊會顯示的內容
                 const showSelected = item.selected.map(
                   (selected: any, _index: number) =>
                     item.data.filter((item: any) => item.title === selected)
@@ -128,14 +194,8 @@ function NewAssignee({
                 return renderData.map((item) => {
                   return (
                     <>
-                      <div
-                        onClick={() => {
-                          console.log("hello world");
-                          setSelectedValue(item.title);
-                          setClickRate(clickRate + 1);
-                        }}
-                        className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center"
-                      >
+                      <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
+                        {/* 外面顯示的內容 */}
                         {item.icon.includes("http") ? (
                           <img
                             src={item.icon}
@@ -159,22 +219,24 @@ function NewAssignee({
             })()}
 
             <div className="mt-[8px] mr-auto ml-auto w-[95%] text-[12px] text-[#6c737a]">
-              {item.default.isOpen && (
-                <>
-                  {item.selected.length === 0 &&
-                    item.default.descriptionWithoutLink}
-                  {item.selected.length === 0 &&
-                    item.default.descriptionWithLink && (
-                      <>
-                        <span className="hover:text-[#3e7bd7]">
-                          <a href={item.default.desLink}>
-                            {item.default.descriptionWithLink}
-                          </a>
-                        </span>
-                      </>
-                    )}{" "}
-                </>
-              )}
+              {/* 沒有點擊進去會顯示的內容 */}
+              {item.default.isOpen &&
+                (data.assignees.length === 0 || data.labels.length === 0) && (
+                  <>
+                    {item.selected.length === 0 &&
+                      item.default.descriptionWithoutLink}
+                    {item.selected.length === 0 &&
+                      item.default.descriptionWithLink && (
+                        <>
+                          <span className="hover:text-[#3e7bd7]">
+                            <a href={item.default.desLink}>
+                              {item.default.descriptionWithLink}
+                            </a>
+                          </span>
+                        </>
+                      )}{" "}
+                  </>
+                )}
             </div>
             {(() => {
               if (item.default.isOpen === true) {
@@ -184,7 +246,12 @@ function NewAssignee({
                     <div
                       // 透明外面，點擊會關掉彈窗
                       onClick={() => {
-                        setShowDropDown("");
+                        //如果已經點擊過選單，就傳送到issue page wrap更新issue裡面的label或assignee
+                        if (showDropDown.length !== 0) {
+                          setShowDropDown(showDropDown + " post");
+                        } else {
+                          setShowDropDown("");
+                        }
                         setInputValue("");
                       }}
                       className={`${
@@ -244,96 +311,104 @@ function NewAssignee({
                           </div>
                         )}
                         <div className="flex h-[204px] flex-col overflow-y-auto overflow-x-hidden">
-                          {controller[clickIndex].data.map((item: any) => (
-                            //每一項data
-                            <div
-                              onClick={() => {
-                                setInputValue("");
-                                setSelectedValue(item.title);
-                                setClickRate(clickRate + 1);
-                              }}
-                              className={`${
-                                item.description === undefined
-                                  ? "flex-nowrap"
-                                  : "flex-wrap"
-                              } ${
-                                item.description === undefined
-                                  ? "h-[53px]"
-                                  : "h-[80px]"
-                              } flex w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:w-[298px]  `}
-                            >
+                          {controller[clickIndex].data.map(
+                            (item: any, index: number) => (
+                              //每一項data
                               <div
+                                onClick={() => {
+                                  setInputValue("");
+                                  setSelectedValue(item.title);
+                                  setClickRate(clickRate + 1);
+                                }}
                                 className={`${
-                                  item.description !== undefined &&
-                                  item.description.length === 0
-                                    ? "h-[54px]"
-                                    : "h-[16px]"
-                                } 
+                                  item.description === undefined
+                                    ? "flex-nowrap"
+                                    : "flex-wrap"
+                                } ${
+                                  item.description === undefined
+                                    ? "h-[53px]"
+                                    : "h-[80px]"
+                                } flex w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:w-[298px]  `}
+                              >
+                                <div
+                                  className={`${
+                                    item.description !== undefined &&
+                                    item.description.length === 0
+                                      ? "h-[54px]"
+                                      : "h-[16px]"
+                                  } 
                     ${
                       item.description === undefined
                         ? "w-[fit-content]"
                         : "w-[100%]"
                     }
                     mt-[17px] flex items-center justify-between small:mt-0 small:h-[35px] med:m-0`}
-                              >
-                                <div className="flex items-center">
-                                  <img
-                                    src={check}
-                                    alt=""
-                                    className={`${
-                                      controller[clickIndex].selected!.includes(
-                                        item.title
-                                      )
-                                        ? "visible"
-                                        : "invisible"
-                                    } mr-[8px] ml-[40px]  h-[16px] w-[16px]`}
-                                  ></img>
-                                  {item.icon.includes("http") ? (
+                                >
+                                  <div className="flex items-center">
                                     <img
-                                      src={item.icon}
-                                      className="ml-[4px] mr-[5px] h-[20px] w-[20px] rounded-full"
+                                      src={check}
+                                      alt=""
+                                      className={`${
+                                        controller[
+                                          clickIndex
+                                        ].selected!.includes(item.title)
+                                          ? // (data.assignees.length !== 0 &&
+                                            //   data.assignees.some(
+                                            //     (eachData: any) =>
+                                            //       eachData.login === item.title
+                                            //   ))
+                                            "visible"
+                                          : "invisible"
+                                      } mr-[8px] ml-[40px]  h-[16px] w-[16px]`}
+                                    ></img>
+
+                                    {item.icon.includes("http") ? (
+                                      <img
+                                        src={item.icon}
+                                        className="ml-[4px] mr-[5px] h-[20px] w-[20px] rounded-full"
+                                        alt=""
+                                      ></img>
+                                    ) : (
+                                      <div
+                                        style={{ background: `#${item.icon}` }}
+                                        className={`mr-[6px] h-[14px] w-[14px] rounded-full `}
+                                      ></div>
+                                    )}
+
+                                    <span className=" mr-[6px] text-[14px] font-semibold">
+                                      {item.title}
+                                    </span>
+                                  </div>
+                                  {!item.icon.includes("http") && (
+                                    <img
+                                      src={x}
+                                      className={`${
+                                        controller[
+                                          clickIndex
+                                        ].selected!.includes(item.title)
+                                          ? "visible"
+                                          : "invisible"
+                                      } mr-[13px] h-[16px] w-[16px] cursor-pointer`}
                                       alt=""
                                     ></img>
-                                  ) : (
-                                    <div
-                                      style={{ background: `#${item.icon}` }}
-                                      className={`mr-[6px] h-[14px] w-[14px] rounded-full `}
-                                    ></div>
                                   )}
-
-                                  <span className=" mr-[6px] text-[14px] font-semibold">
+                                </div>
+                                {item.description === undefined ? (
+                                  <span className=" mr-[6px] text-[12px] text-[#737a81]">
                                     {item.title}
                                   </span>
-                                </div>
-                                {!item.icon.includes("http") && (
-                                  <img
-                                    src={x}
-                                    className={`${
-                                      controller[clickIndex].selected!.includes(
-                                        item.title
-                                      )
-                                        ? "visible"
-                                        : "invisible"
-                                    } mr-[13px] h-[16px] w-[16px] cursor-pointer`}
-                                    alt=""
-                                  ></img>
+                                ) : item.description.length === 0 ? (
+                                  <></>
+                                ) : (
+                                  <>
+                                    <span className="mt-[6px] mb-[30px] ml-[83px] mr-[6px] text-[12px] text-[#737a81]">
+                                      {item.description}
+                                    </span>
+                                  </>
                                 )}
                               </div>
-                              {item.description === undefined ? (
-                                <span className=" mr-[6px] text-[12px] text-[#737a81]">
-                                  {item.title}
-                                </span>
-                              ) : item.description.length === 0 ? (
-                                <></>
-                              ) : (
-                                <>
-                                  <span className="mt-[6px] mb-[30px] ml-[83px] mr-[6px] text-[12px] text-[#737a81]">
-                                    {item.description}
-                                  </span>
-                                </>
-                              )}
-                            </div>
-                          ))}
+                            )
+                          )}
                         </div>
                       </div>
                     )}

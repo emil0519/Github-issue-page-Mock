@@ -1,23 +1,5 @@
 import EditSection from "./EditSection";
-import {
-  ChevronUpIcon,
-  ChevronDownIcon,
-  TypographyIcon,
-  QuoteIcon,
-  CodeIcon,
-  LinkIcon,
-  MentionIcon,
-  ImageIcon,
-  ReplyIcon,
-  HeadingIcon,
-  BoldIcon,
-  ItalicIcon,
-  ListUnorderedIcon,
-  ListOrderedIcon,
-  TasklistIcon,
-  CrossReferenceIcon,
-  MarkdownIcon,
-} from "@primer/octicons-react";
+import { MarkdownIcon } from "@primer/octicons-react";
 import Submit from "./Submit";
 import SubmitBig from "./SubmitBig";
 import PopUpDataProcessor from "./PopUpDataProcessor";
@@ -40,6 +22,8 @@ function NewIssueWrapper() {
   const [postData, setPostData] = useState<any>();
   const [hoverOnLowerMarkDown, setHoverOnLowerMarkDown] = useState(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [showDropDown, setShowDropDown] = useState("");
 
   useEffect(() => {
     if (controller !== undefined) {
@@ -120,6 +104,10 @@ function NewIssueWrapper() {
         <EditNote />
       </section>
       <PopUpDataProcessor
+        selectedValue={selectedValue}
+        setSelectedValue={setSelectedValue}
+        showDropDown={showDropDown}
+        setShowDropDown={setShowDropDown}
         controller={controller}
         setController={setController}
       />

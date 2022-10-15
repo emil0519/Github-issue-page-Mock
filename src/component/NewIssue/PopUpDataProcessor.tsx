@@ -1,23 +1,47 @@
 import { useEffect, useState } from "react";
 import NewAssignee from "../Reusable/NewAssignee";
 import { useGetAllIssuesQuery } from "../../state/issueRTK";
+import { useSearchParams } from "react-router-dom";
 
 export type ControllerProps = {
   controller: any;
   setController: any;
+  showDropDown: string;
+  setShowDropDown: React.Dispatch<React.SetStateAction<string>>;
+  selectedValue: string;
+  setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function PopUpDataProcessor({ controller, setController }: ControllerProps) {
+function PopUpDataProcessor({
+  controller,
+  setController,
+  setShowDropDown,
+  showDropDown,
+  selectedValue,
+  setSelectedValue,
+}: ControllerProps) {
   const [defaultAssigneesData, setDefaultAssigneesData] = useState<any>();
   const [defaultLabelData, setDefaultLabelData] = useState<any>();
   const [assigneesData, setAssigneesData] = useState<any>();
   const [labelData, setLabelData] = useState<any>();
   const [inputValue, setInputValue] = useState<string>("");
-  const [clickIndex, setClickIndex] = useState<number>(0);
-  const [selectedValue, setSelectedValue] = useState<string>("");
   const [clickRate, setClickRate] = useState<number>(0);
   const [clearAssigneeRate, setClearAssigneeRate] = useState<number>(0);
+  const [clickIndex, setClickIndex] = useState<number>(0);
   // 用來偵測是否有點擊選單內的元素，如有就加一，目前想不到更好的方法]
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("query");
+  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
+    baseType: "repos",
+    type: "/issues",
+    name: "/emil0519",
+    repo: "/testing-issues",
+    query: `/${query}`,
+  });
+  // 改進: call in condition or else it will return 404 in new issue page
+
+  // useEffect(() => console.log(data), [data]);
+  // useEffect(() => console.log(controller), [controller]);
 
   useEffect(() => {
     //Options for reusable component
@@ -103,8 +127,6 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
     ]);
   }, [assigneesData, labelData]);
 
-  useEffect(() => console.log(assigneesData), [assigneesData]);
-
   const fetchedAssigneeData = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/assignees",
@@ -135,15 +157,22 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
       } else if (controller[clickIndex].selected.includes(selectedValue)) {
         const num = controller[clickIndex].selected.indexOf(selectedValue);
         controller[clickIndex].selected.splice(num, 1);
-        const newController = controller.map((item: any, index: number) => {
-          if (index === clickIndex) {
-            return {
-              ...item,
-              selected: controller[clickIndex].selected,
-            };
-          }
-          return { ...item };
-        });
+
+        // const newController = controller.map((item: any, index: number) => {
+        //   if (index === clickIndex) {
+        //     return {
+        //       ...item,
+        //       selected: controller[clickIndex].selected.splice(num, 1),
+        //     };
+        //   }
+        //   return { ...item };
+        // });
+        const newController = controller;
+        newController[0].selected = controller[clickIndex].selected.splice(
+          num,
+          1
+        );
+
         setController(newController);
       }
     }
@@ -202,7 +231,7 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
         ({ title }: { title: string }) =>
           new RegExp(inputValue, "i").test(title)
       );
-      console.log(found);
+
       const newController = copyController.map((item: any, index: number) => {
         if (index === clickIndex) {
           item.data = found;
@@ -211,7 +240,6 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
       });
       setController(newController);
     } else if (inputValue.length === 0) {
-      console.log("no input");
       let copyController = JSON.parse(JSON.stringify(controller));
       const newController = copyController.map((item: any, index: number) => {
         if (index === clickIndex) {
@@ -219,7 +247,7 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
         }
         return { ...item };
       });
-      console.log(newController);
+
       setController(newController);
     }
   }, [inputValue]);
@@ -236,28 +264,9 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
         //清空
         return { ...item };
       });
-      console.log(newController);
+
       setController(newController);
     }
-
-    //處理Clear選項
-    // if (
-    //   controller[0] !== undefined &&
-    //   controller[0].hasOwnProperty("data") &&
-    //   controller[0].data !== undefined &&
-    //   clearAssignee
-    // ) {
-    // let copyController = JSON.parse(JSON.stringify(controller));
-    // const newController = copyController.map((item: any, index: number) => {
-    //   if (index === clickIndex) {
-    //     item.selected = [];
-    //   }
-    //   //清空
-    //   return { ...item };
-    // });
-    // console.log(newController);
-    // setController(newController);
-    // }
   }, [clearAssigneeRate]);
 
   if (controller === undefined) {
@@ -266,6 +275,8 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
   return (
     <section className="mt-[48px] mr-auto ml-auto flex w-[95%] flex-col med:m-0 med:w-[fit-content]">
       <NewAssignee
+        showDropDown={showDropDown}
+        setShowDropDown={setShowDropDown}
         controller={controller}
         clickIndex={clickIndex}
         setClickIndex={setClickIndex}
@@ -276,6 +287,8 @@ function PopUpDataProcessor({ controller, setController }: ControllerProps) {
         setClickRate={setClickRate}
         clearAssigneeRate={clearAssigneeRate}
         setClearAssigneeRate={setClearAssigneeRate}
+        setController={setController}
+        data={data}
       />
     </section>
   );

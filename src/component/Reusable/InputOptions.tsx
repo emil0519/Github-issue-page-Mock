@@ -13,6 +13,7 @@ function InputOptions({ array, inputValue, setInputValue }: arrayProps) {
     <div className={`ml-[13px] flex cursor-pointer`}>
       {array.map((item: any) => (
         <div
+          key={item}
           onClick={() => {
             if (
               item[2] === "ordered-list" ||

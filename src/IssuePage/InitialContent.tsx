@@ -5,16 +5,61 @@ import DropDownMenu from "../component/Reusable/DropDownMenu";
 import PopUpSection from "../component/Reusable/PopUpSection";
 import Reaction from "../component/Reusable/Reaction";
 import smile from "../img/smile.svg";
-import { DataCommentProps } from "./IssuePageProcessor";
 import { hourAdder, timeAgo } from "../utils/horus";
+import { useUpdateMutation, useGetAllIssuesQuery } from "../state/issueRTK";
+import { useSearchParams } from "react-router-dom";
+
 const _ = require("lodash");
 
-function InitialContent({ data }: DataCommentProps) {
+type InitalCommentProps = {
+  data: any;
+  type: string;
+  count?: number;
+};
+
+function InitialContent({ data, type, count }: InitalCommentProps) {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("query");
+  const comments = useGetAllIssuesQuery({
+    baseType: "repos",
+    type: "/issues",
+    name: "/emil0519",
+    repo: "/testing-issues",
+    query: `/${query}/comments`,
+  });
+
+  const [update] = useUpdateMutation();
   const [hoverOnDots, setHoverOnDots] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [clickOnDots, setClickOnDots] = useState<boolean>(false);
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const updateComment = async () => {
+    let body: any;
+    let combinedQuery = "";
+
+    if (type === "body") {
+      combinedQuery = `/${query}`;
+    } else {
+      if (count !== undefined && comments.data !== undefined) {
+        console.log(comments.data[count].id);
+        combinedQuery = `/comments/${comments.data[count].id}`;
+      }
+    }
+    body = {
+      body: inputValue,
+    };
+    await update({
+      baseType: "repos",
+      type: "/issues",
+      name: "/emil0519",
+      repo: "/testing-issues",
+      query: combinedQuery,
+      content: JSON.stringify(body),
+    });
+    setEditOpen(false);
+    setInputValue("");
+  };
 
   const controller = [
     { content: "Copy link", hoverColor: "red" },
@@ -166,7 +211,10 @@ function InitialContent({ data }: DataCommentProps) {
                 >
                   Cancel
                 </div>
-                <div className="mr-[12px] ml-[12px] flex h-[32px] w-[148px] cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-[#278644] bg-[#29994a]  hover:bg-[#288c46]">
+                <div
+                  onClick={() => updateComment()}
+                  className="mr-[12px] ml-[12px] flex h-[32px] w-[148px] cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-[#278644] bg-[#29994a]  hover:bg-[#288c46]"
+                >
                   <span className="text-white">Update comment</span>
                 </div>
               </div>

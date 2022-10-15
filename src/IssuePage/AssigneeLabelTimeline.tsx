@@ -82,6 +82,9 @@ function AssigneeLabelTimeline({ data, origin, avatarData }: DataProps) {
                     return "closed this as not planned";
                   }
                 }
+                case "renamed": {
+                  return "changed the title";
+                }
                 default:
                   return;
               }
@@ -97,6 +100,13 @@ function AssigneeLabelTimeline({ data, origin, avatarData }: DataProps) {
                 case "labeled":
                 case "unlabeled": {
                   return <PreviewLabel labels={[data[0].content]} />;
+                }
+                case "renamed": {
+                  return (
+                    <span className="font-semibold text-[#4d555e]">
+                      <s>{data[0].content.from}</s> {data[0].content.to}
+                    </span>
+                  );
                 }
 
                 default:

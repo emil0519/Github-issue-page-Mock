@@ -18,7 +18,7 @@ function AvatarIcon({ data, render }: AvatarProps) {
   return (
     <>
       {render.map((item: any) => (
-        <section className="relative mr-[8px]">
+        <section key={item.login} className="relative mr-[8px]">
           <img
             src={item.avatar_url}
             className="h-[20px] w-[20px] cursor-pointer rounded-[9999px]"
