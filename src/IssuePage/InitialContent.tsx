@@ -34,15 +34,18 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
   const [clickOnDots, setClickOnDots] = useState<boolean>(false);
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
-  const updateComment = async () => {
+  const updateComment = async (value: string) => {
     let body: any;
     let combinedQuery = "";
-
     if (type === "body") {
       combinedQuery = `/${query}`;
     } else {
       if (count !== undefined && comments.data !== undefined) {
-        combinedQuery = `/comments/${comments.data[count].id}`;
+        const searchComment = comments.data.filter(
+          (item: any) => item.body === value
+        );
+
+        combinedQuery = `/comments/${searchComment[0].id}`;
       }
     }
     body = {
@@ -228,7 +231,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
                   Cancel
                 </div>
                 <div
-                  onClick={() => updateComment()}
+                  onClick={() => updateComment(data.body)}
                   className="mr-[12px] ml-[12px] flex h-[32px] w-[148px] cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-[#278644] bg-[#29994a]  hover:bg-[#288c46]"
                 >
                   <span className="text-white">Update comment</span>
