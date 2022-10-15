@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import tag from "../img/tag.svg";
+import pencil from "../img/pencil.svg";
 import person from "../img/person.svg";
 import {
   CircleSlashIcon,
@@ -47,6 +48,8 @@ function AssigneeLabelTimeline({ data, origin, avatarData }: DataProps) {
               src={
                 data[0].action === "labeled" || data[0].action === "unlabeled"
                   ? `${tag}`
+                  : data[0].action === "renamed"
+                  ? `${pencil}`
                   : `${person}`
               }
               alt=""

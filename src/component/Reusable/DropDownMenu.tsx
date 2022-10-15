@@ -6,6 +6,7 @@ type ControllerProps = {
   setEditOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   setClickOnDots?: React.Dispatch<React.SetStateAction<boolean>>;
   count: number;
+  content?: any;
 };
 
 function DropDownMenu({
@@ -13,6 +14,7 @@ function DropDownMenu({
   setEditOpen,
   setClickOnDots,
   count,
+  content,
 }: ControllerProps) {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
@@ -25,14 +27,21 @@ function DropDownMenu({
   });
   const [del] = useDeleteMutation();
   const handleDelete = async () => {
+    const searchData = comments.data.filter(
+      (item: any) => item.body === content
+    );
+
+    // 改進：這邊如果comment是一樣的就會出錯
+
     const confirm = window.confirm("Are you sure you want to delete this?");
+
     if (confirm) {
       await del({
         baseType: "repos",
         type: "/issues",
         name: "/emil0519",
         repo: "/testing-issues",
-        query: `/comments/${comments.data[count].id}`,
+        query: `/comments/${searchData[0].id}`,
       });
       setEditOpen!(false);
     }

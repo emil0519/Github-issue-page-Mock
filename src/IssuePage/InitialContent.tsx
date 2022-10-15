@@ -172,6 +172,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
                     controller={
                       type === "body" ? initController : commentController
                     }
+                    content={data.body}
                     setEditOpen={setEditOpen}
                     setClickOnDots={setClickOnDots}
                     count={count}
