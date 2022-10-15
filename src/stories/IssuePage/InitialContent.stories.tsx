@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import InitialContent from "../NewIssue/InitialContent";
+import InitialContent from "./InitialContent";
 
 export default {
   title: "Issue-page/InitialContent",

@@ -19,7 +19,7 @@ type DataProps = {
 };
 
 function AssigneeLabelTimeline({ data, origin, avatarData }: DataProps) {
-  // useEffect(() => console.log(data), [data]);
+  useEffect(() => console.log(data), [data]);
   if (data === undefined) {
     return <></>;
   }

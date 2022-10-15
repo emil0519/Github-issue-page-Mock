@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import EditSection from "../../component/NewIssue/EditSection";
 import BigAvatar from "../../component/Reusable/BigAvatar";
-import DropDownMenu from "../../component/Reusable/DropDownMenu";
+import DropDownMenu from "./DropDownStories";
 import PopUpSection from "../../component/Reusable/PopUpSection";
 import Reaction from "../../component/Reusable/Reaction";
 import smile from "../../img/smile.svg";
 import { hourAdder, timeAgo } from "../../utils/horus";
-import { useUpdateMutation, useGetAllIssuesQuery } from "../../state/issueRTK";
 
 const _ = require("lodash");
 
@@ -17,7 +16,6 @@ type InitalCommentProps = {
 };
 
 function InitialContent({ data, type, count }: InitalCommentProps) {
-  const [update] = useUpdateMutation();
   const [hoverOnDots, setHoverOnDots] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [clickOnDots, setClickOnDots] = useState<boolean>(false);
@@ -179,13 +177,13 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
               <Reaction data={render} />
             </div>
             <section className={`${editOpen ? "block" : "hidden"}`}>
-              <EditSection
+              {/* <EditSection
                 inputValue={inputValue}
                 setInputValue={setInputValue}
                 postData={postData}
                 setPostData={setPostData}
                 page={"issue"}
-              />
+              /> */}
               <div className="flex h-[49px] items-center justify-end">
                 <div
                   onClick={() => setEditOpen(false)}

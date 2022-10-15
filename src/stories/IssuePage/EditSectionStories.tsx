@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import InputOptions from "../Reusable/InputOptions";
+import InputOptions from "../../component/Reusable/InputOptions";
 import {
   ChevronUpIcon,
   ChevronDownIcon,
@@ -21,7 +21,7 @@ import {
 } from "@primer/octicons-react";
 
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import Preview from "./Preview";
+import Preview from "../../component/NewIssue/Preview";
 
 export type EditSectionProps = {
   postData: {
@@ -48,7 +48,7 @@ function EditSection({
   const [clickOnA, setClickOnA] = useState(false);
   const [clickOnACount, setClickOnACount] = useState(0);
   const [hoverOnMarkDown, setHoverOnMarkDown] = useState(false);
-  const [hoverOnLowerMarkDown, setHoverOnLowerMarkDown] = useState(false);
+
   const [images, setImages] = useState<any[]>([]);
   const [localImage, setLocalImage] = useState<string[][]>([]);
 
@@ -257,12 +257,12 @@ function EditSection({
             </div>
           </section>
 
-          <Preview
+          {/* <Preview
             clickName={clickName}
             inputValue={inputValue}
             setInputValue={setInputValue}
             images={images}
-          />
+          /> */}
           <section
             className={`${
               clickName === "preview" ? "hidden" : "block"
@@ -298,17 +298,17 @@ function EditSection({
                   />
                 </summary>
 
-                <InputOptions
+                {/* <InputOptions
                   array={inputIconsArray}
                   inputValue={inputValue}
                   setInputValue={setInputValue}
-                />
+                /> */}
               </details>
-              <InputOptions
+              {/* <InputOptions
                 array={rightIconsArray}
                 inputValue={inputValue}
                 setInputValue={setInputValue}
-              />
+              /> */}
             </section>
             <ImageUploading
               multiple
