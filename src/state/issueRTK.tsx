@@ -94,9 +94,22 @@ export const createIssueApi: any = createApi({
       }),
       invalidatesTags: ["issues"],
     }),
+    delete: builder.mutation({
+      query: ({ baseType, type, name, repo, query }) => ({
+        url: `${baseType}${name}${repo}${type}${query}`,
+        method: "DELETE",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          "if-none-match": "",
+        }),
+      }),
+      invalidatesTags: ["issues"],
+    }),
   }),
 });
 
 export const { useGetAllIssuesQuery } = createIssueApi;
 export const { useCreateIssueMutation } = createIssueApi;
 export const { useUpdateMutation } = createIssueApi;
+export const { useDeleteMutation } = createIssueApi;

@@ -15,11 +15,11 @@ function IssuePageProcessor({ data, timeline }: DataCommentProps) {
   if (data === undefined || timeline.data === undefined) {
     return <></>;
   } else if (timeline.data !== undefined && timeline.data.length === 0) {
-    return <InitialContent data={data} type={"body"} />;
+    return <InitialContent data={data} type={"body"} count={-1} />;
   } else {
     return (
       <>
-        <InitialContent data={data} type={"body"} />
+        <InitialContent data={data} type={"body"} count={-1} />
         {timeline.data.map((item: any, index: number) => {
           if (item.event === "commented") {
             return (

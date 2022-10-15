@@ -14,7 +14,7 @@ const _ = require("lodash");
 type InitalCommentProps = {
   data: any;
   type: string;
-  count?: number;
+  count: number;
 };
 
 function InitialContent({ data, type, count }: InitalCommentProps) {
@@ -42,7 +42,6 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
       combinedQuery = `/${query}`;
     } else {
       if (count !== undefined && comments.data !== undefined) {
-        console.log(comments.data[count].id);
         combinedQuery = `/comments/${comments.data[count].id}`;
       }
     }
@@ -61,14 +60,27 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
     setInputValue("");
   };
 
-  const controller = [
-    { content: "Copy link", hoverColor: "red" },
+  const initController = [
+    { content: "Copy link" },
     { content: "Quote reply" },
     { content: "|" },
     { content: "Edit" },
     { content: "|" },
     { content: "Report content" },
   ];
+
+  const commentController = [
+    { content: "Copy link" },
+    { content: "Quote reply" },
+    { content: "Reference in new issue" },
+    { content: "|" },
+    { content: "Edit" },
+    { content: "Hide" },
+    { content: "Delete", hoverColor: "red" },
+    { content: "|" },
+    { content: "Report content" },
+  ];
+
   const [postData, setPostData] = useState<any>();
   const [reactions, setReactions] = useState();
   const [render, setRender] = useState<any>();
@@ -157,9 +169,12 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
                   } absolute top-[16px] right-[0] z-[3] h-[max-content] w-[183px] flex-col rounded-md border-[0.5px] border-solid border-[#d5dbe1] bg-white pt-[8px] pb-[8px]`}
                 >
                   <DropDownMenu
-                    controller={controller}
+                    controller={
+                      type === "body" ? initController : commentController
+                    }
                     setEditOpen={setEditOpen}
                     setClickOnDots={setClickOnDots}
+                    count={count}
                   />
                   <span className="upward-triangle absolute top-[-11px] left-[158px] h-[9px] w-[9px] bg-white"></span>
                   <span className="upward-triangle absolute top-[7px] left-[3px] hidden h-[9px] w-[9px] bg-white"></span>
