@@ -24,8 +24,8 @@ function AssigneeLabelTimeline({ data, origin, avatarData }: DataProps) {
     return <></>;
   }
   return (
-    <section className="mr-auto ml-auto flex w-[95%] flex-col">
-      <main className="ml-[9px] flex items-center">
+    <section className="med: mr-auto ml-auto flex w-[95%] flex-col">
+      <main className="ml-[9px] flex w-[100%] items-center med:ml-[79px]">
         {/* Detect the type of action */}
         {data[0].action === "closed" || data[0].action === "reopened" ? (
           data[0].action === "reopened" ? (
@@ -130,7 +130,7 @@ function AssigneeLabelTimeline({ data, origin, avatarData }: DataProps) {
           </span>
         </div>
       </main>
-      <aside className="ml-[26px] h-[20px] w-[1px] bg-[#d3d9e0]"></aside>
+      <aside className="ml-[24px] h-[20px] w-[1px] bg-[#d3d9e0] med:ml-[94px]"></aside>
     </section>
   );
 }

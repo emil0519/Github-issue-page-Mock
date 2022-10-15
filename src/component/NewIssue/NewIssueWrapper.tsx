@@ -5,7 +5,7 @@ import SubmitBig from "./SubmitBig";
 import PopUpDataProcessor from "./PopUpDataProcessor";
 import avatar from "../../img/github-avatar.png";
 import { useEffect, useState } from "react";
-import info from "../../img/info.svg";
+import { useGetAllIssuesQuery } from "../../state/issueRTK";
 import EditNote from "../Reusable/EditNote";
 
 export type PostDataProps = {
@@ -24,6 +24,10 @@ function NewIssueWrapper() {
   const [inputValue, setInputValue] = useState<string>("");
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [showDropDown, setShowDropDown] = useState("");
+  const [defaultAssigneesData, setDefaultAssigneesData] = useState<any>();
+  const [defaultLabelData, setDefaultLabelData] = useState<any>();
+  const [assigneesData, setAssigneesData] = useState<any>();
+  const [labelData, setLabelData] = useState<any>();
 
   useEffect(() => {
     if (controller !== undefined) {
@@ -46,6 +50,132 @@ function NewIssueWrapper() {
       }
     }
   }, [controller]);
+
+  useEffect(() => {
+    //Options for reusable component
+    setController([
+      {
+        title: "Assignee",
+        default: {
+          descriptionWithoutLink: "No one- ",
+          descriptionWithLink: "assign yourself",
+          desLink: "https://github.com/emil0519?tab=repositories",
+          isLinkDecoration: false,
+          inputPlaceholder: "Type or choose a user",
+          mainHeader: "Assign up to 10 people to this issue",
+          subHeader: "Suggestion",
+          clearText: "clear assignee",
+          isOpen: true,
+          isGear: true, //can be cancel by"x" button or not
+        },
+        data: assigneesData,
+        defaultData: defaultAssigneesData,
+        selected: [] as string[],
+        showSelectedData: [],
+      },
+      {
+        title: "Labels",
+        default: {
+          descriptionWithoutLink: "None yet",
+          inputPlaceholder: "Filter labels",
+          mainHeader: "Apply labels to this issue",
+          isOpen: true,
+          isGear: true,
+        },
+        data: labelData,
+        defaultData: defaultLabelData,
+        selected: [] as string[],
+        showSelectedData: [],
+      },
+      {
+        title: "Projects",
+        default: {
+          descriptionWithoutLink: "None yet",
+          inputPlaceholder: "",
+          mainHeader: "",
+          isOpen: false,
+          isGear: true,
+          selected: [] as string[],
+        },
+      },
+      {
+        title: "Milestone",
+        default: {
+          descriptionWithoutLink: "No milestone",
+          inputPlaceholder: "",
+          mainHeader: "",
+          isOpen: false,
+          isGear: true,
+          selected: [] as string[],
+        },
+      },
+      {
+        title: "Development",
+        default: {
+          descriptionWithoutLink:
+            "Shows branches and pull requests linked to this issue.",
+          inputPlaceholder: "",
+          mainHeader: "",
+          isOpen: false,
+          isGear: false,
+          selected: [] as string[],
+        },
+      },
+      {
+        title: "Helpful resources",
+        default: {
+          descriptionWithLink: "GitHub Community Guidelines",
+          inputPlaceholder: "",
+          mainHeader: "",
+          isOpen: false,
+          isGear: false,
+          selected: [] as string[],
+        },
+      },
+    ]);
+  }, [assigneesData, labelData]);
+
+  const fetchedLabelData = useGetAllIssuesQuery({
+    baseType: "repos",
+    type: "/labels",
+    name: "/emil0519",
+    repo: "/testing-issues",
+    query: "",
+  });
+
+  useEffect(() => {
+    //處理fetch回來的label data
+    if (fetchedLabelData.data !== undefined) {
+      const processedLabelData = fetchedLabelData.data.map((item: any) => ({
+        icon: item.color,
+        title: item.name,
+        description: item.description,
+      }));
+      setLabelData(processedLabelData);
+      setDefaultLabelData(processedLabelData);
+    }
+  }, [fetchedLabelData]);
+
+  const fetchedAssigneeData = useGetAllIssuesQuery({
+    baseType: "repos",
+    type: "/assignees",
+    name: "/emil0519",
+    repo: "/testing-issues",
+    query: "",
+  });
+  useEffect(() => {
+    //處理fetch回來的assignee data
+    if (fetchedAssigneeData.data !== undefined) {
+      const processedAssigneeData = fetchedAssigneeData.data.map(
+        (item: any) => ({
+          icon: item.avatar_url,
+          title: item.login,
+        })
+      );
+      setAssigneesData(processedAssigneeData);
+      setDefaultAssigneesData(processedAssigneeData);
+    }
+  }, [fetchedAssigneeData]);
 
   return (
     <section className="flex flex-col med:relative med:m-[0_auto] med:w-[95%] med:flex-row med:justify-center">

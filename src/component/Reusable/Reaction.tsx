@@ -23,7 +23,7 @@ function Reaction({ data }: EmojiProps) {
             onMouseOut={() => setHover("")}
             className={`${
               index === 0 ? "mr-0" : "mr-[8px]"
-            } z-[2] ml-[8px] flex h-[26px] w-[42px] cursor-pointer items-center justify-between rounded-[15px] border-[1px] border-solid border-[#1760cf] bg-[#d9f2fe] hover:bg-[#aedffd]`}
+            } relative z-[2] ml-[8px] flex h-[26px] w-[42px] cursor-pointer items-center justify-between rounded-[15px] border-[1px] border-solid border-[#1760cf] bg-[#d9f2fe] hover:bg-[#aedffd]`}
           >
             <span className="ml-[3px] mb-[7px] h-[16px] w-[16px]">
               {(() => {
@@ -63,7 +63,7 @@ function Reaction({ data }: EmojiProps) {
             </span>
             <div
               className={`${hover === item[0] ? "block" : "hidden"}
-       absolute top-[41%] w-[max-content] cursor-text items-center justify-center rounded-md bg-black p-[5px_9px] `}
+       absolute bottom-[39px] w-[max-content] cursor-text items-center justify-center rounded-md bg-black p-[5px_9px] `}
             >
               <span className="downward-triangle absolute top-[97%] left-[3px] h-[9px] w-[9px] bg-black"></span>
               <span className="text-xs text-[white]">

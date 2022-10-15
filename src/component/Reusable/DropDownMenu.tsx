@@ -1,10 +1,11 @@
 import { useDeleteMutation, useGetAllIssuesQuery } from "../../state/issueRTK";
 import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 type ControllerProps = {
   controller: { content: string; hoverColor?: string }[];
   setEditOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  setClickOnDots?: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickOnDots: React.Dispatch<React.SetStateAction<boolean>>;
   count: number;
   content?: any;
 };
@@ -13,7 +14,6 @@ function DropDownMenu({
   controller,
   setEditOpen,
   setClickOnDots,
-  count,
   content,
 }: ControllerProps) {
   const [searchParams] = useSearchParams();
@@ -46,6 +46,7 @@ function DropDownMenu({
       setEditOpen!(false);
     }
   };
+
   return (
     <section>
       {controller.map((item) =>
@@ -54,8 +55,9 @@ function DropDownMenu({
         ) : item.content === "Edit" ? (
           <div
             onClick={() => {
+              console.log("edit");
               setEditOpen!(true);
-              setClickOnDots!(false);
+              setClickOnDots(false);
             }}
             className={`p-[5px] text-[14px] text-[#212529] hover:bg-[#1760cf] hover:text-white`}
           >

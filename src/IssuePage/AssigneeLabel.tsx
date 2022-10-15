@@ -15,11 +15,11 @@ function AssigneeLabel({ data }: DataProps) {
     return <></>;
   }
   return (
-    <>
+    <section className="block med:hidden">
       {data.assignees.length === 0 && data.labels.length === 0 ? (
         ""
       ) : (
-        <section className="mt-[24px] mr-auto ml-auto mb-[20px] flex w-[95%] flex-col">
+        <section className="mt-[24px] mr-auto ml-auto mb-[20px] flex w-[95%] max-w-[1198px] flex-col med:m-0">
           {data.assignees.length === 0 ? (
             ""
           ) : (
@@ -42,7 +42,7 @@ function AssigneeLabel({ data }: DataProps) {
           <div className="mt-[16px] h-[0.5px] w-[95%] bg-[#d2d8de]"></div>
         </section>
       )}
-    </>
+    </section>
   );
 }
 

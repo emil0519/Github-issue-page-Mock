@@ -54,8 +54,8 @@ function Title({ data, comments }: DataProps) {
     return <></>;
   }
   return (
-    <section className="mt-[24px] mr-auto ml-auto flex h-[max-content] w-[95%] flex-col items-start justify-between">
-      <div className="flex w-[100%] items-center justify-between">
+    <section className="mt-[24px] mr-auto ml-auto flex h-[max-content] w-[95%] max-w-[1198px] flex-col items-start justify-between med:m-0">
+      <div className="mt-[12px] flex w-[100%] items-center justify-between">
         {edit ? (
           <div className="flex w-[100%] items-center">
             <input

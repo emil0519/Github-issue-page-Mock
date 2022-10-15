@@ -20,10 +20,6 @@ function PopUpDataProcessor({
   selectedValue,
   setSelectedValue,
 }: ControllerProps) {
-  const [defaultAssigneesData, setDefaultAssigneesData] = useState<any>();
-  const [defaultLabelData, setDefaultLabelData] = useState<any>();
-  const [assigneesData, setAssigneesData] = useState<any>();
-  const [labelData, setLabelData] = useState<any>();
   const [inputValue, setInputValue] = useState<string>("");
   const [clickRate, setClickRate] = useState<number>(0);
   const [clearAssigneeRate, setClearAssigneeRate] = useState<number>(0);
@@ -42,98 +38,6 @@ function PopUpDataProcessor({
   // 改進: call in condition or else it will return 404 in new issue page
 
   // useEffect(() => console.log(data), [data]);
-
-  useEffect(() => {
-    //Options for reusable component
-    setController([
-      {
-        title: "Assignee",
-        default: {
-          descriptionWithoutLink: "No one- ",
-          descriptionWithLink: "assign yourself",
-          desLink: "https://github.com/emil0519?tab=repositories",
-          isLinkDecoration: false,
-          inputPlaceholder: "Type or choose a user",
-          mainHeader: "Assign up to 10 people to this issue",
-          subHeader: "Suggestion",
-          clearText: "clear assignee",
-          isOpen: true,
-          isGear: true, //can be cancel by"x" button or not
-        },
-        data: assigneesData,
-        defaultData: defaultAssigneesData,
-        selected: [] as string[],
-        showSelectedData: [],
-      },
-      {
-        title: "Labels",
-        default: {
-          descriptionWithoutLink: "None yet",
-          inputPlaceholder: "Filter labels",
-          mainHeader: "Apply labels to this issue",
-          isOpen: true,
-          isGear: true,
-        },
-        data: labelData,
-        defaultData: defaultLabelData,
-        selected: [] as string[],
-        showSelectedData: [],
-      },
-      {
-        title: "Projects",
-        default: {
-          descriptionWithoutLink: "None yet",
-          inputPlaceholder: "",
-          mainHeader: "",
-          isOpen: false,
-          isGear: true,
-          selected: [] as string[],
-        },
-      },
-      {
-        title: "Milestone",
-        default: {
-          descriptionWithoutLink: "No milestone",
-          inputPlaceholder: "",
-          mainHeader: "",
-          isOpen: false,
-          isGear: true,
-          selected: [] as string[],
-        },
-      },
-      {
-        title: "Development",
-        default: {
-          descriptionWithoutLink:
-            "Shows branches and pull requests linked to this issue.",
-          inputPlaceholder: "",
-          mainHeader: "",
-          isOpen: false,
-          isGear: false,
-          selected: [] as string[],
-        },
-      },
-      {
-        title: "Helpful resources",
-        default: {
-          descriptionWithLink: "GitHub Community Guidelines",
-          inputPlaceholder: "",
-          mainHeader: "",
-          isOpen: false,
-          isGear: false,
-          selected: [] as string[],
-        },
-      },
-    ]);
-  }, [assigneesData, labelData]);
-
-  const fetchedAssigneeData = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/assignees",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
 
   useEffect(() => {
     //處理每張選單勾選的element
@@ -171,41 +75,6 @@ function PopUpDataProcessor({
       }
     }
   }, [selectedValue, clickRate]);
-
-  const fetchedLabelData = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/labels",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
-
-  useEffect(() => {
-    //處理fetch回來的label data
-    if (fetchedLabelData.data !== undefined) {
-      const processedLabelData = fetchedLabelData.data.map((item: any) => ({
-        icon: item.color,
-        title: item.name,
-        description: item.description,
-      }));
-      setLabelData(processedLabelData);
-      setDefaultLabelData(processedLabelData);
-    }
-  }, [fetchedLabelData]);
-
-  useEffect(() => {
-    //處理fetch回來的assignee data
-    if (fetchedAssigneeData.data !== undefined) {
-      const processedAssigneeData = fetchedAssigneeData.data.map(
-        (item: any) => ({
-          icon: item.avatar_url,
-          title: item.login,
-        })
-      );
-      setAssigneesData(processedAssigneeData);
-      setDefaultAssigneesData(processedAssigneeData);
-    }
-  }, [fetchedAssigneeData]);
 
   useEffect(() => {
     // Search function within dropdown menu

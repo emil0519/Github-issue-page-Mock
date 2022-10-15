@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import EditSection from "../component/NewIssue/EditSection";
-import BigAvatar from "../component/Reusable/BigAvatar";
-import DropDownMenu from "../component/Reusable/DropDownMenu";
-import PopUpSection from "../component/Reusable/PopUpSection";
-import Reaction from "../component/Reusable/Reaction";
-import smile from "../img/smile.svg";
-import { hourAdder, timeAgo } from "../utils/horus";
-import { useUpdateMutation, useGetAllIssuesQuery } from "../state/issueRTK";
-import { useSearchParams } from "react-router-dom";
+import EditSection from "../../component/NewIssue/EditSection";
+import BigAvatar from "../../component/Reusable/BigAvatar";
+import DropDownMenu from "../../component/Reusable/DropDownMenu";
+import PopUpSection from "../../component/Reusable/PopUpSection";
+import Reaction from "../../component/Reusable/Reaction";
+import smile from "../../img/smile.svg";
+import { hourAdder, timeAgo } from "../../utils/horus";
+import { useUpdateMutation, useGetAllIssuesQuery } from "../../state/issueRTK";
 
 const _ = require("lodash");
 
@@ -18,18 +17,6 @@ type InitalCommentProps = {
 };
 
 function InitialContent({ data, type, count }: InitalCommentProps) {
-  console.log(data);
-
-  const [searchParams] = useSearchParams();
-  const query = searchParams.get("query");
-  const comments = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: `/${query}/comments`,
-  });
-
   const [update] = useUpdateMutation();
   const [hoverOnDots, setHoverOnDots] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -38,35 +25,6 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
   const [inputValue, setInputValue] = useState<string>("");
   const [hoverOnCancel, setHoverOnCancel] = useState<boolean>(false);
   useEffect(() => console.log(clickOnDots), [clickOnDots]);
-  const updateComment = async (value: string) => {
-    let body: any;
-    let combinedQuery = "";
-    if (type === "body") {
-      combinedQuery = `/${query}`;
-    } else {
-      if (count !== undefined && comments.data !== undefined) {
-        const searchComment = comments.data.filter(
-          (item: any) => item.body === value
-        );
-
-        combinedQuery = `/comments/${searchComment[0].id}`;
-        // 改進：同樣這邊如果內容一樣的話會有錯
-      }
-    }
-    body = {
-      body: inputValue,
-    };
-    await update({
-      baseType: "repos",
-      type: "/issues",
-      name: "/emil0519",
-      repo: "/testing-issues",
-      query: combinedQuery,
-      content: JSON.stringify(body),
-    });
-    setEditOpen(false);
-    setInputValue("");
-  };
 
   const initController = [
     { content: "Copy link" },
@@ -243,10 +201,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
                     Cancel
                   </span>
                 </div>
-                <div
-                  onClick={() => updateComment(data.body)}
-                  className="mr-[12px] ml-[12px] flex h-[32px] w-[148px] cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-[#278644] bg-[#29994a]  hover:bg-[#288c46]"
-                >
+                <div className="mr-[12px] ml-[12px] flex h-[32px] w-[148px] cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-[#278644] bg-[#29994a]  hover:bg-[#288c46]">
                   <span className="text-white">Update comment</span>
                 </div>
               </div>
