@@ -137,7 +137,6 @@ function PopUpDataProcessor({
 
   useEffect(() => {
     //處理每張選單勾選的element
-    console.log("invoke");
     if (controller !== undefined && controller[clickIndex].data !== undefined) {
       if (!controller[clickIndex].selected.includes(selectedValue)) {
         const filteredData = controller[clickIndex].data.filter(

@@ -56,16 +56,25 @@ function NewAssignee({
   data,
   reRender,
 }: controllerProps) {
-  useEffect(() => console.log(controller, "outside"), [controller]);
   useEffect(() => {
+    //若issue page已經有assingee或者label， onload的時候會自動勾選
+    console.log(showDropDown);
+    console.log(data);
     switch (showDropDown) {
       case "Assignee":
-      case "Label": {
+      case "Labels": {
         if (controller !== undefined && data !== undefined) {
           let newController = controller;
           if (data.assignees.length !== 0) {
             data.assignees.map((item: any) => {
               newController[0].selected!.push(item.login);
+            });
+            setController(newController);
+          }
+          if (data.labels.length !== 0) {
+            console.log("action get in");
+            data.labels.map((item: any) => {
+              newController[1].selected!.push(item.name);
             });
             console.log(newController);
             setController(newController);
