@@ -35,9 +35,16 @@ function PopUpDataProcessor({
     repo: "/testing-issues",
     query: `/${query}`,
   });
+  // useEffect(() => console.log(isError), [isError]);
   // 改進: call in condition or else it will return 404 in new issue page
-
-  // useEffect(() => console.log(data), [data]);
+  const [localData, setLocalData] = useState<any>();
+  useEffect(() => {
+    if (query === null) {
+      setLocalData([]);
+    } else {
+      setLocalData(data);
+    }
+  }, [query]);
 
   useEffect(() => {
     //處理每張選單勾選的element
@@ -153,6 +160,7 @@ function PopUpDataProcessor({
         setController={setController}
         data={data}
         reRender={reRender}
+        isError={isError}
       />
     </section>
   );

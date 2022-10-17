@@ -37,6 +37,7 @@ type controllerProps = {
   setController: any;
   data?: any;
   reRender?: number;
+  isError: boolean;
 };
 
 function NewAssignee({
@@ -55,6 +56,7 @@ function NewAssignee({
   setController,
   data,
   reRender,
+  isError,
 }: controllerProps) {
   useEffect(() => {
     //若issue page已經有assingee或者label， onload的時候會自動勾選
@@ -63,6 +65,9 @@ function NewAssignee({
       case "Labels": {
         if (controller !== undefined && data !== undefined) {
           let newController = controller;
+          if (isError) {
+            return;
+          }
           if (data.assignees.length !== 0) {
             data.assignees.map((item: any) => {
               newController[0].selected!.push(item.login);
@@ -155,6 +160,42 @@ function NewAssignee({
                     <div className="mt-[16px] h-[0.4px] w-[92%] bg-[#cdd4db]"></div>
                   </>
                 );
+              } else if (item.selected.length !== 0) {
+                // 在new issue page內，未點擊會顯示的內容
+                const showSelected = item.selected.map(
+                  (selected: any, _index: number) =>
+                    item.data.filter((item: any) => item.title === selected)
+                );
+                let renderData = [];
+                for (let x = 0; x < showSelected.length; x++) {
+                  renderData.push(showSelected[x][0]);
+                }
+                return renderData.map((item) => {
+                  return (
+                    <>
+                      <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
+                        {/* 外面顯示的內容 */}
+                        {item.icon.includes("http") ? (
+                          <img
+                            src={item.icon}
+                            className="ml-[4px] mr-[5px] mt-[5px] h-[20px] w-[20px] rounded-full"
+                            alt=""
+                          ></img>
+                        ) : (
+                          <div
+                            style={{ background: `#${item.icon}` }}
+                            className={`mr-[6px] h-[14px] w-[14px] rounded-full `}
+                          ></div>
+                        )}
+                        <span className="text-xs font-semibold">
+                          {item.title}
+                        </span>
+                      </div>
+                    </>
+                  );
+                });
+              } else if (isError) {
+                return;
               } else if (
                 data.assignees.length !== 0 ||
                 data.labels.length !== 0
@@ -198,40 +239,6 @@ function NewAssignee({
                   );
                 }
                 // return <></>;
-              } else if (item.selected.length !== 0) {
-                // 在new issue page內，未點擊會顯示的內容
-                const showSelected = item.selected.map(
-                  (selected: any, _index: number) =>
-                    item.data.filter((item: any) => item.title === selected)
-                );
-                let renderData = [];
-                for (let x = 0; x < showSelected.length; x++) {
-                  renderData.push(showSelected[x][0]);
-                }
-                return renderData.map((item) => {
-                  return (
-                    <>
-                      <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
-                        {/* 外面顯示的內容 */}
-                        {item.icon.includes("http") ? (
-                          <img
-                            src={item.icon}
-                            className="ml-[4px] mr-[5px] mt-[5px] h-[20px] w-[20px] rounded-full"
-                            alt=""
-                          ></img>
-                        ) : (
-                          <div
-                            style={{ background: `#${item.icon}` }}
-                            className={`mr-[6px] h-[14px] w-[14px] rounded-full `}
-                          ></div>
-                        )}
-                        <span className="text-xs font-semibold">
-                          {item.title}
-                        </span>
-                      </div>
-                    </>
-                  );
-                });
               }
             })()}
 
