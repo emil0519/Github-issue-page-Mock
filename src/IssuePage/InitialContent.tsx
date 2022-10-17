@@ -111,6 +111,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
         Object.fromEntries,
       ])(newReaction);
       let entries = Object.entries(renderReaction);
+      console.log(entries);
       setRender(entries);
     }
   }, [reactions]);

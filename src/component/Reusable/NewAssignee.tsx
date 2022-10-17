@@ -58,8 +58,6 @@ function NewAssignee({
 }: controllerProps) {
   useEffect(() => {
     //若issue page已經有assingee或者label， onload的時候會自動勾選
-    console.log(showDropDown);
-    console.log(data);
     switch (showDropDown) {
       case "Assignee":
       case "Labels": {
@@ -72,11 +70,9 @@ function NewAssignee({
             setController(newController);
           }
           if (data.labels.length !== 0) {
-            console.log("action get in");
             data.labels.map((item: any) => {
               newController[1].selected!.push(item.name);
             });
-            console.log(newController);
             setController(newController);
           }
         }
