@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
-import api from "../utils/api";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 import { useOnClickOutside } from "usehooks-ts";
-import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
+import { useGetAllIssuesQuery, useUpdateMutation,useDeleteMutation } from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
 
 function useComponentVisible(initialIsVisible: any) {
@@ -39,6 +38,7 @@ function useComponentVisible(initialIsVisible: any) {
 
 function Refer(props: any) {
   const [update] = useUpdateMutation();
+  const [del] = useDeleteMutation();
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
   const dispatch = useDispatch();
@@ -132,20 +132,17 @@ function Refer(props: any) {
   //   });
   // }
 
-  function deleteLabel(index: number) {
+  async function deleteLabel() {
     const confirm = window.confirm(
       "Are you sure? Deleting a label will remove it from all issues and pull requests."
     );
     if (confirm) {
-      // const response = api.deleteLabel(
-      //   "emil0519",
-      //   "testing-issues",
-      //   props.updateLabelInfo[index].name
-      // );
-
-      dispatch({
-        type: "deleteItem",
-        payload: { deleteName: props.updateLabelInfo[index].name },
+      await del({
+        baseType: "repos",
+        type: "/labels",
+        name: "/emil0519",
+        repo: "/testing-issues",
+        query: `/${props.name}`,
       });
     }
   }
@@ -209,7 +206,7 @@ function Refer(props: any) {
             <DeleteText
               ref={ref}
               onClick={() => {
-                deleteLabel(props.index);
+                deleteLabel();
               }}
             >
               Delete
@@ -307,7 +304,7 @@ function Refer(props: any) {
           labelIndex={props.labelIndex}
           areaOpen={props.areaOpen}
           onClick={() => {
-            deleteLabel(props.index);
+            deleteLabel();
           }}
         >
           Delete
