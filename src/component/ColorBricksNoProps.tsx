@@ -6,7 +6,7 @@ function ColorBricksNoProps(props: any) {
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [changeColor, setChangeColor] = useState();
+  const [changeColor, setChangeColor] = useState<string>();
 
   const handleClickOutside = () => {
     setEditOpen(false);
@@ -87,6 +87,7 @@ function ColorBricksNoProps(props: any) {
             ...props.updateLabelInfo,
             newCol: e.target.value,
           });
+          setChangeColor(e.target.value);
         }}
       ></ColorInput>
       {isComponentVisible && (
@@ -107,13 +108,13 @@ function ColorBricksNoProps(props: any) {
                   //   });
                   //   setChangeColor(name);
                   // }}
-                  // onClick={(e) => {
-                  //   props.setUpdateLabelInfo({
-                  //     ...props.updateLabelInfo,
-                  //     newCol: e.target.value,
-                  //   });
-                  //   setChangeColor(name);
-                  // }}
+                  onClick={(e) => {
+                    props.setUpdateLabelInfo({
+                      ...props.updateLabelInfo,
+                      newCol: name,
+                    });
+                    setChangeColor(name);
+                  }}
                 />
               );
             })}
@@ -125,7 +126,8 @@ function ColorBricksNoProps(props: any) {
                   key={name}
                   colors={name}
                   onClick={() => {
-                    props.toUpdateInfo("color", props.index, name);
+                    // props.toUpdateInfo("color", props.index, name);
+                    setChangeColor(name);
                   }}
                 />
               );

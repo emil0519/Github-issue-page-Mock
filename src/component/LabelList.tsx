@@ -76,7 +76,7 @@ function Refer(props: any) {
       color:
         props.updateLabelInfo.newCol.length === 0
           ? item.itemColor
-          : props.updateLabelInfo.newCol.substring(0, 1),
+          : props.updateLabelInfo.newCol.substring(1, 7),
     };
 
     await update({
