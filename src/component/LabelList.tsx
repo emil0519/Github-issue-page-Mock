@@ -294,62 +294,7 @@ function LabelList() {
   if (data === undefined || updateLabelInfo === undefined) {
     return <></>;
   }
-  // return <>{data.map((item) => item.color)}</>;
 
-  // useEffect(() => {
-  //   console.log(label);
-  // }, [label]);
-  // useEffect(() => {
-  //   (async () => {
-  //     setLabel(await api.getLabels("emil0519", "testing-issues"));
-  //   })().then((error) => console.log(error));
-  // }, []);
-  //第一次setLabel
-
-  // useEffect(() => {
-  //   if (label === undefined) {
-  //     return;
-  //   } else {
-  //     setUpdateLabelInfo(
-  //       label.map((item: any) => {
-  //         return {
-  //           name: item.name,
-  //           description: item.description,
-  //           color: item.color,
-  //           new_name: item.name,
-  //         };
-  //       })
-  //     );
-  //   }
-  // }, [label]);
-
-  // useEffect(() => {
-  //   if (updatedLabels === undefined) {
-  //     return;
-  //   } else {
-  //     setUpdateLabelInfo(updatedLabels);
-  //     setLabel(updatedLabels);
-  //   }
-  // }, [updatedLabels]);
-
-  // if (data === undefined) {
-  //   return (
-  //     <NoLabelWrapper>
-  //       <NoLabelText>Loading</NoLabelText>
-  //     </NoLabelWrapper>
-  //   );
-  // } else if (data.length === 0) {
-  //   return (
-  //     <>
-  //       {/* <h1>Hello from label</h1> */}
-  //       <NoLabelWrapper>
-  //         <NoLabelText>
-  //           There is no label yet. Click New Label to create one.
-  //         </NoLabelText>
-  //       </NoLabelWrapper>
-  //     </>
-  //   );
-  // } else {
   return (
     <>
       {data.map((item: any, index: any) => {

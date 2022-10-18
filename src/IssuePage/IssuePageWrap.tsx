@@ -91,6 +91,17 @@ function IssuePageWrap() {
 
   useEffect(() => {
     //Options for reusable component
+
+    //之後再回來：這邊想要在onload的時候即將assignee 及label放進selected但不成功
+    // let assigneeSelected: string[] = [];
+    // if (data === undefined && controller === undefined) {
+    //   return;
+    // } else if (data.assignees.length !== 0) {
+    //   data.assignees.map((item: any) => {
+    //     assigneeSelected.push(item.login);
+    //   });
+    //   console.log(assigneeSelected, "assigneeSelected");
+    // }
     setController([
       {
         title: "Assignee",
@@ -160,7 +171,7 @@ function IssuePageWrap() {
         },
       },
     ]);
-  }, [assigneesData, labelData]);
+  }, [assigneesData, labelData, data]);
 
   const fetchedLabelData = useGetAllIssuesQuery({
     baseType: "repos",

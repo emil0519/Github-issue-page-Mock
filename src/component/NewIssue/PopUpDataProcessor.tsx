@@ -102,6 +102,8 @@ function PopUpDataProcessor({
 
   useEffect(() => {
     // Search function within dropdown menu
+    console.log("controller reset 1");
+
     if (controller === undefined) {
       return;
     }
@@ -137,6 +139,7 @@ function PopUpDataProcessor({
         return { ...item };
       });
       console.log(newController);
+      console.log("controller reset 2");
 
       setController(newController);
     }
@@ -154,6 +157,7 @@ function PopUpDataProcessor({
         //清空
         return { ...item };
       });
+      console.log("controller reset 3");
 
       setController(newController);
     }

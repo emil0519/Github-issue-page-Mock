@@ -61,7 +61,8 @@ function NewAssignee({
   type,
 }: controllerProps) {
   useEffect(() => {
-    //若issue page已經有assingee或者label， onload的時候會自動勾選
+    //若issue page已經有assingee或者label， onload的時候會自動勾
+
     if (data === undefined) {
       return;
     } else {
@@ -70,19 +71,19 @@ function NewAssignee({
         case "Labels": {
           if (controller !== undefined && data !== undefined) {
             let newController = controller;
-            if (isError) {
-              return;
-            }
             if (data.assignees.length !== 0) {
               data.assignees.map((item: any) => {
                 newController[0].selected!.push(item.login);
               });
+              console.log(newController, "new controller");
               setController(newController);
             }
             if (data.labels.length !== 0) {
               data.labels.map((item: any) => {
                 newController[1].selected!.push(item.name);
               });
+              console.log("controller reset 5");
+
               setController(newController);
             }
           }
@@ -93,6 +94,8 @@ function NewAssignee({
       }
     }
   }, [showDropDown, data]);
+
+  useEffect(() => console.log(controller, "controller"), [controller]);
 
   const [mouseOver, setMouseOver] = useState("");
 
@@ -183,9 +186,9 @@ function NewAssignee({
                 for (let x = 0; x < showSelected.length; x++) {
                   renderData.push(showSelected[x][0]);
                 }
-                console.log(controller, "controller");
-                console.log(showSelected, "showSelected");
-                console.log(renderData, "renderData");
+                // console.log(controller, "controller");
+                // console.log(showSelected, "showSelected");
+                // console.log(renderData, "renderData");
 
                 return renderData.map((item: any) => {
                   return (
