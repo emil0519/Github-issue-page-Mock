@@ -3,8 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 import { useOnClickOutside } from "usehooks-ts";
-import { useGetAllIssuesQuery, useUpdateMutation,useDeleteMutation } from "../state/issueRTK";
+import {
+  useGetAllIssuesQuery,
+  useUpdateMutation,
+  useDeleteMutation,
+} from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
+import useGenerateRandomColor from "../utils/useGenerateRandomColor";
 
 function useComponentVisible(initialIsVisible: any) {
   const [isComponentVisible, setIsComponentVisible] =
@@ -41,32 +46,13 @@ function Refer(props: any) {
   const [del] = useDeleteMutation();
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
-  const dispatch = useDispatch();
   const [editOpen, setEditOpen] = useState(false);
   const [editVisible, setEditVisible] = useState(true);
   const handleClickOutside = () => {
     setEditOpen(false);
   };
-  useEffect(() => console.log(props.updateLabelInfo), [props.updateLabelInfo]);
-  // function toUpdateInfo(types: string, index: any, value: any) {
-  //   // let newInfo = [...props.updateLabelInfo];
-  //   if (types === "name") {
-  //     props.setUpdateLabelInfo((props.updateLabelInfo.newName = value));
-  //   }
-  //   // else if (types === "description") {
-  //   //   props.updateLabelInfo.newDes = value;
-  //   // } else if (types === "color") {
-  //   //   props.updateLabelInfo.newCol = value;
-  //   // }
-  //   // props.setUpdateLabelInfo(newInfo);
-  //   return;
-  // }
 
   const postInfo = async (item: any) => {
-    // console.log(item);
-    // let test = "#fffff";
-    // console.log(test.subString(0, 1), "inside");
-
     const body = {
       new_name:
         props.updateLabelInfo.newName.length === 0
@@ -87,7 +73,6 @@ function Refer(props: any) {
       query: `/${item.itemName}`,
       content: JSON.stringify(body),
     });
-    console.log(body);
 
     props.setUpdateLabelInfo({
       newName: "",
@@ -97,40 +82,6 @@ function Refer(props: any) {
     props.setLabelIndex(-1);
     props.setAreaOpen(false);
   };
-
-  // function postInfo(index: number) {
-
-  // let updateBody = props.updateLabelInfo[index];
-
-  // api
-  //   .updateLabels(
-  //     "emil0519",
-  //     "testing-issues",
-  //     updateBody.name,
-  //     updateBody.new_name,
-  //     updateBody.description,
-  //     updateBody.color
-  //   )
-  //   .then((data) => {
-  //     if (
-  //       data.message !== "Validation Failed" ||
-  //       data.message === undefined
-  //     ) {
-  //       props.setLabelIndex(-1);
-  //       props.setAreaOpen(false);
-  //     } else if (data.errors !== undefined) {
-  //       alert(
-  //         `Your label ${
-  //           data.errors[0].field
-  //         } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
-  //       );
-  //     } else {
-  //       alert(
-  //         "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
-  //       );
-  //     }
-  //   });
-  // }
 
   async function deleteLabel() {
     const confirm = window.confirm(
@@ -155,6 +106,23 @@ function Refer(props: any) {
     setLocalDes(props.description);
     setLocalName(props.name);
   }, [props.color, props.description, props.name]);
+
+  const { color, generateColor } = useGenerateRandomColor();
+
+  function randomColor() {
+    const random = ((Math.random() * 0xffffff) << 0)
+      .toString(16)
+      .padStart(6, "0");
+    // console.log(random);
+
+    // generateColor();
+    setLocalColor(random);
+  }
+
+  // useEffect(()=>{
+  // setLocalColor(color);
+  //   console.log(color);
+  // },[color])
 
   useOnClickOutside(ref, handleClickOutside);
   return (
@@ -249,7 +217,7 @@ function Refer(props: any) {
           <ColorInputSection>
             <ColorText>Color</ColorText>
             <LowerWrapper>
-              <ColorRoller colors={localColor}>
+              <ColorRoller onClick={() => randomColor()} colors={localColor}>
                 <RollerIcon />
               </ColorRoller>
 

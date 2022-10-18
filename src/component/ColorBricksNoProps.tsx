@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useComponentVisible } from "../utils/useComponentVisible";
 
@@ -67,14 +67,14 @@ function ColorBricksNoProps(props: any) {
       name: "#d4c5f7",
     },
   ];
-
+  useEffect(() => console.log(props.localColor), [props.localColor]);
   return (
     <ColorWrap>
       <ColorInput
         maxLength={7}
         type="text"
         defaultValue={props.defaultValue}
-        value={changeColor}
+        value={`#${props.localColor}`}
         onClick={() => {
           setIsComponentVisible(true);
           setEditOpen(true);
@@ -99,15 +99,6 @@ function ColorBricksNoProps(props: any) {
                 <ColorBrick
                   key={name}
                   colors={name}
-                  // onClick={() => {
-                  //   // props.toUpdateInfo("color", props.index, name);
-                  //   console.log(name);
-                  //   props.setUpdateLabelInfo({
-                  //     ...props.updateLabelInfo,
-                  //     newCol: name.subS,
-                  //   });
-                  //   setChangeColor(name);
-                  // }}
                   onClick={(e) => {
                     props.setUpdateLabelInfo({
                       ...props.updateLabelInfo,
