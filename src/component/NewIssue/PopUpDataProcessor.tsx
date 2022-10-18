@@ -58,6 +58,8 @@ function PopUpDataProcessor({
   // }, [query]);
   // useEffect(() => console.log(clickIndex), [clickIndex]);
   useEffect(() => {
+    console.log(selectedValue);
+
     //處理每張選單勾選的element
     if (controller !== undefined && controller[clickIndex].data !== undefined) {
       if (!controller[clickIndex].selected.includes(selectedValue)) {

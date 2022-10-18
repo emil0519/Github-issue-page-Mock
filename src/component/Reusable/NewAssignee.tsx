@@ -157,10 +157,11 @@ function NewAssignee({
                     </span>
                     {item.default.descriptionWithLink && (
                       <>
-                        <span className="ml-[11px] flex cursor-pointer text-xs text-[#6c737a] hover:text-[#3e7bd7]">
-                          <a href={item.default.desLink}>
-                            {item.default.descriptionWithLink}
-                          </a>
+                        <span
+                          onClick={() => setSelectedValue("emil0519")}
+                          className="ml-[11px] flex cursor-pointer text-xs text-[#6c737a] hover:text-[#3e7bd7]"
+                        >
+                          {item.default.descriptionWithLink}
                         </span>
                       </>
                     )}{" "}
@@ -174,17 +175,11 @@ function NewAssignee({
                     (item: any) => item.title === selected
                   )
                 );
-                console.log(controller, "controller");
-                console.log(item.data, "controller data");
-                console.log(item.selected, "controller selected");
-
-                console.log(showSelected, "show selected");
 
                 let renderData: any = [];
                 for (let x = 0; x < showSelected.length; x++) {
                   renderData.push(showSelected[x][0]);
                 }
-                console.log(renderData, "renderData");
 
                 return renderData.map((item: any) => {
                   return (
@@ -275,10 +270,11 @@ function NewAssignee({
                   {item.selected.length === 0 &&
                     item.default.descriptionWithLink && (
                       <>
-                        <span className="hover:text-[#3e7bd7]">
-                          <a href={item.default.desLink}>
-                            {item.default.descriptionWithLink}
-                          </a>
+                        <span
+                          onClick={() => setSelectedValue("emil0519")}
+                          className="hover:text-[#3e7bd7]"
+                        >
+                          {item.default.descriptionWithLink}
                         </span>
                       </>
                     )}{" "}
