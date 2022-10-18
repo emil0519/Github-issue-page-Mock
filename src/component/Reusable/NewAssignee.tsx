@@ -169,16 +169,24 @@ function NewAssignee({
                 );
               } else if (item.selected.length !== 0) {
                 // 在new issue page內，未點擊會顯示的內容
-                const showSelected = item.selected.map(
-                  (selected: any, _index: number) =>
-                    item.data.filter((item: any) => item.title === selected)
+                const showSelected = item.selected.map((selected: any) =>
+                  item.defaultData.filter(
+                    (item: any) => item.title === selected
+                  )
                 );
+                console.log(controller, "controller");
+                console.log(item.data, "controller data");
+                console.log(item.selected, "controller selected");
+
+                console.log(showSelected, "show selected");
+
                 let renderData: any = [];
                 for (let x = 0; x < showSelected.length; x++) {
                   renderData.push(showSelected[x][0]);
                 }
+                console.log(renderData, "renderData");
+
                 return renderData.map((item: any) => {
-                  // console.log(renderData);
                   return (
                     <>
                       <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
@@ -355,7 +363,6 @@ function NewAssignee({
                               //每一項data
                               <div
                                 onClick={() => {
-                                  setInputValue("");
                                   setSelectedValue(item.title);
                                   setClickRate(clickRate + 1);
                                 }}

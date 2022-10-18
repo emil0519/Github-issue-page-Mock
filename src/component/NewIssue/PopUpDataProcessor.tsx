@@ -59,10 +59,10 @@ function PopUpDataProcessor({
   // useEffect(() => console.log(clickIndex), [clickIndex]);
   useEffect(() => {
     //處理每張選單勾選的element
-
     if (controller !== undefined && controller[clickIndex].data !== undefined) {
       if (!controller[clickIndex].selected.includes(selectedValue)) {
         //如果不include selected value
+        console.log("not include");
 
         const filteredData = controller[clickIndex].data.filter(
           (item: any) => item.title === selectedValue
@@ -126,6 +126,8 @@ function PopUpDataProcessor({
         }
         return { ...item };
       });
+      console.log(newController);
+
       setController(newController);
     } else if (inputValue.length === 0) {
       let copyController = JSON.parse(JSON.stringify(controller));
@@ -135,6 +137,7 @@ function PopUpDataProcessor({
         }
         return { ...item };
       });
+      console.log(newController);
 
       setController(newController);
     }
