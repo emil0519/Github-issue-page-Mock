@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { useComponentVisible } from "../utils/useComponentVisible";
 
@@ -67,7 +67,7 @@ function ColorBricksNoProps(props: any) {
       name: "#d4c5f7",
     },
   ];
-  useEffect(() => console.log(props.localColor), [props.localColor]);
+
   return (
     <ColorWrap>
       <ColorInput
@@ -88,6 +88,11 @@ function ColorBricksNoProps(props: any) {
             newCol: e.target.value,
           });
           setChangeColor(e.target.value);
+          if (props.localColor.length === 0) {
+            props.setLocalColor(`#${e.target.value}`);
+          } else {
+            props.setLocalColor(`${e.target.value}`);
+          }
         }}
       ></ColorInput>
       {isComponentVisible && (

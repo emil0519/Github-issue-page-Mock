@@ -9,7 +9,7 @@ import {
   useDeleteMutation,
 } from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
-import useGenerateRandomColor from "../utils/useGenerateRandomColor";
+
 
 function useComponentVisible(initialIsVisible: any) {
   const [isComponentVisible, setIsComponentVisible] =
@@ -107,15 +107,13 @@ function Refer(props: any) {
     setLocalName(props.name);
   }, [props.color, props.description, props.name]);
 
-  const { color, generateColor } = useGenerateRandomColor();
+  useEffect(()=>console.log(props.color),[props.color])
+    // useEffect(() => console.log(props.updateLabelInfo), [props.updateLabelInfo]);
 
   function randomColor() {
     const random = ((Math.random() * 0xffffff) << 0)
       .toString(16)
       .padStart(6, "0");
-    // console.log(random);
-
-    // generateColor();
     setLocalColor(random);
   }
 
@@ -125,12 +123,21 @@ function Refer(props: any) {
   // },[color])
 
   useOnClickOutside(ref, handleClickOutside);
+  if (
+    localColor === undefined ||
+    localDes === undefined ||
+    localName === undefined
+  ) {
+    return <></>;
+  }
   return (
     <>
       <OuterWrapper>
         <LabelWrap>
           <Label color={localColor}>
-            <LabelText color={localColor}>{localName}</LabelText>
+            <LabelText color={localColor}>{`${
+              localName.length === 0 ? "Label Preview" : localName
+            }`}</LabelText>
           </Label>
         </LabelWrap>
       </OuterWrapper>
@@ -198,6 +205,7 @@ function Refer(props: any) {
                   ...props.updateLabelInfo,
                   newName: e.target.value,
                 });
+                setLocalName(e.target.value);
               }}
             />
           </LabelInputSection>
