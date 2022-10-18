@@ -150,9 +150,27 @@ function Refer(props: any) {
     }
   }
 
+  const [localColor, setLocalColor] = useState<string>("");
+  const [localDes, setLocalDes] = useState<string>();
+  const [localName, setLocalName] = useState<string>();
+  useEffect(() => {
+    setLocalColor(props.color);
+    setLocalDes(props.description);
+    setLocalName(props.name);
+  }, [props.color, props.description, props.name]);
+
   useOnClickOutside(ref, handleClickOutside);
   return (
     <>
+      <OuterWrapper>
+        <LabelWrap>
+          <Label color={localColor}>
+            <LabelText color={localColor}>{localName}</LabelText>
+          </Label>
+        </LabelWrap>
+      </OuterWrapper>
+      <LabelDes>{localDes}</LabelDes>
+      <Notification></Notification>
       <Sort
         onClick={() => {
           setIsComponentVisible(true);
@@ -234,7 +252,7 @@ function Refer(props: any) {
           <ColorInputSection>
             <ColorText>Color</ColorText>
             <LowerWrapper>
-              <ColorRoller>
+              <ColorRoller colors={localColor}>
                 <RollerIcon />
               </ColorRoller>
 
@@ -243,6 +261,8 @@ function Refer(props: any) {
                 index={props.index}
                 updateLabelInfo={props.updateLabelInfo}
                 setUpdateLabelInfo={props.setUpdateLabelInfo}
+                setLocalColor={setLocalColor}
+                localColor={localColor}
               />
             </LowerWrapper>
           </ColorInputSection>
@@ -356,16 +376,6 @@ function LabelList() {
             labelIndex={labelIndex}
             areaOpen={areaOpen}
           >
-            <OuterWrapper>
-              <LabelWrap>
-                <Label color={item.color}>
-                  <LabelText color={item.color}>{item.name}</LabelText>
-                </Label>
-              </LabelWrap>
-            </OuterWrapper>
-            <LabelDes>{item.description}</LabelDes>
-            <Notification></Notification>
-
             <Refer
               key={item.id}
               index={index}
@@ -381,6 +391,9 @@ function LabelList() {
               labelIndex={labelIndex}
               setLabelIndex={setLabelIndex}
               refresh={refresh}
+              color={item.color}
+              description={item.description}
+              name={item.name}
             />
           </Wrapper>
         );
@@ -488,13 +501,17 @@ const RollerIcon = styled(IssueReopenedIcon)`
   }
 `;
 
-const ColorRoller = styled.div`
+type ColorRollerProps = {
+  colors: string;
+};
+
+const ColorRoller = styled.div<ColorRollerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 32px;
   height: 31px;
-  background: #e58b8c;
+  background: #${(props) => props.colors};
   border-radius: 5px;
   margin-top: 10px;
   @media screen and (min-width: 768px) {

@@ -114,6 +114,7 @@ function ColorBricksNoProps(props: any) {
                       newCol: name,
                     });
                     setChangeColor(name);
+                    props.setLocalColor(name.substring(1, 7));
                   }}
                 />
               );
@@ -128,6 +129,7 @@ function ColorBricksNoProps(props: any) {
                   onClick={() => {
                     // props.toUpdateInfo("color", props.index, name);
                     setChangeColor(name);
+                    props.setLocalColor(name.substring(1, 7));
                   }}
                 />
               );
