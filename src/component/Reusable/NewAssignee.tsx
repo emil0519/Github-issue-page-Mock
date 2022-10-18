@@ -158,7 +158,10 @@ function NewAssignee({
                     {item.default.descriptionWithLink && (
                       <>
                         <span
-                          onClick={() => setSelectedValue("emil0519")}
+                          onClick={() => {
+                            setClickIndex(0);
+                            setSelectedValue("emil0519");
+                          }}
                           className="ml-[11px] flex cursor-pointer text-xs text-[#6c737a] hover:text-[#3e7bd7]"
                         >
                           {item.default.descriptionWithLink}
@@ -180,6 +183,9 @@ function NewAssignee({
                 for (let x = 0; x < showSelected.length; x++) {
                   renderData.push(showSelected[x][0]);
                 }
+                console.log(controller, "controller");
+                console.log(showSelected, "showSelected");
+                console.log(renderData, "renderData");
 
                 return renderData.map((item: any) => {
                   return (
@@ -271,7 +277,10 @@ function NewAssignee({
                     item.default.descriptionWithLink && (
                       <>
                         <span
-                          onClick={() => setSelectedValue("emil0519")}
+                          onClick={() => {
+                            setClickIndex(0);
+                            setSelectedValue("emil0519");
+                          }}
                           className="hover:text-[#3e7bd7]"
                         >
                           {item.default.descriptionWithLink}
