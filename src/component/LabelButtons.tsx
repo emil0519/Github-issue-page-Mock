@@ -8,14 +8,15 @@ import {
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import ColorBricks from "./ColorBricks";
-import api from "../utils/api";
 import useGenerateRandomColor from "../utils/useGenerateRandomColor";
+import { useUpdateMutation } from "../state/issueRTK";
 
 export interface opener {
   labelOpen: boolean;
 }
 
 function LabelButtons() {
+  const [update] = useUpdateMutation();
   const [labelOpen, setLabelOpen] = useState(false);
   const [defaultColor, setDefaultColor] = useState("#e99695");
   const [newLabelInfo, setNewLabelInfo] = useState({
@@ -51,38 +52,58 @@ function LabelButtons() {
   const dispatch = useDispatch();
 
   const startCreate = async () => {
-    await api
-      .createLabels(
-        "emil0519",
-        "testing-issues",
-        newLabelInfo.name,
-        newLabelInfo.description,
-        newLabelInfo.color.substring(1)
-      )
-      .then((data) => {
-        if (
-          data.message !== "Validation Failed" ||
-          data.message === undefined
-        ) {
-          dispatch({
-            type: "createList",
-            payload: { data },
-          });
-          setCreateLabelChange(false);
-          setLabelText("Saving ...");
-          setTimeout(() => setLabelOpen(false), 1000);
-        } else if (data.errors !== undefined) {
-          alert(
-            `Your label ${
-              data.errors[0].field
-            } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
-          );
-        } else {
-          alert(
-            "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
-          );
-        }
-      });
+    const body = {
+      name: newLabelInfo.name,
+      description: newLabelInfo.description,
+      color: newLabelInfo.color.substring(1),
+    };
+
+    await update({
+      baseType: "repos",
+      type: "/labels",
+      name: "/emil0519",
+      repo: "/testing-issues",
+      query: ``,
+      content: JSON.stringify(body),
+    });
+
+    setCreateLabelChange(false);
+    setLabelText("Saving ...");
+    setTimeout(() => setLabelOpen(false), 1000);
+
+
+    // await api
+    //   .createLabels(
+    //     "emil0519",
+    //     "testing-issues",
+    //     newLabelInfo.name,
+    //     newLabelInfo.description,
+    //     newLabelInfo.color.substring(1)
+    //   )
+    //   .then((data) => {
+    //     if (
+    //       data.message !== "Validation Failed" ||
+    //       data.message === undefined
+    //     ) {
+    //       dispatch({
+    //         type: "createList",
+    //         payload: { data },
+    //       });
+          // setCreateLabelChange(false);
+          // setLabelText("Saving ...");
+          // setTimeout(() => setLabelOpen(false), 1000);
+    //     } else if (data.errors !== undefined) {
+    //       alert(
+    //         `Your label ${
+    //           data.errors[0].field
+    //         } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
+    //       );
+    //     } else {
+    //       alert(
+    //         "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
+    //       );
+    //     }
+    //   });
   };
 
   return (

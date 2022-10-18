@@ -79,8 +79,14 @@ function ColorBricksNoProps(props: any) {
           setIsComponentVisible(true);
           setEditOpen(true);
         }}
+        // onChange={(e) => {
+        //   props.toUpdateInfo("color", props.index, e.target.value);
+        // }}
         onChange={(e) => {
-          props.toUpdateInfo("color", props.index, e.target.value);
+          props.setUpdateLabelInfo({
+            ...props.updateLabelInfo,
+            newCol: e.target.value,
+          });
         }}
       ></ColorInput>
       {isComponentVisible && (
@@ -92,10 +98,22 @@ function ColorBricksNoProps(props: any) {
                 <ColorBrick
                   key={name}
                   colors={name}
-                  onClick={() => {
-                    props.toUpdateInfo("color", props.index, name);
-                    setChangeColor(name);
-                  }}
+                  // onClick={() => {
+                  //   // props.toUpdateInfo("color", props.index, name);
+                  //   console.log(name);
+                  //   props.setUpdateLabelInfo({
+                  //     ...props.updateLabelInfo,
+                  //     newCol: name.subS,
+                  //   });
+                  //   setChangeColor(name);
+                  // }}
+                  // onClick={(e) => {
+                  //   props.setUpdateLabelInfo({
+                  //     ...props.updateLabelInfo,
+                  //     newCol: e.target.value,
+                  //   });
+                  //   setChangeColor(name);
+                  // }}
                 />
               );
             })}

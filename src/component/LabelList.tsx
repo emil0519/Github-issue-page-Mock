@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import api from "../utils/api";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 import { useOnClickOutside } from "usehooks-ts";
-import { useGetAllIssuesQuery } from "../state/issueRTK";
+import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
 
 function useComponentVisible(initialIsVisible: any) {
@@ -38,6 +38,7 @@ function useComponentVisible(initialIsVisible: any) {
 }
 
 function Refer(props: any) {
+  const [update] = useUpdateMutation();
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
   const dispatch = useDispatch();
@@ -46,51 +47,90 @@ function Refer(props: any) {
   const handleClickOutside = () => {
     setEditOpen(false);
   };
+  useEffect(() => console.log(props.updateLabelInfo), [props.updateLabelInfo]);
+  // function toUpdateInfo(types: string, index: any, value: any) {
+  //   // let newInfo = [...props.updateLabelInfo];
+  //   if (types === "name") {
+  //     props.setUpdateLabelInfo((props.updateLabelInfo.newName = value));
+  //   }
+  //   // else if (types === "description") {
+  //   //   props.updateLabelInfo.newDes = value;
+  //   // } else if (types === "color") {
+  //   //   props.updateLabelInfo.newCol = value;
+  //   // }
+  //   // props.setUpdateLabelInfo(newInfo);
+  //   return;
+  // }
 
-  function toUpdateInfo(types: any, index: any, value: any) {
-    let newInfo = [...props.updateLabelInfo];
-    if (types === "name") {
-      newInfo[index].new_name = value;
-    } else if (types === "description") {
-      newInfo[index].description = value;
-    } else if (types === "color") {
-      newInfo[index].color = value;
-    }
-    props.setUpdateLabelInfo(newInfo);
-    return;
-  }
-  function postInfo(index: number) {
-    let updateBody = props.updateLabelInfo[index];
+  const postInfo = async (item: any) => {
+    // console.log(item);
+    // let test = "#fffff";
+    // console.log(test.subString(0, 1), "inside");
 
-    api
-      .updateLabels(
-        "emil0519",
-        "testing-issues",
-        updateBody.name,
-        updateBody.new_name,
-        updateBody.description,
-        updateBody.color
-      )
-      .then((data) => {
-        if (
-          data.message !== "Validation Failed" ||
-          data.message === undefined
-        ) {
-          props.setLabelIndex(-1);
-          props.setAreaOpen(false);
-        } else if (data.errors !== undefined) {
-          alert(
-            `Your label ${
-              data.errors[0].field
-            } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
-          );
-        } else {
-          alert(
-            "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
-          );
-        }
-      });
-  }
+    const body = {
+      new_name:
+        props.updateLabelInfo.newName.length === 0
+          ? item.itemName
+          : props.updateLabelInfo.newName,
+      description: props.updateLabelInfo.newDes,
+      color:
+        props.updateLabelInfo.newCol.length === 0
+          ? item.itemColor
+          : props.updateLabelInfo.newCol.substring(0, 1),
+    };
+
+    await update({
+      baseType: "repos",
+      type: "/labels",
+      name: "/emil0519",
+      repo: "/testing-issues",
+      query: `/${item.itemName}`,
+      content: JSON.stringify(body),
+    });
+    console.log(body);
+
+    props.setUpdateLabelInfo({
+      newName: "",
+      newDes: "",
+      newCol: "",
+    });
+    props.setLabelIndex(-1);
+    props.setAreaOpen(false);
+  };
+
+  // function postInfo(index: number) {
+
+  // let updateBody = props.updateLabelInfo[index];
+
+  // api
+  //   .updateLabels(
+  //     "emil0519",
+  //     "testing-issues",
+  //     updateBody.name,
+  //     updateBody.new_name,
+  //     updateBody.description,
+  //     updateBody.color
+  //   )
+  //   .then((data) => {
+  //     if (
+  //       data.message !== "Validation Failed" ||
+  //       data.message === undefined
+  //     ) {
+  //       props.setLabelIndex(-1);
+  //       props.setAreaOpen(false);
+  //     } else if (data.errors !== undefined) {
+  //       alert(
+  //         `Your label ${
+  //           data.errors[0].field
+  //         } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
+  //       );
+  //     } else {
+  //       alert(
+  //         "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
+  //       );
+  //     }
+  //   });
+  // }
 
   function deleteLabel(index: number) {
     const confirm = window.confirm(
@@ -171,7 +211,10 @@ function Refer(props: any) {
               placeholder="Label name"
               defaultValue={`${props.itemName}`}
               onChange={(e) => {
-                toUpdateInfo("name", props.index, e.target.value);
+                props.setUpdateLabelInfo({
+                  ...props.updateLabelInfo,
+                  newName: e.target.value,
+                });
               }}
             />
           </LabelInputSection>
@@ -181,7 +224,10 @@ function Refer(props: any) {
               placeholder="Description (optional)"
               defaultValue={`${props.itemDescription}`}
               onChange={(e) => {
-                toUpdateInfo("description", props.index, e.target.value);
+                props.setUpdateLabelInfo({
+                  ...props.updateLabelInfo,
+                  newDes: e.target.value,
+                });
               }}
             />
           </LabelInputSection>
@@ -194,8 +240,9 @@ function Refer(props: any) {
 
               <ColorBricksNoProps
                 defaultValue={`#${props.itemColor}`}
-                toUpdateInfo={toUpdateInfo}
                 index={props.index}
+                updateLabelInfo={props.updateLabelInfo}
+                setUpdateLabelInfo={props.setUpdateLabelInfo}
               />
             </LowerWrapper>
           </ColorInputSection>
@@ -203,7 +250,7 @@ function Refer(props: any) {
             <CreateLabelButton>
               <CreateLabelText
                 onClick={() => {
-                  postInfo(props.index);
+                  postInfo(props);
                 }}
               >
                 Save changes
@@ -263,7 +310,11 @@ function LabelList() {
   const [label, setLabel]: any = useState();
   const updatedLabels: any = useSelector((state) => state);
 
-  const [updateLabelInfo, setUpdateLabelInfo]: any = useState();
+  const [updateLabelInfo, setUpdateLabelInfo] = useState({
+    newName: "",
+    newDes: "",
+    newCol: "",
+  });
   const { data } = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/labels",
@@ -271,27 +322,27 @@ function LabelList() {
     repo: "/testing-issues",
     query: "",
   });
-  useEffect(() => {
-    console.log(data);
-    if (data !== undefined) {
-      setUpdateLabelInfo(
-        data.map((item: any) => {
-          return {
-            name: item.name,
-            description: item.description,
-            color: item.color,
-            new_name: item.name,
-          };
-        })
-      );
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data);
+  //   if (data !== undefined) {
+  //     setUpdateLabelInfo(
+  //       data.map((item: any) => {
+  //         return {
+  //           name: item.name,
+  //           description: item.description,
+  //           color: item.color,
+  //           new_name: item.name,
+  //         };
+  //       })
+  //     );
+  //   }
+  // }, [data]);
 
-  useEffect(() => {
-    console.log(updateLabelInfo);
-  }, [updateLabelInfo]);
+  // useEffect(() => {
+  //   console.log(updateLabelInfo);
+  // }, [updateLabelInfo]);
 
-  if (data === undefined || updateLabelInfo === undefined) {
+  if (data === undefined) {
     return <></>;
   }
 
@@ -307,14 +358,12 @@ function LabelList() {
           >
             <OuterWrapper>
               <LabelWrap>
-                <Label color={updateLabelInfo[index].color}>
-                  <LabelText color={item.color}>
-                    {updateLabelInfo[index].new_name}
-                  </LabelText>
+                <Label color={item.color}>
+                  <LabelText color={item.color}>{item.name}</LabelText>
                 </Label>
               </LabelWrap>
             </OuterWrapper>
-            <LabelDes>{updateLabelInfo[index].description}</LabelDes>
+            <LabelDes>{item.description}</LabelDes>
             <Notification></Notification>
 
             <Refer
@@ -332,7 +381,6 @@ function LabelList() {
               labelIndex={labelIndex}
               setLabelIndex={setLabelIndex}
               refresh={refresh}
-              setRefresh={setRefresh}
             />
           </Wrapper>
         );
@@ -509,7 +557,6 @@ const DropDownText = styled.span<Visible>`
   font-size: 8px;
   color: #34383b;
   background: white;
-
   &:hover {
     background: #1760cf;
     color: white;
@@ -549,7 +596,6 @@ const DropDown = styled.div`
 const OuterWrapper = styled.section`
   width: 15%;
   height: 24px;
-
   @media screen and (min-width: 1012px) {
   }
 `;
@@ -557,7 +603,6 @@ const OuterWrapper = styled.section`
 const LabelWrap = styled.div`
   width: auto;
   height: 24px;
-
   @media screen and (min-width: 1012px) {
   }
 `;
@@ -645,7 +690,6 @@ const Sort = styled.div<Sorter>`
   align-items: center;
   cursor: pointer;
   margin-right: 10px;
-
   &:hover {
     background: #1760cf;
     > * {

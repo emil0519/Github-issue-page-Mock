@@ -54,40 +54,40 @@ function LabelButtonsIssues() {
   const [created, setCreated] = useState(0);
   const dispatch = useDispatch();
 
-  const startCreate = async () => {
-    await api
-      .createLabels(
-        "emil0519",
-        "testing-issues",
-        newLabelInfo.name,
-        newLabelInfo.description,
-        newLabelInfo.color.substring(1)
-      )
-      .then((data) => {
-        if (
-          data.message !== "Validation Failed" ||
-          data.message === undefined
-        ) {
-          dispatch({
-            type: "createList",
-            payload: { data },
-          });
-          setCreateLabelChange(false);
-          setLabelText("Saving ...");
-          setTimeout(() => setLabelOpen(false), 1000);
-        } else if (data.errors !== undefined) {
-          alert(
-            `Your label ${
-              data.errors[0].field
-            } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
-          );
-        } else {
-          alert(
-            "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
-          );
-        }
-      });
-  };
+  // const startCreate = async () => {
+  //   await api
+  //     .createLabels(
+  //       "emil0519",
+  //       "testing-issues",
+  //       newLabelInfo.name,
+  //       newLabelInfo.description,
+  //       newLabelInfo.color.substring(1)
+  //     )
+  //     .then((data) => {
+  //       if (
+  //         data.message !== "Validation Failed" ||
+  //         data.message === undefined
+  //       ) {
+  //         dispatch({
+  //           type: "createList",
+  //           payload: { data },
+  //         });
+  //         setCreateLabelChange(false);
+  //         setLabelText("Saving ...");
+  //         setTimeout(() => setLabelOpen(false), 1000);
+  //       } else if (data.errors !== undefined) {
+  //         alert(
+  //           `Your label ${
+  //             data.errors[0].field
+  //           } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
+  //         );
+  //       } else {
+  //         alert(
+  //           "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
+  //         );
+  //       }
+  //     });
+  // };
 
   return (
     <Wrapper>
