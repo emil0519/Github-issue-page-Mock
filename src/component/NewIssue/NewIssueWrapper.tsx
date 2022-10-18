@@ -231,7 +231,7 @@ function NewIssueWrapper() {
             <SubmitBig postData={postData} />
           </div>
         </section>
-        <EditNote />
+        {/* <EditNote /> */}
       </section>
       <PopUpDataProcessor
         selectedValue={selectedValue}
@@ -240,6 +240,7 @@ function NewIssueWrapper() {
         setShowDropDown={setShowDropDown}
         controller={controller}
         setController={setController}
+        type={"new"}
       />
       <Submit postData={postData} />
     </section>

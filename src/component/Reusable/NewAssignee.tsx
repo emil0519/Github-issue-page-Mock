@@ -37,7 +37,8 @@ type controllerProps = {
   setController: any;
   data?: any;
   reRender?: number;
-  isError: boolean;
+  isError?: boolean;
+  type: string;
 };
 
 function NewAssignee({
@@ -57,45 +58,50 @@ function NewAssignee({
   data,
   reRender,
   isError,
+  type,
 }: controllerProps) {
   useEffect(() => {
     //若issue page已經有assingee或者label， onload的時候會自動勾選
-    switch (showDropDown) {
-      case "Assignee":
-      case "Labels": {
-        if (controller !== undefined && data !== undefined) {
-          let newController = controller;
-          if (isError) {
-            return;
+    if (data === undefined) {
+      return;
+    } else {
+      switch (showDropDown) {
+        case "Assignee":
+        case "Labels": {
+          if (controller !== undefined && data !== undefined) {
+            let newController = controller;
+            if (isError) {
+              return;
+            }
+            if (data.assignees.length !== 0) {
+              data.assignees.map((item: any) => {
+                newController[0].selected!.push(item.login);
+              });
+              setController(newController);
+            }
+            if (data.labels.length !== 0) {
+              data.labels.map((item: any) => {
+                newController[1].selected!.push(item.name);
+              });
+              setController(newController);
+            }
           }
-          if (data.assignees.length !== 0) {
-            data.assignees.map((item: any) => {
-              newController[0].selected!.push(item.login);
-            });
-            setController(newController);
-          }
-          if (data.labels.length !== 0) {
-            data.labels.map((item: any) => {
-              newController[1].selected!.push(item.name);
-            });
-            setController(newController);
-          }
+          break;
         }
-        break;
+        default:
+          return;
       }
-      default:
-        return;
     }
-  }, [showDropDown]);
+  }, [showDropDown, data]);
 
   const [mouseOver, setMouseOver] = useState("");
 
   const [mainHeader, setMainHeader] = useState<string[]>([]);
-
+  // useEffect(() => console.log(controller), [controller]);
   if (
     controller[0].data === undefined ||
     controller[0].default.descriptionWithoutLink === undefined ||
-    data === undefined
+    (type === "issue" && data === undefined)
   ) {
     return <></>;
   }
@@ -113,6 +119,7 @@ function NewAssignee({
               onClick={() => {
                 setShowDropDown(item.title);
                 setClickIndex!(index);
+                // console.log(index);
                 setMainHeader([
                   item.default.mainHeader,
                   item.default.inputPlaceholder,
@@ -166,16 +173,19 @@ function NewAssignee({
                   (selected: any, _index: number) =>
                     item.data.filter((item: any) => item.title === selected)
                 );
-                let renderData = [];
+                let renderData: any = [];
                 for (let x = 0; x < showSelected.length; x++) {
                   renderData.push(showSelected[x][0]);
                 }
-                return renderData.map((item) => {
+                return renderData.map((item: any) => {
+                  // console.log(renderData);
                   return (
                     <>
                       <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
                         {/* 外面顯示的內容 */}
-                        {item.icon.includes("http") ? (
+                        {type === "new" &&
+                        item.icon !== undefined &&
+                        item.icon.includes("http") ? (
                           <img
                             src={item.icon}
                             className="ml-[4px] mr-[5px] mt-[5px] h-[20px] w-[20px] rounded-full"
@@ -197,8 +207,8 @@ function NewAssignee({
               } else if (isError) {
                 return;
               } else if (
-                data.assignees.length !== 0 ||
-                data.labels.length !== 0
+                type === "issue" &&
+                (data.assignees.length !== 0 || data.labels.length !== 0)
               ) {
                 //在issue page 裡面會展示的內容
                 if (data.assignees.length !== 0 && index === 0) {
@@ -238,29 +248,34 @@ function NewAssignee({
                     </>
                   );
                 }
-                // return <></>;
+                return <></>;
               }
             })()}
 
             <div className="mt-[8px] mr-auto ml-auto w-[95%] text-[12px] text-[#6c737a]">
               {/* 沒有點擊進去會顯示的內容 */}
-              {item.default.isOpen &&
-                (data.assignees.length === 0 || data.labels.length === 0) && (
-                  <>
-                    {item.selected.length === 0 &&
-                      item.default.descriptionWithoutLink}
-                    {item.selected.length === 0 &&
-                      item.default.descriptionWithLink && (
-                        <>
-                          <span className="hover:text-[#3e7bd7]">
-                            <a href={item.default.desLink}>
-                              {item.default.descriptionWithLink}
-                            </a>
-                          </span>
-                        </>
-                      )}{" "}
-                  </>
-                )}
+              {item.default.isOpen && (
+                // ||
+                //   (type === "issue" &&
+                //     data !== undefined &&
+                //     (data.assignees.length === 0 || data.labels.length === 0) && (
+                // &&
+                //   (data.assignees.length === 0 || data.labels.length === 0)
+                <>
+                  {item.selected.length === 0 &&
+                    item.default.descriptionWithoutLink}
+                  {item.selected.length === 0 &&
+                    item.default.descriptionWithLink && (
+                      <>
+                        <span className="hover:text-[#3e7bd7]">
+                          <a href={item.default.desLink}>
+                            {item.default.descriptionWithLink}
+                          </a>
+                        </span>
+                      </>
+                    )}{" "}
+                </>
+              )}
             </div>
             {(() => {
               if (item.default.isOpen === true) {

@@ -10,6 +10,7 @@ export type ControllerProps = {
   setShowDropDown: React.Dispatch<React.SetStateAction<string>>;
   selectedValue: string;
   setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
+  type: string;
 };
 
 function PopUpDataProcessor({
@@ -19,6 +20,7 @@ function PopUpDataProcessor({
   showDropDown,
   selectedValue,
   setSelectedValue,
+  type,
 }: ControllerProps) {
   const [inputValue, setInputValue] = useState<string>("");
   const [clickRate, setClickRate] = useState<number>(0);
@@ -28,28 +30,40 @@ function PopUpDataProcessor({
   const [searchParams] = useSearchParams();
   const [reRender, setreRender] = useState<number>(0);
   const query = searchParams.get("query");
+
   const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/issues",
     name: "/emil0519",
     repo: "/testing-issues",
     query: `/${query}`,
+    // skip: `${type==="new" ? true : false}`,
   });
+
+  useEffect(() => {
+    if (query === null) {
+      return;
+    }
+  });
+
   // useEffect(() => console.log(isError), [isError]);
   // 改進: call in condition or else it will return 404 in new issue page
   const [localData, setLocalData] = useState<any>();
-  useEffect(() => {
-    if (query === null) {
-      setLocalData([]);
-    } else {
-      setLocalData(data);
-    }
-  }, [query]);
-
+  // useEffect(() => {
+  //   if (query === null) {
+  //     setLocalData([]);
+  //   } else {
+  //     setLocalData(data);
+  //   }
+  // }, [query]);
+  // useEffect(() => console.log(clickIndex), [clickIndex]);
   useEffect(() => {
     //處理每張選單勾選的element
+
     if (controller !== undefined && controller[clickIndex].data !== undefined) {
       if (!controller[clickIndex].selected.includes(selectedValue)) {
+        //如果不include selected value
+
         const filteredData = controller[clickIndex].data.filter(
           (item: any) => item.title === selectedValue
         );
@@ -65,19 +79,23 @@ function PopUpDataProcessor({
           return { ...item };
         });
         setController(newController);
-      } else if (controller[clickIndex].selected.includes(selectedValue)) {
+      } else {
+        let copyController = JSON.parse(JSON.stringify(controller));
         const num = controller[clickIndex].selected.indexOf(selectedValue);
-        controller[clickIndex].selected.splice(num, 1);
-        const newController = controller;
-        newController[0].selected = controller[clickIndex].selected.splice(
-          num,
-          1
-        );
-        console.log(newController);
+        copyController[clickIndex].selected.splice(num, 1);
+
+        // console.log(controller[clickIndex].selected.splice(num, 1));
+        // const newController = controller;
+        // newController[0].selected = controller[clickIndex].selected.splice(
+        //   num,
+        //   1
+        // );
+
+        // console.log(newController);
         // 改進：這邊console.log的話會看到controller改變了，但不會重新render
         //可能因為改變了object react會沒有反應，目前先讓NewAssignee吃一個number，強制讓它rerender
         //參見 https://stackoverflow.com/questions/71185474/component-not-re-rendering-after-change-in-an-array-state-in-react
-        setController(newController);
+        setController(copyController);
         setreRender(reRender + 1);
       }
     }
@@ -160,7 +178,8 @@ function PopUpDataProcessor({
         setController={setController}
         data={data}
         reRender={reRender}
-        isError={isError}
+        type={type}
+        // isError={isError}
       />
     </section>
   );

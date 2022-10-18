@@ -235,6 +235,7 @@ function IssuePageWrap() {
             setShowDropDown={setShowDropDown}
             controller={controller}
             setController={setController}
+            type={"issue"}
           />
           <IssueSpecialPart />
         </section>

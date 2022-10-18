@@ -28,9 +28,9 @@ function IssueSpecialPart() {
     query: `/${query}`,
   });
 
-  useEffect(() => {
-    console.log(avatarData);
-  }, [avatarData]);
+  // useEffect(() => {
+  //   console.log(avatarData);
+  // }, [avatarData]);
 
   useEffect(() => {
     if (data !== undefined) {

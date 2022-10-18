@@ -22,7 +22,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [hoverOnCancel, setHoverOnCancel] = useState<boolean>(false);
-  useEffect(() => console.log(clickOnDots), [clickOnDots]);
+  // useEffect(() => console.log(clickOnDots), [clickOnDots]);
 
   const initController = [
     { content: "Copy link" },
@@ -147,7 +147,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
               </div>
               <div
                 onClick={() => {
-                  console.log("false");
+                  // console.log("false");
                   setClickOnDots(false);
                 }}
                 //給dropdown menu的透明外層

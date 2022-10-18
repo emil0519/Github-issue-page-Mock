@@ -18,7 +18,7 @@ type InitalCommentProps = {
 };
 
 function InitialContent({ data, type, count }: InitalCommentProps) {
-  console.log(data);
+  // console.log(data);
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
@@ -37,7 +37,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [hoverOnCancel, setHoverOnCancel] = useState<boolean>(false);
-  useEffect(() => console.log(clickOnDots), [clickOnDots]);
+  // useEffect(() => console.log(clickOnDots), [clickOnDots]);
   const updateComment = async (value: string) => {
     let body: any;
     let combinedQuery = "";
@@ -111,7 +111,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
         Object.fromEntries,
       ])(newReaction);
       let entries = Object.entries(renderReaction);
-      console.log(entries);
+      // console.log(entries);
       setRender(entries);
     }
   }, [reactions]);
@@ -192,7 +192,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
               </div>
               <div
                 onClick={() => {
-                  console.log("false");
+                  // console.log("false");
                   setClickOnDots(false);
                 }}
                 //給dropdown menu的透明外層
