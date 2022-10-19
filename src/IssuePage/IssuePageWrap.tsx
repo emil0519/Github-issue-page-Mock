@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import EditSection from "../component/NewIssue/EditSection";
+import PopUpDataProcessor from "../component/NewIssue/PopUpDataProcessor";
+import BigAvatar from "../component/Reusable/BigAvatar";
 import EditNote from "../component/Reusable/EditNote";
+import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
 import AssigneeLabel from "./AssigneeLabel";
 import IssuePageProcessor from "./IssuePageProcessor";
-import Title from "./Title";
-import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
-import { useSearchParams } from "react-router-dom";
-import PopUpDataProcessor from "../component/NewIssue/PopUpDataProcessor";
 import IssueSpecialPart from "./IssueSpecialPart";
-import BigAvatar from "../component/Reusable/BigAvatar";
+import Title from "./Title";
 
 function IssuePageWrap() {
   const [postData, setPostData] = useState<any>();
@@ -55,8 +55,8 @@ function IssuePageWrap() {
       await update({
         baseType: "repos",
         type: "/issues",
-        name: "/emil0519",
-        repo: "/testing-issues",
+        name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+        repo: `/${repo}`,
         query: `/${query}`,
         content: JSON.stringify(body),
       });
@@ -65,27 +65,60 @@ function IssuePageWrap() {
   }, [showDropDown]);
 
   const query = searchParams.get("query");
-  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: `/${query}`,
-  });
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("");
+
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/issues",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: `/${query}`,
+    },
+    { skip: skip }
+  );
 
   const comments = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
+    name: `/${
+      skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+    }`,
+    repo: `/${skip ? "" : repo}`,
     query: `/${query}/comments`,
   });
 
   const timeline = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
+    name: `/${
+      skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+    }`,
+    repo: `/${skip ? "" : repo}`,
     query: `/${query}/timeline`,
   });
 

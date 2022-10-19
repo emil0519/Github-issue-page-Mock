@@ -21,10 +21,11 @@ function IssueColumn() {
   const [baseType, setBaseType] = useState("/repos");
   const [type, setType] = useState("/issues");
   const [name, setName] = useState("/emil0519");
-  const [repo, setRepo] = useState("/testing-issues");
-  const [userInfo, setUserInfo] = useState<any>();
   const navigate = useNavigate();
+
+  const [userInfo, setUserInfo] = useState<any>();
   const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("/testing-issues");
   const { data } = useGetAllIssuesQuery(
     {
       baseType: baseType,
@@ -59,7 +60,7 @@ function IssueColumn() {
     }
   }, [userInfo, repo]);
 
-  useEffect(() => console.log(data), [data]);
+  // useEffect(() => console.log(data), [data]);
 
   useEffect(() => {
     if (value.search.length !== 0) {

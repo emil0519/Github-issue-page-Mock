@@ -1,21 +1,51 @@
-import down from "../img/triangle-down.svg";
-import { useGetAllIssuesQuery } from "../state/issueRTK";
-import x from "../img/x.svg";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import down from "../img/triangle-down.svg";
+import x from "../img/x.svg";
+import { useGetAllIssuesQuery } from "../state/issueRTK";
 import { UserContext } from "../utils/useContext";
 
 function Assignee() {
   const navigate = useNavigate();
   const { value, setValue } = useContext(UserContext);
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("/testing-issues");
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
 
-  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      console.log(userInfo.currentSession.provider_token);
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/issues",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: "",
+    },
+    { skip: skip }
+  );
+  useEffect(() => console.log(data), [data]);
+
   const [localData, setLocalData] = useState<any>();
 
   const [renderData, setRenderData] = useState<any>();
@@ -155,7 +185,6 @@ function Assignee() {
             <div
               onClick={() => {
                 setShowAssignee(false);
-
                 setValue({
                   ...value,
                   assignees: `assignee=${item.login}`,
