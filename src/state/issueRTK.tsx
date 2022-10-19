@@ -21,39 +21,40 @@ type Parameter = {
   name: string;
   repo: string;
   query: string;
+  token?: string;
 };
 
-type Query = {
-  name: string;
-  repo: string;
-  query: string;
-};
+// type Query = {
+//   name: string;
+//   repo: string;
+//   query: string;
+// };
 
-interface CreateLabel {
-  id: number;
-  node_id: string;
-  url: string;
-  name: string;
-  color: string;
-  default: boolean;
-  description: string;
-}
+// interface CreateLabel {
+//   id: number;
+//   node_id: string;
+//   url: string;
+//   name: string;
+//   color: string;
+//   default: boolean;
+//   description: string;
+// }
 
-type CreateLabelParameter = {
-  name: string;
-  repo: string;
-  token: string;
-  createLabelName: string;
-  createLabelColor: string;
-  createLabelDescription: string;
-};
+// type CreateLabelParameter = {
+//   name: string;
+//   repo: string;
+//   token: string;
+//   createLabelName: string;
+//   createLabelColor: string;
+//   createLabelDescription: string;
+// };
 
 export const createIssueApi: any = createApi({
   reducerPath: "createLabelApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.github.com/",
   }),
-  tagTypes: ["issues"],
+  tagTypes: ["issues", "repo"],
   endpoints: (builder) => ({
     getAllIssues: builder.query<GetLebal[], Parameter>({
       query: ({ baseType, type, name, repo, query }) => ({
@@ -66,6 +67,18 @@ export const createIssueApi: any = createApi({
         }),
       }),
       providesTags: ["issues"],
+    }),
+    getRepo: builder.query<GetLebal[], Parameter>({
+      query: ({ baseType, name, query, token }) => ({
+        url: `${baseType}${name}${query}`,
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `token ${token}`,
+          "if-none-match": "",
+        }),
+      }),
+      providesTags: ["repo"],
     }),
     createIssue: builder.mutation({
       query: ({ baseType, type, name, repo, query, newIssue }) => ({
@@ -110,6 +123,7 @@ export const createIssueApi: any = createApi({
 });
 
 export const { useGetAllIssuesQuery } = createIssueApi;
+export const { useGetRepoQuery } = createIssueApi;
 export const { useCreateIssueMutation } = createIssueApi;
 export const { useUpdateMutation } = createIssueApi;
 export const { useDeleteMutation } = createIssueApi;

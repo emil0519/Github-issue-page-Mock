@@ -17,11 +17,13 @@ const App = () => {
     const user: any | never = superbase.auth.user();
     const session: any = superbase.auth.session();
     setUser(user);
+    console.log(session);
+
     // get access token from this user
   }
 
   async function signInWithGitHub() {
-    await superbase.auth.signIn(
+    const { user } = await superbase.auth.signIn(
       {
         provider: "github",
       },
@@ -36,13 +38,13 @@ const App = () => {
     setUser(null);
   }
 
-  useEffect(() => console.log(user), [user]);
+  // useEffect(() => console.log(user), [user]);
 
   //Will render signOut function later
 
-  if (user) {
-    navigate("/Repo");
-  }
+  // if (user) {
+  //   navigate("/Repo");
+  // }
 
   return (
     <section className="flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-[#f9f9f9]">
@@ -66,6 +68,12 @@ const App = () => {
           className="mt-[28px] flex h-[32px] w-[240px] cursor-pointer items-center justify-center rounded-md bg-[#2fa455]"
         >
           <span className="text-[14px] text-white">Sign in</span>
+        </div>
+        <div
+          onClick={signOut}
+          className="mt-[28px] flex h-[32px] w-[240px] cursor-pointer items-center justify-center rounded-md bg-[#2fa455]"
+        >
+          <span className="text-[14px] text-white">Sign out</span>
         </div>
       </div>
     </section>
