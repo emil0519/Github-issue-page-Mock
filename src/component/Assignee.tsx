@@ -10,7 +10,7 @@ function Assignee() {
   const { value, setValue } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState<any>();
   const [skip, setSkip] = useState(true);
-  const [repo, setRepo] = useState("/testing-issues");
+  const [repo, setRepo] = useState("");
   useEffect(() => {
     const items = localStorage.getItem("supabase.auth.token");
     const repo = localStorage.getItem("repo");
@@ -27,7 +27,6 @@ function Assignee() {
 
   useEffect(() => {
     if (userInfo !== undefined && repo !== undefined) {
-      console.log(userInfo.currentSession.provider_token);
       setSkip(false);
     }
   }, [userInfo, repo]);
@@ -44,7 +43,7 @@ function Assignee() {
     },
     { skip: skip }
   );
-  useEffect(() => console.log(data), [data]);
+  // useEffect(() => console.log(data), [data]);
 
   const [localData, setLocalData] = useState<any>();
 

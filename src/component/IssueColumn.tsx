@@ -18,14 +18,16 @@ function IssueColumn() {
   const [showPage, setShowPage] = useState<boolean>(true);
   const [previous, setPrevious] = useState<boolean>(false);
   const [nextPageQuery, setNextPageQuery] = useState<any>("");
+  const navigate = useNavigate();
+
   const [baseType, setBaseType] = useState("/repos");
   const [type, setType] = useState("/issues");
   const [name, setName] = useState("/emil0519");
-  const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState<any>();
   const [skip, setSkip] = useState(true);
   const [repo, setRepo] = useState("/testing-issues");
+
   const { data } = useGetAllIssuesQuery(
     {
       baseType: baseType,
@@ -76,21 +78,31 @@ function IssueColumn() {
     }
   }, [value]);
 
-  const closedData = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: `?state=closed`,
-  });
+  const closedData = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/issues",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: `?state=closed`,
+    },
+    { skip: skip }
+  );
 
-  const nextPage = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: nextPageQuery,
-  });
+  const nextPage = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/issues",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: nextPageQuery,
+    },
+    { skip: skip }
+  );
 
   useEffect(() => {
     if (data !== undefined) {

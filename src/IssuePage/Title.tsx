@@ -4,9 +4,9 @@ import {
   IssueOpenedIcon,
 } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
-import { hourAdder, timeAgo } from "../utils/horus";
-import { useUpdateMutation, useGetAllIssuesQuery } from "../state/issueRTK";
 import { useSearchParams } from "react-router-dom";
+import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
+import { hourAdder, timeAgo } from "../utils/horus";
 
 export type DataProps = {
   data: any;
@@ -14,6 +14,21 @@ export type DataProps = {
 };
 
 function Title({ data, comments }: DataProps) {
+  const [repo, setRepo] = useState("");
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
   const [edit, setEdit] = useState<boolean>(false);
   const [update] = useUpdateMutation();
   const [searchParams] = useSearchParams();
@@ -33,8 +48,8 @@ function Title({ data, comments }: DataProps) {
       await update({
         baseType: "repos",
         type: "/issues",
-        name: "/emil0519",
-        repo: "/testing-issues",
+        name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+        repo: `/${repo}`,
         query: `/${query}`,
         content: JSON.stringify(changedTitle),
       });

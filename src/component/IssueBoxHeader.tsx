@@ -30,14 +30,42 @@ function IssueBoxHeader() {
   const [labelStore, setLabelStore] = useState<any>();
   const [type, setType] = useState("/labels");
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("/testing-issues");
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
 
-  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: type,
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      console.log(userInfo.currentSession.provider_token);
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: type,
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: "",
+    },
+    { skip: skip }
+  );
 
   useEffect(() => {
     setLabelData(data);

@@ -1,7 +1,3 @@
-import { useDeleteMutation, useGetAllIssuesQuery } from "../../state/issueRTK";
-
-import { useEffect } from "react";
-
 type ControllerProps = {
   controller: { content: string; hoverColor?: string }[];
   setEditOpen?: React.Dispatch<React.SetStateAction<boolean>>;

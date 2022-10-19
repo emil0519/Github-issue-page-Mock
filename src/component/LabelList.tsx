@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { useEffect, useState, useRef } from "react";
 import { IssueReopenedIcon } from "@primer/octicons-react";
+import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 import { useOnClickOutside } from "usehooks-ts";
 import {
+  useDeleteMutation,
   useGetAllIssuesQuery,
   useUpdateMutation,
-  useDeleteMutation,
 } from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
 
@@ -49,15 +49,42 @@ function LabelList() {
     newCol: "",
   });
 
-  //之前的名字是updated
-  //直接在這邊宣示一個變數，更清晰
-  const { data } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/labels",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("/testing-issues");
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      console.log(userInfo.currentSession.provider_token);
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/labels",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: "",
+    },
+    { skip: skip }
+  );
 
   if (data === undefined) {
     return <></>;
@@ -100,6 +127,37 @@ function LabelList() {
 
 function Refer(props: any) {
   const [update] = useUpdateMutation();
+
+  const [repo, setRepo] = useState("");
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
   const [del] = useDeleteMutation();
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
@@ -125,8 +183,8 @@ function Refer(props: any) {
     await update({
       baseType: "repos",
       type: "/labels",
-      name: "/emil0519",
-      repo: "/testing-issues",
+      name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+      repo: `/${repo}`,
       query: `/${item.itemName}`,
       content: JSON.stringify(body),
     });
@@ -148,8 +206,8 @@ function Refer(props: any) {
       await del({
         baseType: "repos",
         type: "/labels",
-        name: "/emil0519",
-        repo: "/testing-issues",
+        name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+        repo: `/${repo}`,
         query: `/${props.name}`,
       });
     }

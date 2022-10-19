@@ -1,15 +1,14 @@
-import styled from "styled-components";
-import labelIcon from "../img/labelicon.png";
 import {
-  MilestoneIcon,
   IssueReopenedIcon,
+  MilestoneIcon,
   SearchIcon,
 } from "@primer/octicons-react";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import ColorBricks from "./ColorBricks";
-import useGenerateRandomColor from "../utils/useGenerateRandomColor";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import labelIcon from "../img/labelicon.png";
 import { useUpdateMutation } from "../state/issueRTK";
+import useGenerateRandomColor from "../utils/useGenerateRandomColor";
+import ColorBricks from "./ColorBricks";
 
 export interface opener {
   labelOpen: boolean;
@@ -40,6 +39,23 @@ function LabelButtons() {
     useState("Label Preview");
   const [createLabelChange, setCreateLabelChange] = useState(false);
   const [redBorder, setRedBorder] = useState(false);
+
+  const [repo, setRepo] = useState("");
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
   useEffect(() => {
     //validation on input
 
@@ -49,7 +65,6 @@ function LabelButtons() {
       : setCreateLabelChange(false);
   }, [newLabelInfo]);
   const [created, setCreated] = useState(0);
-  const dispatch = useDispatch();
 
   const startCreate = async () => {
     const body = {
@@ -61,8 +76,8 @@ function LabelButtons() {
     await update({
       baseType: "repos",
       type: "/labels",
-      name: "/emil0519",
-      repo: "/testing-issues",
+      name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+      repo: `/${repo}`,
       query: ``,
       content: JSON.stringify(body),
     });
@@ -70,7 +85,6 @@ function LabelButtons() {
     setCreateLabelChange(false);
     setLabelText("Saving ...");
     setTimeout(() => setLabelOpen(false), 1000);
-
 
     // await api
     //   .createLabels(
@@ -89,9 +103,9 @@ function LabelButtons() {
     //         type: "createList",
     //         payload: { data },
     //       });
-          // setCreateLabelChange(false);
-          // setLabelText("Saving ...");
-          // setTimeout(() => setLabelOpen(false), 1000);
+    // setCreateLabelChange(false);
+    // setLabelText("Saving ...");
+    // setTimeout(() => setLabelOpen(false), 1000);
     //     } else if (data.errors !== undefined) {
     //       alert(
     //         `Your label ${

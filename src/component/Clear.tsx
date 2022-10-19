@@ -1,6 +1,5 @@
 import { XIcon } from "@primer/octicons-react";
 import { useContext, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../utils/useContext";
 
@@ -8,8 +7,22 @@ function Clear() {
   const navigate = useNavigate();
   const [showClear, setShowClear] = useState(false);
   const [hover, setHover] = useState(false);
-  const [searchParams] = useSearchParams();
-  const { value } = useContext(UserContext);
+  const { value, setValue } = useContext(UserContext);
+
+  function handleClear() {
+    setValue({
+      filter: "",
+      label: [],
+      assignees: "",
+      sort: "",
+      closed: "",
+      paging: "",
+      search: "",
+      dataLength: 0,
+    });
+    setShowClear(false);
+  }
+
   useEffect(() => {
     if (
       value.filter.length > 0 ||
@@ -31,7 +44,7 @@ function Clear() {
       onMouseOut={() => {
         setHover(false);
       }}
-      onClick={() => navigate("/")}
+      onClick={() => handleClear()}
       className={`ml-[0] ${
         showClear ? "flex" : "hidden"
       } mt-[16px] items-center`}

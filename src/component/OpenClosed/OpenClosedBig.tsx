@@ -1,16 +1,15 @@
 import open from "../../img/issue-opened.svg";
-import ClosedBig from "./ClosedBig";
 import { UserContext } from "../../utils/useContext";
+import ClosedBig from "./ClosedBig";
 
-import { useGetAllIssuesQuery } from "../../state/issueRTK";
 import { useContext, useEffect, useState } from "react";
+import { useGetAllIssuesQuery } from "../../state/issueRTK";
 
 function OpenClosedInHeader() {
   const { value, setValue } = useContext<any>(UserContext);
   const [baseType, setBaseType] = useState("/repos");
   const [type, setType] = useState("/issues");
   const [name, setName] = useState("/emil0519");
-  const [repo, setRepo] = useState("/testing-issues");
   const [queryString, setQueryString] = useState("");
 
   // const [data, setData] = useState<any>(undefined);
@@ -50,13 +49,41 @@ function OpenClosedInHeader() {
     }
   }, [value]);
 
-  const { data } = useGetAllIssuesQuery({
-    baseType: baseType,
-    type: type,
-    name: name,
-    repo: repo,
-    query: `${queryString}`,
-  });
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("/testing-issues");
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: baseType,
+      type: type,
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: `${queryString}`,
+    },
+    { skip: skip }
+  );
 
   if (data === undefined) {
     return <></>;

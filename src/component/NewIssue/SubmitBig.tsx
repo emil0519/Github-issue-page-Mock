@@ -1,10 +1,51 @@
-import { PostDataProps } from "./NewIssueWrapper";
-import { useCreateIssueMutation } from "../../state/issueRTK";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  useCreateIssueMutation,
+  useGetAllIssuesQuery,
+} from "../../state/issueRTK";
+import { PostDataProps } from "./NewIssueWrapper";
 
 function SubmitTest({ postData }: PostDataProps) {
   const [createIssue] = useCreateIssueMutation();
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState<any>();
+  const [repo, setRepo] = useState("");
+  const [skip, setSkip] = useState(true);
+
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      console.log(userInfo.currentSession.provider_token);
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/issues",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: ``,
+    },
+    { skip: skip }
+  );
 
   const handleSubmit = async () => {
     if (postData.title.length === 0) {
@@ -13,12 +54,12 @@ function SubmitTest({ postData }: PostDataProps) {
     await createIssue({
       baseType: "repos",
       type: "/issues",
-      name: "/emil0519",
-      repo: "/testing-issues",
+      name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+      repo: `/${repo}`,
       query: "",
       newIssue: JSON.stringify(postData),
     });
-    navigate("/App");
+    navigate(`/IssuePage?query=${data.length + 1}`);
   };
 
   return (

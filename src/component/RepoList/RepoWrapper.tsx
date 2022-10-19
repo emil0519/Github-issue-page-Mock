@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useGetRepoQuery } from "../../state/issueRTK";
 import Footer from "../Footer";
 import Header from "../Header";
@@ -7,6 +9,7 @@ import RepoLayout from "./RepoLayout";
 function RepoWrapper() {
   const [userInfo, setUserInfo] = useState<any>();
   const [skip, setSkip] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const items = localStorage.getItem("supabase.auth.token");
@@ -17,12 +20,12 @@ function RepoWrapper() {
 
   useEffect(() => {
     if (userInfo !== undefined) {
-      console.log(userInfo.currentSession.provider_token);
+      console.log(userInfo);
       setSkip(false);
     }
   }, [userInfo]);
 
-  const { data } = useGetRepoQuery(
+  const { data, error } = useGetRepoQuery(
     {
       baseType: "users",
       name: `/${
@@ -34,6 +37,11 @@ function RepoWrapper() {
     { skip: skip }
   );
 
+  useEffect(() => {
+    if (error !== undefined && error.status === 401) {
+      navigate("/");
+    }
+  }, [error]);
   if (userInfo === undefined) {
     return <></>;
   }

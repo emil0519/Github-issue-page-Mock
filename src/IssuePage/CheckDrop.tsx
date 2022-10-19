@@ -1,9 +1,8 @@
-import { IssueClosedIcon, CheckCircleIcon } from "@primer/octicons-react";
+import { CheckCircleIcon, IssueClosedIcon } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
-import down from "../img/triangle-down.svg";
-import { useGetAllIssuesQuery } from "../state/issueRTK";
 import { useSearchParams } from "react-router-dom";
-import { useUpdateMutation } from "../state/issueRTK";
+import down from "../img/triangle-down.svg";
+import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
 
 type CheckDropProps = {
   checkControl: {
@@ -18,17 +17,60 @@ type CheckDropProps = {
 function CheckDrop({ checkControl }: CheckDropProps) {
   const [showCheckDrop, setShowCheckDrop] = useState<boolean>(false);
 
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
   const [update] = useUpdateMutation();
   const [state, setState] = useState<any>();
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
-  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: `/${query}`,
-  });
+
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("");
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/issues",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: `/${query}`,
+    },
+    { skip: skip }
+  );
 
   const handleState = async (param: string) => {
     console.log("call handlestate");
@@ -64,8 +106,8 @@ function CheckDrop({ checkControl }: CheckDropProps) {
     await update({
       baseType: "repos",
       type: "/issues",
-      name: "/emil0519",
-      repo: "/testing-issues",
+      name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+      repo: `/${repo}`,
       query: `/${query}`,
       content: JSON.stringify(body),
     });

@@ -11,7 +11,7 @@ const App = () => {
     });
   }, []);
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
 
   async function checkUser() {
     const user: any | never = superbase.auth.user();
@@ -38,11 +38,15 @@ const App = () => {
     setUser(null);
   }
 
-  // useEffect(() => console.log(user), [user]);
+  // useEffect(() => {
+  //   if (user.provider_token !== null) {
+  //     console.log(user.provider_token);
+  //   }
+  // }, [user]);
 
   //Will render signOut function later
 
-  if (user) {
+  if (user && user.provider_token !== null) {
     navigate("/Repo");
   }
 

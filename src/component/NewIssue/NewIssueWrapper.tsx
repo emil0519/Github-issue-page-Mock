@@ -1,12 +1,11 @@
-import EditSection from "./EditSection";
 import { MarkdownIcon } from "@primer/octicons-react";
+import { useEffect, useState } from "react";
+import avatar from "../../img/github-avatar.png";
+import { useGetAllIssuesQuery } from "../../state/issueRTK";
+import EditSection from "./EditSection";
+import PopUpDataProcessor from "./PopUpDataProcessor";
 import Submit from "./Submit";
 import SubmitBig from "./SubmitBig";
-import PopUpDataProcessor from "./PopUpDataProcessor";
-import avatar from "../../img/github-avatar.png";
-import { useEffect, useState } from "react";
-import { useGetAllIssuesQuery } from "../../state/issueRTK";
-import EditNote from "../Reusable/EditNote";
 
 export type PostDataProps = {
   postData: {
@@ -135,13 +134,42 @@ function NewIssueWrapper() {
     ]);
   }, [assigneesData, labelData]);
 
-  const fetchedLabelData = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/labels",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("/testing-issues");
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      console.log(userInfo.currentSession.provider_token);
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const fetchedLabelData = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/labels",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: "",
+    },
+    { skip: skip }
+  );
 
   useEffect(() => {
     //處理fetch回來的label data
@@ -156,13 +184,18 @@ function NewIssueWrapper() {
     }
   }, [fetchedLabelData]);
 
-  const fetchedAssigneeData = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/assignees",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
+  const fetchedAssigneeData = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/assignees",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: "",
+    },
+    { skip: skip }
+  );
   useEffect(() => {
     //處理fetch回來的assignee data
     if (fetchedAssigneeData.data !== undefined) {

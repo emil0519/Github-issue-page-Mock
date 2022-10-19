@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import xBell from "../img/bell-slash.svg";
-import { useGetAllIssuesQuery } from "../state/issueRTK";
-import { useSearchParams } from "react-router-dom";
-import AvatarIcon from "../component/Reusable/AvatarIcon";
 import {
+  ArrowRightIcon,
   LockIcon,
   PinIcon,
-  ArrowRightIcon,
   TrashIcon,
 } from "@primer/octicons-react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import AvatarIcon from "../component/Reusable/AvatarIcon";
+import xBell from "../img/bell-slash.svg";
+import { useGetAllIssuesQuery } from "../state/issueRTK";
 
 function IssueSpecialPart() {
   const [hoverOnNoti, setHoverOnNoti] = useState<boolean>(false);
@@ -19,14 +19,40 @@ function IssueSpecialPart() {
   const [hoverPin, setHoverPin] = useState<boolean>(false);
   const [hoverArrow, setHoverArrow] = useState<boolean>(false);
   const [hoverTrash, setHoverTrash] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("");
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
 
-  const { data, isError, isSuccess, isLoading } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: `/${query}`,
-  });
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/issues",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: `/${query}`,
+    },
+    { skip: skip }
+  );
 
   // useEffect(() => {
   //   console.log(avatarData);

@@ -209,8 +209,10 @@ function IssuePageWrap() {
   const fetchedLabelData = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/labels",
-    name: "/emil0519",
-    repo: "/testing-issues",
+    name: `/${
+      skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+    }`,
+    repo: `/${skip ? "" : repo}`,
     query: "",
   });
 
@@ -230,8 +232,10 @@ function IssuePageWrap() {
   const fetchedAssigneeData = useGetAllIssuesQuery({
     baseType: "repos",
     type: "/assignees",
-    name: "/emil0519",
-    repo: "/testing-issues",
+    name: `/${
+      skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+    }`,
+    repo: `/${skip ? "" : repo}`,
     query: "",
   });
   useEffect(() => {

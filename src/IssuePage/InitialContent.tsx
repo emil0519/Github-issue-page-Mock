@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import EditSection from "../component/NewIssue/EditSection";
 import BigAvatar from "../component/Reusable/BigAvatar";
 import DropDownMenu from "../component/Reusable/DropDownMenu";
 import PopUpSection from "../component/Reusable/PopUpSection";
 import Reaction from "../component/Reusable/Reaction";
 import smile from "../img/smile.svg";
+import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
 import { hourAdder, timeAgo } from "../utils/horus";
-import { useUpdateMutation, useGetAllIssuesQuery } from "../state/issueRTK";
-import { useSearchParams } from "react-router-dom";
 
 const _ = require("lodash");
 
@@ -22,13 +22,56 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
-  const comments = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: `/${query}/comments`,
-  });
+  const [repo, setRepo] = useState("");
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  const [skip, setSkip] = useState(true);
+
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const comments = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/issues",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: `/${query}/comments`,
+    },
+    { skip: skip }
+  );
 
   const [update] = useUpdateMutation();
   const [hoverOnDots, setHoverOnDots] = useState<boolean>(false);
@@ -59,8 +102,8 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
     await update({
       baseType: "repos",
       type: "/issues",
-      name: "/emil0519",
-      repo: "/testing-issues",
+      name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+      repo: `/${repo}`,
       query: combinedQuery,
       content: JSON.stringify(body),
     });
