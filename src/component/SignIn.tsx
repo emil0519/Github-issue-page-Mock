@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { superbase } from "../utils/client";
 import github from "../img/github.svg";
+import { superbase } from "../utils/client";
 
 const App = () => {
   useEffect(() => {
@@ -17,7 +17,6 @@ const App = () => {
     const user: any | never = superbase.auth.user();
     const session: any = superbase.auth.session();
     setUser(user);
-
     // get access token from this user
   }
 
@@ -37,10 +36,12 @@ const App = () => {
     setUser(null);
   }
 
+  useEffect(() => console.log(user), [user]);
+
   //Will render signOut function later
 
   if (user) {
-    navigate("/App");
+    navigate("/Repo");
   }
 
   return (

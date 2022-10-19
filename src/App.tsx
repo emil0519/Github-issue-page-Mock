@@ -1,13 +1,12 @@
-import Header from "./component/Header";
 import Footer from "./component/Footer";
-import Repo from "./component/Repo";
+import Header from "./component/Header";
+import IssueWrapper from "./component/IssueWrapper";
 import Option from "./component/Option";
+import Repo from "./component/Repo";
+import { UserContext } from "./utils/useContext";
 
 import { createGlobalStyle } from "styled-components";
 
-import IssueWrapper from "./component/IssueWrapper";
-
-import { UserContext } from "./utils/useContext";
 import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`

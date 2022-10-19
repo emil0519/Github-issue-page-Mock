@@ -1,18 +1,15 @@
-import styled from "styled-components";
-import labelIcon from "../img/labelicon.png";
 import {
-  MilestoneIcon,
   IssueReopenedIcon,
+  MilestoneIcon,
   SearchIcon,
   TagIcon,
 } from "@primer/octicons-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import ColorBricks from "./ColorBricks";
-import api from "../utils/api";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import useGenerateRandomColor from "../utils/useGenerateRandomColor";
 import Filter from "./Filter";
-import { useNavigate } from "react-router-dom";
 
 export interface opener {
   labelOpen: boolean;

@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import down from "../img/triangle-down.svg";
-import OpenClosedInHeader from "./OpenClosed/OpenClosedBig";
-import x from "../img/x.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import check from "../img/check.svg";
+import down from "../img/triangle-down.svg";
+import x from "../img/x.svg";
 import { useGetAllIssuesQuery } from "../state/issueRTK";
-import Assignee from "./Assignee";
-import { useSearchParams } from "react-router-dom";
 import { UserContext } from "../utils/useContext";
+import Assignee from "./Assignee";
+import OpenClosedInHeader from "./OpenClosed/OpenClosedBig";
 
 function IssueBoxHeader() {
   const { value, setValue } = useContext(UserContext);
@@ -117,7 +116,7 @@ function IssueBoxHeader() {
   return (
     <section className="flex w-[100%]">
       <div className="fixed top-0 left-0 bg-black"></div>
-      <section className="mt-[16px] flex h-[55px] w-[100%] items-center justify-evenly rounded-md border-t-[0.5px] border-b-[0.5px] border-solid border-[#cad1d9] bg-[#f5f7f9] pl-[16px] pr-[16px] small:justify-start small:border-[0.5px] big:justify-between big:justify-between">
+      <section className="mt-[16px] flex h-[55px] w-[100%] items-center justify-evenly rounded-md border-t-[0.5px] border-b-[0.5px] border-solid border-[#cad1d9] bg-[#f5f7f9] pl-[16px] pr-[16px] small:justify-start small:border-[0.5px] big:justify-between">
         <section className="flex">
           <OpenClosedInHeader />
         </section>

@@ -1,4 +1,3 @@
-import x from "../img/x.svg";
 import { XIcon } from "@primer/octicons-react";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -10,7 +9,6 @@ function Clear() {
   const [showClear, setShowClear] = useState(false);
   const [hover, setHover] = useState(false);
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("query");
   const { value } = useContext(UserContext);
   useEffect(() => {
     if (

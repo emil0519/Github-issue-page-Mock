@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { IssueReopenedIcon } from "@primer/octicons-react";
 import { useOnClickOutside } from "usehooks-ts";
@@ -9,7 +8,6 @@ import {
   useDeleteMutation,
 } from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
-
 
 function useComponentVisible(initialIsVisible: any) {
   const [isComponentVisible, setIsComponentVisible] =
@@ -39,6 +37,65 @@ function useComponentVisible(initialIsVisible: any) {
   });
 
   return { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside };
+}
+
+function LabelList() {
+  const [labelIndex, setLabelIndex] = useState(-1);
+  const [areaOpen, setAreaOpen] = useState(false);
+  const [test, setTest] = useState(false);
+  const [updateLabelInfo, setUpdateLabelInfo] = useState({
+    newName: "",
+    newDes: "",
+    newCol: "",
+  });
+
+  //之前的名字是updated
+  //直接在這邊宣示一個變數，更清晰
+  const { data } = useGetAllIssuesQuery({
+    baseType: "repos",
+    type: "/labels",
+    name: "/emil0519",
+    repo: "/testing-issues",
+    query: "",
+  });
+
+  if (data === undefined) {
+    return <></>;
+  }
+
+  return (
+    <>
+      {data.map((item: any, index: any) => {
+        return (
+          <Wrapper
+            key={item.id}
+            index={index}
+            labelIndex={labelIndex}
+            areaOpen={areaOpen}
+          >
+            <Refer
+              key={item.id}
+              index={index}
+              itemName={item.name}
+              itemDescription={item.description}
+              itemColor={item.color}
+              updateLabelInfo={updateLabelInfo}
+              setUpdateLabelInfo={setUpdateLabelInfo}
+              test={test}
+              setTest={setTest}
+              areaOpen={areaOpen}
+              setAreaOpen={setAreaOpen}
+              labelIndex={labelIndex}
+              setLabelIndex={setLabelIndex}
+              color={item.color}
+              description={item.description}
+              name={item.name}
+            />
+          </Wrapper>
+        );
+      })}
+    </>
+  );
 }
 
 function Refer(props: any) {
@@ -107,20 +164,12 @@ function Refer(props: any) {
     setLocalName(props.name);
   }, [props.color, props.description, props.name]);
 
-  useEffect(()=>console.log(props.color),[props.color])
-    // useEffect(() => console.log(props.updateLabelInfo), [props.updateLabelInfo]);
-
   function randomColor() {
     const random = ((Math.random() * 0xffffff) << 0)
       .toString(16)
       .padStart(6, "0");
     setLocalColor(random);
   }
-
-  // useEffect(()=>{
-  // setLocalColor(color);
-  //   console.log(color);
-  // },[color])
 
   useOnClickOutside(ref, handleClickOutside);
   if (
@@ -291,90 +340,6 @@ function Refer(props: any) {
     // </div>
   );
 }
-
-function LabelList() {
-  const [labelIndex, setLabelIndex] = useState(-1);
-  const [areaOpen, setAreaOpen] = useState(false);
-
-  const [test, setTest] = useState(false);
-
-  const [refresh, setRefresh] = useState(false);
-
-  const [label, setLabel]: any = useState();
-  const updatedLabels: any = useSelector((state) => state);
-
-  const [updateLabelInfo, setUpdateLabelInfo] = useState({
-    newName: "",
-    newDes: "",
-    newCol: "",
-  });
-  const { data } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/labels",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: "",
-  });
-  // useEffect(() => {
-  //   console.log(data);
-  //   if (data !== undefined) {
-  //     setUpdateLabelInfo(
-  //       data.map((item: any) => {
-  //         return {
-  //           name: item.name,
-  //           description: item.description,
-  //           color: item.color,
-  //           new_name: item.name,
-  //         };
-  //       })
-  //     );
-  //   }
-  // }, [data]);
-
-  // useEffect(() => {
-  //   console.log(updateLabelInfo);
-  // }, [updateLabelInfo]);
-
-  if (data === undefined) {
-    return <></>;
-  }
-
-  return (
-    <>
-      {data.map((item: any, index: any) => {
-        return (
-          <Wrapper
-            key={item.id}
-            index={index}
-            labelIndex={labelIndex}
-            areaOpen={areaOpen}
-          >
-            <Refer
-              key={item.id}
-              index={index}
-              itemName={item.name}
-              itemDescription={item.description}
-              itemColor={item.color}
-              updateLabelInfo={updateLabelInfo}
-              setUpdateLabelInfo={setUpdateLabelInfo}
-              test={test}
-              setTest={setTest}
-              areaOpen={areaOpen}
-              setAreaOpen={setAreaOpen}
-              labelIndex={labelIndex}
-              setLabelIndex={setLabelIndex}
-              refresh={refresh}
-              color={item.color}
-              description={item.description}
-              name={item.name}
-            />
-          </Wrapper>
-        );
-      })}
-    </>
-  );
-}
-// }
 
 const BigWrapper = styled.section`
   @media screen and (min-width: 768px) {
@@ -741,25 +706,6 @@ const Wrapper = styled.section<NewLabels>`
   justify-content: space-between;
   @media screen and (min-width: 768px) {
   }
-`;
-
-const NoLabelWrapper = styled.section`
-  width: 95vw;
-  height: 61px;
-  margin: 0 auto;
-  background: white;
-  border: 0.5px solid #cad1d9;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  @media screen and (min-width: 768px) {
-  }
-`;
-const NoLabelText = styled.span`
-  text-align: center;
-  font-size: 20;
 `;
 
 export default LabelList;
