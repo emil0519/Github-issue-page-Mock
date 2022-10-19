@@ -42,9 +42,9 @@ const App = () => {
 
   //Will render signOut function later
 
-  // if (user) {
-  //   navigate("/Repo");
-  // }
+  if (user) {
+    navigate("/Repo");
+  }
 
   return (
     <section className="flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-[#f9f9f9]">

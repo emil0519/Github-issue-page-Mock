@@ -1,17 +1,16 @@
 import {
-  IssueOpenedIcon,
-  CircleSlashIcon,
-  IssueClosedIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  CircleSlashIcon,
+  IssueClosedIcon,
+  IssueOpenedIcon,
 } from "@primer/octicons-react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import comment from "../img/comment.svg";
-import { useState, useEffect, useContext } from "react";
-import { useSearchParams } from "react-router-dom";
-import { UserContext } from "../utils/useContext";
-import { hourAdder, timeAgo } from "../utils/horus";
 import { useGetAllIssuesQuery } from "../state/issueRTK";
+import { hourAdder, timeAgo } from "../utils/horus";
+import { UserContext } from "../utils/useContext";
 
 function IssueColumn() {
   const { value, setValue } = useContext(UserContext);
@@ -23,14 +22,44 @@ function IssueColumn() {
   const [type, setType] = useState("/issues");
   const [name, setName] = useState("/emil0519");
   const [repo, setRepo] = useState("/testing-issues");
+  const [userInfo, setUserInfo] = useState<any>();
   const navigate = useNavigate();
-  const { data } = useGetAllIssuesQuery({
-    baseType: baseType,
-    type: type,
-    name: name,
-    repo: repo,
-    query: `${queryString}`,
-  });
+  const [skip, setSkip] = useState(true);
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: baseType,
+      type: type,
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: `${queryString}`,
+    },
+    { skip: skip }
+  );
+
+  useEffect(() => {
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      console.log(userInfo.currentSession.provider_token);
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  useEffect(() => console.log(data), [data]);
 
   useEffect(() => {
     if (value.search.length !== 0) {
