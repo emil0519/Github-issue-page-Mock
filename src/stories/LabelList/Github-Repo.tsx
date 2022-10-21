@@ -71,16 +71,19 @@ type RepoProps = {
    */
   OWNER: string;
   REPO: string;
-  TYPE: string;
 };
 
-export const Repo = ({ OWNER = "emil0519", ...props }: RepoProps) => {
+export const Repo = ({
+  OWNER = "emil0519",
+  REPO = "testing-issue",
+  ...props
+}: RepoProps) => {
   return (
     <TitleWrapper>
       <RepoLogo alt="" src={repo} />
       <UserName>{OWNER} </UserName>
       <Slash>/</Slash>
-      <RepoName>testing-issues</RepoName>
+      <RepoName>{REPO}</RepoName>
       <RepoType>Public</RepoType>
     </TitleWrapper>
   );

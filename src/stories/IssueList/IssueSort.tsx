@@ -1,9 +1,9 @@
 import { useState } from "react";
+import check from "../../img/check.svg";
 import down from "../../img/triangle-down.svg";
 import x from "../../img/x.svg";
-import check from "../../img/check.svg";
 
-function IssueSort() {
+function IssueSort({ TITLE = "Sort", ...props }) {
   const sortText = [
     { name: "Newest", query: "sort=created&direction=desc" },
     { name: "Oldest", query: "sort=created&direction=asc" },
@@ -28,7 +28,7 @@ function IssueSort() {
         onClick={() => setSortListOpen(true)}
         className="ml-[16px] mr-[16px] flex cursor-pointer text-xs text-[#212529] hover:text-[black] small:relative small:items-center"
       >
-        Sort
+        {TITLE}
         <img
           src={down}
           alt=""

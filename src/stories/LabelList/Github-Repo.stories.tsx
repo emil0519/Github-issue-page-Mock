@@ -3,7 +3,6 @@ import { Repo } from "./Github-Repo";
 export default {
   title: "Label-List/Repo",
   component: Repo,
-
   argTypes: {},
 };
 

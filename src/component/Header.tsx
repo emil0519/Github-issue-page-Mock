@@ -1,37 +1,67 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import bell from "../img/bell.png";
+import down from "../img/down.png";
 import hamburger from "../img/hamburger.png";
 import icon from "../img/icon.png";
-import bell from "../img/bell.png";
 import plus from "../img/plus.png";
-import avatar from "../img/avatar.png";
-import down from "../img/down.png";
+import { superbase } from "../utils/client";
 
 function Header() {
-  return (
-    <>
-      <Wrapper>
-        <BigWrapOne>
-          <Search placeholder="Search or jump to..." />
+  const [user, setUser] = useState<any>();
+  const [repo, setRepo] = useState();
+  const navigate = useNavigate();
 
-          <GithubIcon alt="" src={icon} />
-          <HeaderText>Pull requests</HeaderText>
-          <HeaderText>Issues</HeaderText>
-          <HeaderText>Marketplace</HeaderText>
-          <HeaderText>Explore</HeaderText>
-        </BigWrapOne>
-        <BirWrapTwo>
-          <BigBellIcons alt="" src={bell} />
+  useEffect(() => {
+    const localUser: any = localStorage.getItem("supabase.auth.token");
+    const localRepo: any = localStorage.getItem("repo");
+    setUser(JSON.parse(localUser));
+    setRepo(JSON.parse(localRepo));
+  }, []);
 
-          <Plus alt="" src={plus} />
-          <Avatar alt="" src={avatar} />
-          <Down alt="" src={down} />
-        </BirWrapTwo>
-        <Hamburger alt="" src={hamburger}></Hamburger>
-        <SmallGithubIcon alt="" src={icon} />
-        <BellIcons alt="" src={bell} />
-      </Wrapper>
-    </>
-  );
+  async function signOut() {
+    await superbase.auth.signOut();
+    localStorage.clear();
+    window.location.assign(`/`);
+  }
+
+  useEffect(() => {
+    if (user !== undefined) {
+      console.log(user.currentSession.user.user_metadata.avatar_url);
+    }
+  }, [user]);
+  if (user === undefined || repo === undefined) {
+    return <></>;
+  } else {
+    return (
+      <>
+        <Wrapper>
+          <BigWrapOne>
+            <Search placeholder="Search or jump to..." />
+            <GithubIcon onClick={() => navigate("/Repo")} alt="" src={icon} />
+            <HeaderText onClick={() => signOut()}>Pull requests</HeaderText>
+            <HeaderText>Issues</HeaderText>
+            <HeaderText>Marketplace</HeaderText>
+            <HeaderText>Explore</HeaderText>
+          </BigWrapOne>
+          <BirWrapTwo>
+            <BigBellIcons alt="" src={bell} />
+
+            <Plus alt="" src={plus} />
+            <Avatar
+              alt=""
+              src={user.currentSession.user.user_metadata.avatar_url}
+            />
+            <Down alt="" src={down} />
+          </BirWrapTwo>
+          <Hamburger alt="" src={hamburger}></Hamburger>
+          <SmallGithubIcon alt="" src={icon} />
+          <BellIcons alt="" src={bell} />
+        </Wrapper>
+      </>
+    );
+  }
 }
 
 const Down = styled.img`
@@ -49,7 +79,7 @@ const Avatar = styled.img`
     display: block;
     width: 20px;
     height: 20px;
-
+    border-radius: 9999px;
     margin-right: 2px;
   }
 `;
@@ -139,6 +169,7 @@ const BellIcons = styled.img`
 
 const GithubIcon = styled.img`
   @media screen and (min-width: 768px) {
+    cursor: pointer;
     order: -1;
     width: 35px;
     height: 35px;

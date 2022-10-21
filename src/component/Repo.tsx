@@ -1,15 +1,39 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import repo from "../img/repo.png";
+import repoLogo from "../img/repo.svg";
 import Watch from "./Watch";
 
 function Repo() {
+  const [repo, setRepo] = useState();
+  const [user, setUser] = useState<any>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const localUser: any = localStorage.getItem("supabase.auth.token");
+    const localRepo: any = localStorage.getItem("repo");
+    setUser(JSON.parse(localUser));
+    setRepo(JSON.parse(localRepo));
+  }, []);
+
+  useEffect(() => {
+    if (user !== undefined && repo !== undefined) {
+      console.log(repo);
+      console.log(user.currentSession.user.user_metadata.user_name);
+    }
+  }, [repo, user]);
+  if (user === undefined && repo === undefined) {
+    return <></>;
+  }
   return (
     <TitleWrapper>
       <RepoWrapper>
-        <RepoLogo alt="" src={repo} />
-        <UserName>emil0519 </UserName>
+        <RepoLogo alt="" src={repoLogo} />
+        <UserName onClick={() => navigate("/Repo")}>
+          {user.currentSession.user.user_metadata.user_name}{" "}
+        </UserName>
         <Slash>/</Slash>
-        <RepoName>testing-issues</RepoName>
+        <RepoName>{repo}</RepoName>
         <RepoType>Public</RepoType>
       </RepoWrapper>
       <Watch />
@@ -20,6 +44,7 @@ function Repo() {
 const RepoWrapper = styled.section`
   display: flex;
   margin: 16px;
+  align-items: center;
   @media screen and (min-width: 768px) {
   }
 `;
@@ -78,8 +103,6 @@ const RepoLogo = styled.img`
 
 const TitleWrapper = styled.section`
   display: flex;
-  /* padding: 16px 0; */
-  /* margin-left: 16px; */
   align-items: center;
   background: #f5f7f9;
   justify-content: space-between;

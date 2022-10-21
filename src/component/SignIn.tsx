@@ -12,12 +12,13 @@ const App = () => {
   }, []);
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [session, setSession] = useState<any>(null);
 
   async function checkUser() {
     const user: any | never = superbase.auth.user();
     const session: any = superbase.auth.session();
     setUser(user);
-    console.log(session);
+    setSession(session);
 
     // get access token from this user
   }
@@ -32,23 +33,39 @@ const App = () => {
       }
     );
   }
+  useEffect(() => {
+    if (session === undefined || session === null) {
+      console.log("return");
+      return;
+    } else if (session.provider_token !== undefined) {
+      console.log(session);
+      navigate("/Repo");
+    }
+  }, [session]);
 
-  async function signOut() {
-    await superbase.auth.signOut();
-    setUser(null);
-  }
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+
+  // async function signOut() {
+  //   await superbase.auth.signOut();
+  //   setUser(null);
+  // }
 
   // useEffect(() => {
   //   if (user.provider_token !== null) {
   //     console.log(user.provider_token);
   //   }
   // }, [user]);
-
+  // const session: any = superbase.auth.session();
   //Will render signOut function later
+  useEffect(() => {
+    // if (user.provider_token !== undefined) {
+    console.log(session, "session");
+    console.log(user, "user");
 
-  if (user && user.provider_token !== null) {
-    navigate("/Repo");
-  }
+    // }
+  }, [user, session]);
 
   return (
     <section className="flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-[#f9f9f9]">
@@ -60,7 +77,7 @@ const App = () => {
       <span className="text-[24px] font-bold text-black">
         Sign in to GitHub
       </span>
-      <div className="mt-[16px] flex h-[220px] w-[308px] flex-col items-center border-[1px] border-solid border-[#e4e8ea] bg-white">
+      <div className="mt-[16px] flex h-[220px] w-[308px] flex-col items-center rounded-md border-[1px] border-solid border-[#e4e8ea] bg-white">
         <span className="mt-[16px] w-[85%] text-center text-[16px] font-semibold">
           Welcome to Github Issue Remote Control
         </span>
@@ -73,12 +90,12 @@ const App = () => {
         >
           <span className="text-[14px] text-white">Sign in</span>
         </div>
-        <div
+        {/* <div
           onClick={signOut}
           className="mt-[28px] flex h-[32px] w-[240px] cursor-pointer items-center justify-center rounded-md bg-[#2fa455]"
         >
           <span className="text-[14px] text-white">Sign out</span>
-        </div>
+        </div> */}
       </div>
     </section>
   );

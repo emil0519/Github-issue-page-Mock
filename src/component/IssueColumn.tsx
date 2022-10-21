@@ -8,6 +8,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import comment from "../img/comment.svg";
+import open from "../img/issue-opened.svg";
 import { useGetAllIssuesQuery } from "../state/issueRTK";
 import { hourAdder, timeAgo } from "../utils/horus";
 import { UserContext } from "../utils/useContext";
@@ -209,6 +210,21 @@ function IssueColumn() {
 
   if (data === undefined || closedData === undefined) {
     return <></>;
+  }
+  if (data !== undefined && data.length === 0) {
+    return (
+      <section className="flex h-[296px] w-[100%] flex-col items-center justify-center border-[1px] border-solid border-[#f1f3f5]">
+        <img src={open} alt="" className="h-[24px] w-[24px]"></img>
+        <div className="mt-[24px] text-[24px] font-bold">
+          No results matched your search.
+        </div>
+        <div className="mt-[16px] text-[16px] text-[#57606a]">
+          You could search{" "}
+          <a href="https://github.com/search">all of GitHub </a>or try an
+          advanced search.
+        </div>
+      </section>
+    );
   }
   return (
     <>

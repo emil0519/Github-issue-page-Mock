@@ -1,7 +1,7 @@
 import {
   IssueReopenedIcon,
   MilestoneIcon,
-  SearchIcon,
+  SearchIcon
 } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -28,6 +28,10 @@ function LabelButtons() {
   useEffect(() => {
     generateColor();
     setDefaultColor(color);
+    setNewLabelInfo({
+      ...newLabelInfo,
+      color: color,
+    });
   }, []);
   useEffect(() => {
     setDefaultColor(`#${color}`);
@@ -73,7 +77,7 @@ function LabelButtons() {
       color: newLabelInfo.color.substring(1),
     };
 
-    await update({
+    const message = await update({
       baseType: "repos",
       type: "/labels",
       name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
@@ -81,10 +85,28 @@ function LabelButtons() {
       query: ``,
       content: JSON.stringify(body),
     });
+    console.log(message);
 
-    setCreateLabelChange(false);
-    setLabelText("Saving ...");
-    setTimeout(() => setLabelOpen(false), 1000);
+    if (message.error === undefined) {
+      setNewLabelInfo({
+        name: "",
+        description: "",
+        color: "#e99695",
+      });
+      setCreateLabelChange(false);
+      setLabelText("Saving ...");
+      setTimeout(() => setLabelOpen(false), 1000);
+    } else {
+      alert(
+        `Your ${
+          message.error.data.errors[0].resource
+        } have some problem, it may be caused by ${
+          message.error.data.errors[0].code === "custom"
+            ? message.error.data.errors[0].message
+            : message.error.data.errors[0].code
+        }.`
+      );
+    }
 
     // await api
     //   .createLabels(
@@ -148,11 +170,9 @@ function LabelButtons() {
               setLabelText("Create Label");
               setCreated(created + 1);
               setDefaultLabelPreview("Label Preview");
-              setNewLabelInfo({
-                name: "",
-                description: "",
-                color: "#e99695",
-              });
+              if (labelOpen) {
+                setLabelOpen(false);
+              }
             }}
           >
             New Label
@@ -293,6 +313,7 @@ const BigWrapper = styled.section`
 const ButtonWrapper = styled.section`
   display: flex;
   @media screen and (min-width: 768px) {
+    margin-right: 20px;
   }
 `;
 
@@ -459,7 +480,7 @@ const NewLabelSection = styled.section<NewLabels>`
   display: ${(props) => (props.labelOpen ? "flex" : "none")};
   flex-direction: column;
   width: 95%;
-  height: 328px;
+  height: 360px;
   background: #f5f7f9;
   margin: 20px auto;
   border: 0.5px solid #cad1d9;
@@ -467,6 +488,7 @@ const NewLabelSection = styled.section<NewLabels>`
   @media screen and (min-width: 768px) {
     flex-direction: column;
     height: 149px;
+    width: 100%;
   }
 `;
 
@@ -625,7 +647,7 @@ const LabelSection = styled.section`
 const Wrapper = styled.section`
   background: white;
   margin-top: 20px;
-  width: 100%;
+  width: 95%;
   margin-right: auto;
   margin-left: auto;
   @media screen and (min-width: 768px) {

@@ -1,7 +1,7 @@
 import { GearIcon } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
-import x from "../../img/x.svg";
 import check from "../../img/check.svg";
+import x from "../../img/x.svg";
 
 type controllerProps = {
   controller: {
@@ -195,6 +195,7 @@ function NewAssignee({
                     <>
                       <div className="ml-auto mr-auto mt-[5px] flex w-[95%] items-center">
                         {/* 外面顯示的內容 */}
+
                         {type === "new" &&
                         item.icon !== undefined &&
                         item.icon.includes("http") ? (

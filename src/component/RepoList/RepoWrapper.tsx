@@ -41,6 +41,7 @@ function RepoWrapper() {
     if (error !== undefined && error.status === 401) {
       navigate("/");
     }
+    console.log(error);
   }, [error]);
   if (userInfo === undefined) {
     return <></>;

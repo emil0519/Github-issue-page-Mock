@@ -1,10 +1,6 @@
-import styled from "styled-components";
-import {
-  MilestoneIcon,
-  IssueReopenedIcon,
-  SearchIcon,
-} from "@primer/octicons-react";
+import { IssueReopenedIcon } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 import { useComponentVisible } from "../../utils/useComponentVisible";
 
 type ColorType = {
@@ -239,7 +235,7 @@ const NewLabelSection = styled.section`
   display: flex;
   flex-direction: column;
   width: 95%;
-  height: 328px;
+  height: 360px;
   background: #f5f7f9;
   margin: 20px auto;
   border: 0.5px solid #cad1d9;

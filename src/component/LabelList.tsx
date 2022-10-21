@@ -173,14 +173,18 @@ function Refer(props: any) {
         props.updateLabelInfo.newName.length === 0
           ? item.itemName
           : props.updateLabelInfo.newName,
-      description: props.updateLabelInfo.newDes,
+      description:
+        props.updateLabelInfo.newDes.length === 0
+          ? item.itemDescription
+          : props.updateLabelInfo.newDes,
+
       color:
         props.updateLabelInfo.newCol.length === 0
           ? item.itemColor
           : props.updateLabelInfo.newCol.substring(1, 7),
     };
 
-    await update({
+    const message = await update({
       baseType: "repos",
       type: "/labels",
       name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
@@ -189,13 +193,25 @@ function Refer(props: any) {
       content: JSON.stringify(body),
     });
 
-    props.setUpdateLabelInfo({
-      newName: "",
-      newDes: "",
-      newCol: "",
-    });
-    props.setLabelIndex(-1);
-    props.setAreaOpen(false);
+    if (message.error === undefined) {
+      props.setUpdateLabelInfo({
+        newName: "",
+        newDes: "",
+        newCol: "",
+      });
+      props.setLabelIndex(-1);
+      props.setAreaOpen(false);
+    } else {
+      alert(
+        `Your ${
+          message.error.data.errors[0].resource
+        } have some problem, it may be caused by ${
+          message.error.data.errors[0].code === "custom"
+            ? message.error.data.errors[0].message
+            : message.error.data.errors[0].code
+        }.`
+      );
+    }
   };
 
   async function deleteLabel() {

@@ -3,7 +3,6 @@ import IssueAssignee from "./IssueAssignee";
 export default {
   title: "Issue-List/Assignee",
   component: IssueAssignee,
-
   argTypes: {},
 };
 

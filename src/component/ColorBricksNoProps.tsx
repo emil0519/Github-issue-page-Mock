@@ -88,11 +88,12 @@ function ColorBricksNoProps(props: any) {
             newCol: e.target.value,
           });
           setChangeColor(e.target.value);
-          if (props.localColor.length === 0) {
-            props.setLocalColor(`#${e.target.value}`);
-          } else {
-            props.setLocalColor(`${e.target.value}`);
-          }
+          props.setLocalColor(`#${e.target.value.split("#")[1]}`);
+          // if (props.localColor.length === 0) {
+          //   props.setLocalColor(`#${e.target.value}`);
+          // } else {
+          //   props.setLocalColor(`${e.target.value}`);
+          // }
         }}
       ></ColorInput>
       {isComponentVisible && (

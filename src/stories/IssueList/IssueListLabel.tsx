@@ -1,12 +1,9 @@
-import x from "../../img/x.svg";
-import solidDown from "../../img/solid-down.svg";
-import external from "../../img/external.svg";
-import search from "../../img/search.svg";
 import { useState } from "react";
 import check from "../../img/check.svg";
 import down from "../../img/triangle-down.svg";
+import x from "../../img/x.svg";
 
-function IssueListLabel() {
+function IssueListLabel({ TITLE = "Label", ...props }) {
   const [labelData, setLabelData] = useState([
     {
       name: "Hello world",
@@ -64,7 +61,7 @@ function IssueListLabel() {
         onClick={() => setLabelListOpen(true)}
         className="ml-[16px] mr-[16px] flex cursor-pointer text-xs text-[#212529] hover:text-[black] small:relative small:items-center"
       >
-        Label
+        {TITLE}
         <img
           src={down}
           alt=""

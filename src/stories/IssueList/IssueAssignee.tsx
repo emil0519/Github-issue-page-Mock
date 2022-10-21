@@ -1,9 +1,9 @@
 import { useState } from "react";
+import check from "../../img/check.svg";
 import down from "../../img/triangle-down.svg";
 import x from "../../img/x.svg";
-import check from "../../img/check.svg";
 
-function IssueAssignee() {
+export function IssueAssignee({ TITLE = "Assignee", ...props }) {
   const [showAssignee, setShowAssignee] = useState(false);
   const [renderData, setRenderData] = useState<any>([
     {
@@ -46,7 +46,7 @@ function IssueAssignee() {
         onClick={() => setShowAssignee(true)}
         className="ml-[16px] mr-[16px] flex cursor-pointer text-xs text-[#212529] hover:text-[black] small:relative small:items-center"
       >
-        Assignee
+        {TITLE}
         <img
           src={down}
           alt=""

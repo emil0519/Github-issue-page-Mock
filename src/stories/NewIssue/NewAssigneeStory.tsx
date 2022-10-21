@@ -1,7 +1,7 @@
 import { GearIcon } from "@primer/octicons-react";
-import { useEffect, useState } from "react";
-import x from "../../img/x.svg";
+import { useState } from "react";
 import check from "../../img/check.svg";
+import x from "../../img/x.svg";
 
 type controllerProps = {
   controller: {
@@ -38,11 +38,11 @@ function NewAssigneeStories() {
   const [mouseOver, setMouseOver] = useState("");
   const [showDropDown, setShowDropDown] = useState("");
   const [mainHeader, setMainHeader] = useState<string[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [, setSelectedValue] = useState<string>("");
   const [clickRate, setClickRate] = useState<number>(0);
   const [clearAssigneeRate, setClearAssigneeRate] = useState<number>(0);
-
-  const [controller, setController] = useState<any>([
+  // Refactor:將不需要的useEffect刪去
+  const [controller] = useState<any>([
     {
       title: "Assignee",
       default: {
@@ -95,7 +95,7 @@ function NewAssigneeStories() {
       {controller.map((item: any, index: number) => {
         return (
           <section
-            className={`mt-[10px] flex w-[100%] m-auto ${
+            className={`m-auto mt-[10px] flex w-[100%] ${
               item.default.isGear ? "cursor-pointer" : "cursor-text"
             } flex-col items-start justify-center  med:relative med:h-[max-content] med:w-[240px] med:flex-col med:flex-wrap`}
           >
@@ -186,25 +186,27 @@ function NewAssigneeStories() {
             })()}
 
             <div className="mt-[8px] mr-auto ml-auto w-[95%] text-[12px] text-[#6c737a]">
+              {/* Refactor：這邊從teneray operator 改寫為&&  */}
+              {/* 原本是item.default.isOpen && .... ? (something to render):
+              ("")
+              */}
               {item.default.isOpen && (
                 <>
                   {item.selected.length === 0 &&
                     item.default.descriptionWithoutLink}
                   {item.selected.length === 0 &&
                     item.default.descriptionWithLink && (
-                      <>
-                        <span className="hover:text-[#3e7bd7]">
-                          <a href={item.default.desLink}>
-                            {item.default.descriptionWithLink}
-                          </a>
-                        </span>
-                      </>
+                      <span className="hover:text-[#3e7bd7]">
+                        <a href={item.default.desLink}>
+                          {item.default.descriptionWithLink}
+                        </a>
+                      </span>
                     )}{" "}
                 </>
               )}
             </div>
             {(() => {
-              if (item.default.isOpen === true) {
+              if (item.default.isOpen) {
                 return (
                   <>
                     <div className="mt-[16px] h-[0.4px] w-[92%] bg-[#cdd4db]"></div>
@@ -245,6 +247,7 @@ function NewAssigneeStories() {
                             className="h-[32px] w-[85%] rounded-md border-[1px] border-solid border-[#d3d9e0] p-[5px_12px] small:w-[95%] small:text-xs"
                           ></input>
                         </div>
+                        {/* refactor short circuit evaluation */}
                         {mainHeader[2] && (
                           <div className="flex items-center bg-[#f5f7f9]">
                             <span className="ml-[8px] pt-[8px] pb-[8px] text-sm font-semibold">
@@ -265,24 +268,7 @@ function NewAssigneeStories() {
                               className="ml-[40px] mr-[4px] h-[16px] w-[16px] cursor-pointer"
                               alt=""
                             ></img>
-                            <span
-                              className="ml-[9px] text-xs"
-                              // onClick={() => {
-                              //   const newController = controller.map(
-                              //     (item: any, index: number) => {
-                              //       if (index === clickIndex) {
-                              //         return {
-                              //           ...item,
-                              //           selected: [],
-                              //         };
-                              //       }
-                              //       return { ...item };
-                              //     }
-                              //   );
-                              //   // console.log(newController);
-                              //   setController(newController);
-                              // }}
-                            >
+                            <span className="ml-[9px] text-xs">
                               {mainHeader[3]}
                             </span>
                           </div>
