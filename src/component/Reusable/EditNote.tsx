@@ -76,7 +76,11 @@ function EditNote({ postData, setInputValue }: EditNoteProps) {
   return (
     <div className="mt-[16px] flex h-[fit-content] w-[95%] flex-col">
       <div className={`flex h-[49px] items-center justify-end`}>
-        <CheckDrop checkControl={checkControl} />
+        <CheckDrop
+          checkControl={checkControl}
+          postData={postData}
+          setInputValue={setInputValue}
+        />
 
         <div
           onClick={() => toCreate()}

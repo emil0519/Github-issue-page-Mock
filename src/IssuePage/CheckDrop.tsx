@@ -16,9 +16,18 @@ type CheckDropProps = {
       description: string;
     }[];
   }[];
+  postData:
+    | {
+        title: string;
+        body: string;
+        assignees?: string[] | undefined;
+        labels?: string[] | undefined;
+      }
+    | undefined;
+  setInputValue: React.Dispatch<React.SetStateAction<string>> | undefined;
 };
 
-function CheckDrop({ checkControl }: CheckDropProps) {
+function CheckDrop({ checkControl, postData, setInputValue }: CheckDropProps) {
   const [showCheckDrop, setShowCheckDrop] = useState<boolean>(false);
 
   useEffect(() => {
@@ -76,7 +85,10 @@ function CheckDrop({ checkControl }: CheckDropProps) {
     { skip: skip }
   );
 
-  useEffect(() => console.log(localState), [localState]);
+  useEffect(() => {
+    if (postData !== undefined && postData.body !== undefined)
+      console.log(postData.body.length);
+  }, [postData]);
 
   const handleState = async (param: string) => {
     let body: any;
@@ -86,6 +98,22 @@ function CheckDrop({ checkControl }: CheckDropProps) {
           state: "closed",
           state_reason: "completed",
         };
+        if (
+          state.state === "open" &&
+          postData !== undefined &&
+          postData.body.length !== 0
+        ) {
+          console.log("run");
+          await update({
+            baseType: "repos",
+            type: "/issues",
+            name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
+            repo: `/${repo}`,
+            query: `/${query}/comments`,
+            content: JSON.stringify(postData),
+          });
+          setInputValue!("");
+        }
         setLocalState("reopen");
         break;
       }
@@ -179,13 +207,20 @@ function CheckDrop({ checkControl }: CheckDropProps) {
             className="mr-[4px] h-[16px] w-[16px]"
           />
         ) : localState === "complete" ? (
-          <CheckCircleIcon fill="#7e59d0" className={`mt-[4px]`} />
+          <CheckCircleIcon
+            fill="#7e59d0"
+            className={`mt-[4px] mb-[3px] mr-[3px]`}
+          />
         ) : (
-          <SkipIcon fill="#57606a" className="mt-[4px]" />
+          <SkipIcon fill="#57606a" className="mt-[4px] mb-[3px] mr-[3px]" />
         )}
         <span className="text-[14px] text-[#212529] ">
           {state.state === "open"
-            ? "Close issue"
+            ? postData === undefined
+              ? "Close issue"
+              : postData.body.length === 0
+              ? "Close issue"
+              : "Close with comment"
             : localState === "not planned"
             ? "Closed as not planned"
             : localState === "complete"
@@ -219,6 +254,7 @@ function CheckDrop({ checkControl }: CheckDropProps) {
                 setShowCheckDrop(false);
               } else {
                 setLocalState("reopen");
+                setShowCheckDrop(false);
               }
             }}
             className="ml-[15px] mt-[10px] flex "
