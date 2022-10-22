@@ -1,12 +1,10 @@
-import Header from "./Header";
-import Footer from "./Footer";
-import Repo from "./Repo";
-import Option from "./Option";
-import EditSection from "./NewIssue/EditSection";
-
-import Submit from "./NewIssue/Submit";
-import NewIssueWrapper from "./NewIssue/NewIssueWrapper";
+import { Helmet } from "react-helmet";
 import { createGlobalStyle } from "styled-components";
+import Footer from "./Footer";
+import Header from "./Header";
+import NewIssueWrapper from "./NewIssue/NewIssueWrapper";
+import Option from "./Option";
+import Repo from "./Repo";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -22,6 +20,13 @@ function NewIssue() {
       <Option />
       <NewIssueWrapper />
       <Footer />
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>New Issue</title>
+        <link rel="canonical" href="/App" />
+        <meta name="keywords" content="github,new issue,github issue" />
+        <meta name="author" content="Emil Lau" />
+      </Helmet>
     </>
   );
 }
