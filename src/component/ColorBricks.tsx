@@ -69,22 +69,26 @@ function ColorBricks(props: any) {
 
   return (
     <>
-      <ColorInput
-        maxLength={7}
-        redBorder={props.redBorder}
-        value={`#${props.color}`}
-        onChange={(e) => {
-          props.setDefaultColor(e.target.value);
-          props.setNewLabelInfo({
-            ...props.newLabelInfo,
-            color: e.target.value,
-          });
-        }}
-        onClick={() => {
-          setIsComponentVisible(true);
-          setEditOpen(true);
-        }}
-      ></ColorInput>
+      <WrapNumberSign>
+        <ColorDefault>#</ColorDefault>
+
+        <ColorInput
+          maxLength={6}
+          redBorder={props.redBorder}
+          value={`${props.color}`}
+          onChange={(e) => {
+            props.setDefaultColor(e.target.value);
+            props.setNewLabelInfo({
+              ...props.newLabelInfo,
+              color: e.target.value,
+            });
+          }}
+          onClick={() => {
+            setIsComponentVisible(true);
+            setEditOpen(true);
+          }}
+        ></ColorInput>
+      </WrapNumberSign>
       {isComponentVisible && (
         <ColorSelector style={{ display: "flex" }} ref={ref}>
           <DefaultColorText>Choose from default colors:</DefaultColorText>
@@ -164,6 +168,22 @@ function ColorBricks(props: any) {
     </>
   );
 }
+
+const ColorDefault = styled.span`
+  position: absolute;
+  top: 33%;
+  left: 12px;
+
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const WrapNumberSign = styled.div`
+  position: relative;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
 type Col = {
   colors: string;
 };
@@ -218,7 +238,7 @@ type ColorInputType = {
 const ColorInput = styled.input<ColorInputType>`
   background: #f5f7f9;
   color: ${(props) => (props.redBorder ? "red" : "black")};
-  padding: 5px 12px;
+  padding: 5px 18px;
   border: 0.5px solid #cad1d9;
   margin-left: 6px;
   width: 89%;
