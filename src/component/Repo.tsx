@@ -33,7 +33,7 @@ function Repo() {
           {user.currentSession.user.user_metadata.user_name}{" "}
         </UserName>
         <Slash>/</Slash>
-        <RepoName>{repo}</RepoName>
+        <RepoName onClick={() => navigate("/App")}>{repo}</RepoName>
         <RepoType>Public</RepoType>
       </RepoWrapper>
       <Watch />

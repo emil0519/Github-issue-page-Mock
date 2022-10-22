@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import github from "../img/github.svg";
 import { superbase } from "../utils/client";
@@ -43,30 +44,6 @@ const App = () => {
     }
   }, [session]);
 
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
-
-  // async function signOut() {
-  //   await superbase.auth.signOut();
-  //   setUser(null);
-  // }
-
-  // useEffect(() => {
-  //   if (user.provider_token !== null) {
-  //     console.log(user.provider_token);
-  //   }
-  // }, [user]);
-  // const session: any = superbase.auth.session();
-  //Will render signOut function later
-  useEffect(() => {
-    // if (user.provider_token !== undefined) {
-    console.log(session, "session");
-    console.log(user, "user");
-
-    // }
-  }, [user, session]);
-
   return (
     <section className="flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-[#f9f9f9]">
       <img
@@ -82,7 +59,7 @@ const App = () => {
           Welcome to Github Issue Remote Control
         </span>
         <span className="mt-[32px] w-[85%] text-center text-[14px] text-[grey]">
-          Sign in to choose your repository and have fun.
+          Sign in to choose your repository.
         </span>
         <div
           onClick={signInWithGitHub}
@@ -90,13 +67,14 @@ const App = () => {
         >
           <span className="text-[14px] text-white">Sign in</span>
         </div>
-        {/* <div
-          onClick={signOut}
-          className="mt-[28px] flex h-[32px] w-[240px] cursor-pointer items-center justify-center rounded-md bg-[#2fa455]"
-        >
-          <span className="text-[14px] text-white">Sign out</span>
-        </div> */}
       </div>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Sign in</title>
+        <link rel="canonical" href="/App" />
+        <meta name="keywords" content="github" />
+        <meta name="author" content="Emil Lau" />
+      </Helmet>
     </section>
   );
 };

@@ -32,7 +32,7 @@ function RepoLayout({ data, user }: RepoProps) {
         </div>
       </div>
       <div className="mt-[12px] mr-auto ml-auto h-[1px] w-[95%] bg-[#cad1d9] med:hidden"></div>
-      <div className="ml-[40px] flex med:w-[60%] med:flex-col">
+      <div className="m-0 flex flex-col med:ml-[40px] med:w-[60%]">
         <div className="mt-[24px] hidden h-[24px] w-[160px] cursor-pointer hover:rounded-md hover:bg-[#eef0f3] med:flex">
           <img className="mr-[8px] h-[16px] w-[16px]" alt="" src={repo}></img>
           <span className="mr-[8px] text-[14px] font-semibold">

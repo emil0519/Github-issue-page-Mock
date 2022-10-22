@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
-
 import { useGetRepoQuery } from "../../state/issueRTK";
 import Footer from "../Footer";
 import Header from "../Header";
@@ -15,6 +15,8 @@ function RepoWrapper() {
     const items = localStorage.getItem("supabase.auth.token");
     if (items !== null && items !== undefined) {
       setUserInfo(JSON.parse(items));
+    } else {
+      navigate("/");
     }
   }, []);
 
@@ -54,6 +56,13 @@ function RepoWrapper() {
         data={data}
         user={userInfo.currentSession.user.user_metadata}
       />
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Sign in</title>
+        <link rel="canonical" href="/App" />
+        <meta name="keywords" content="github" />
+        <meta name="author" content="Emil Lau" />
+      </Helmet>
       <Footer />
     </>
   );

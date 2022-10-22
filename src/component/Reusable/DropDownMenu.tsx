@@ -83,7 +83,6 @@ function DropDownMenu({
         ) : item.content === "Edit" ? (
           <div
             onClick={() => {
-              console.log("edit");
               setEditOpen!(true);
               setClickOnDots(false);
             }}
