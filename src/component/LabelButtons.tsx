@@ -17,11 +17,11 @@ export interface opener {
 function LabelButtons() {
   const [update] = useUpdateMutation();
   const [labelOpen, setLabelOpen] = useState(false);
-  const [defaultColor, setDefaultColor] = useState("#e99695");
+  const [defaultColor, setDefaultColor] = useState("e99695");
   const [newLabelInfo, setNewLabelInfo] = useState({
     name: "",
     description: "",
-    color: "#e99695",
+    color: "e99695",
   });
   const [labelText, setLabelText] = useState("Create Label");
   const { color, generateColor } = useGenerateRandomColor();
@@ -34,9 +34,9 @@ function LabelButtons() {
     });
   }, []);
   useEffect(() => {
-    setDefaultColor(`#${color}`);
+    setDefaultColor(`${color}`);
 
-    setNewLabelInfo({ ...newLabelInfo, color: `#${color}` });
+    setNewLabelInfo({ ...newLabelInfo, color: `${color}` });
   }, [color]);
 
   const [defaultLabelPreview, setDefaultLabelPreview] =
@@ -62,8 +62,6 @@ function LabelButtons() {
 
   useEffect(() => {
     //validation on input
-
-    newLabelInfo.color.includes("#") ? setRedBorder(false) : setRedBorder(true);
     newLabelInfo.name.length >= 1
       ? setCreateLabelChange(true)
       : setCreateLabelChange(false);
@@ -74,7 +72,7 @@ function LabelButtons() {
     const body = {
       name: newLabelInfo.name,
       description: newLabelInfo.description,
-      color: newLabelInfo.color.substring(1),
+      color: newLabelInfo.color,
     };
 
     const message = await update({
@@ -416,7 +414,7 @@ const ColorRoller = styled.div<Col>`
   align-items: center;
   width: 32px;
   height: 31px;
-  background: ${(props) => props.colors};
+  background: #${(props) => props.colors};
   border-radius: 5px;
   margin-top: 10px;
   @media screen and (min-width: 768px) {
@@ -458,7 +456,7 @@ const LabelPreview = styled.div<Col>`
   font-size: 10px;
   height: 24px;
   margin-left: 10px;
-  background: ${(props) => props.colors};
+  background: #${(props) => props.colors};
   color: white;
   font-weight: 600;
   border-radius: 15px;

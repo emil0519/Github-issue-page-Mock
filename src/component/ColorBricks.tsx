@@ -15,55 +15,55 @@ function ColorBricks(props: any) {
 
   const solidColorList: any = [
     {
-      name: "#b6070c",
+      name: "b6070c",
     },
     {
-      name: "#d94017",
+      name: "d94017",
     },
     {
-      name: "#fbca31",
+      name: "fbca31",
     },
     {
-      name: "#0e8a25",
+      name: "0e8a25",
     },
     {
-      name: "#006b75",
+      name: "006b75",
     },
     {
-      name: "#1b76d8",
+      name: "1b76d8",
     },
     {
-      name: "#0052c8",
+      name: "0052c8",
     },
     {
-      name: "#521be2",
+      name: "521be2",
     },
   ];
 
   const lightColorList: any = [
     {
-      name: "#e99796",
+      name: "e99796",
     },
     {
-      name: "#f9d0c5",
+      name: "f9d0c5",
     },
     {
-      name: "#fef2c3",
+      name: "fef2c3",
     },
     {
-      name: "#c2e0c7",
+      name: "c2e0c7",
     },
     {
-      name: "#bfdadc",
+      name: "bfdadc",
     },
     {
-      name: "#c5def4",
+      name: "c5def4",
     },
     {
-      name: "#bfd4f1",
+      name: "bfd4f1",
     },
     {
-      name: "#d4c5f7",
+      name: "d4c5f7",
     },
   ];
 
@@ -75,7 +75,7 @@ function ColorBricks(props: any) {
         <ColorInput
           maxLength={6}
           redBorder={props.redBorder}
-          value={`${props.color}`}
+          value={`${props.defaultColor}`}
           onChange={(e) => {
             props.setDefaultColor(e.target.value);
             props.setNewLabelInfo({
@@ -188,7 +188,7 @@ type Col = {
   colors: string;
 };
 const ColorBrick = styled.div<Col>`
-  background: ${(props) => props.colors};
+  background: #${(props) => props.colors};
   width: 12px;
   height: 12px;
   border-radius: 3px;
