@@ -41,7 +41,7 @@ function Header() {
             <Search placeholder="Search or jump to..." />
             <GithubIcon onClick={() => navigate("/Repo")} alt="" src={icon} />
             <HeaderText onClick={() => signOut()}>Pull requests</HeaderText>
-            <HeaderText>Issues</HeaderText>
+            <HeaderText onClick={() => navigate("/Repo")}>Issues</HeaderText>
             <HeaderText>Marketplace</HeaderText>
             <HeaderText>Explore</HeaderText>
           </BigWrapOne>

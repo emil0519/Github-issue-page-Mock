@@ -57,6 +57,7 @@ function IssueBoxHeader() {
       ...value,
       label: [],
     });
+    setLabelListOpen(false);
   }
 
   useEffect(() => {

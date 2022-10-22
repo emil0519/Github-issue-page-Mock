@@ -1,24 +1,27 @@
-import { useEffect, useState } from "react";
-import InputOptions from "../Reusable/InputOptions";
 import {
-  ChevronUpIcon,
-  ChevronDownIcon,
-  TypographyIcon,
-  QuoteIcon,
-  CodeIcon,
-  LinkIcon,
-  MentionIcon,
-  ImageIcon,
-  ReplyIcon,
-  HeadingIcon,
   BoldIcon,
-  ItalicIcon,
-  ListUnorderedIcon,
-  ListOrderedIcon,
-  TasklistIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CodeIcon,
   CrossReferenceIcon,
+  HeadingIcon,
+  ImageIcon,
+  ItalicIcon,
+  LinkIcon,
+  ListOrderedIcon,
+  ListUnorderedIcon,
   MarkdownIcon,
+  MentionIcon,
+  QuoteIcon,
+  ReplyIcon,
+  TasklistIcon,
+  TypographyIcon,
 } from "@primer/octicons-react";
+import { useEffect, useRef, useState } from "react";
+import TextareaMarkdown, {
+  TextareaMarkdownRef,
+} from "textarea-markdown-editor";
+import InputOptions from "../Reusable/InputOptions";
 
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import Preview from "./Preview";
@@ -43,6 +46,8 @@ function EditSection({
   inputValue,
   setInputValue,
 }: EditSectionProps) {
+  const [text, setText] = useState("");
+  const ref = useRef<TextareaMarkdownRef>(null);
   const [clickName, setClickName] = useState("write");
   const [hoverOnA, setHoverOnA] = useState(false);
   const [clickOnA, setClickOnA] = useState(false);
@@ -322,7 +327,7 @@ function EditSection({
                   {errors &&
                     errors.acceptType &&
                     setDefaultAttach("We don't support that file type.")}
-                  <textarea
+                  {/* <textarea
                     {...dragProps}
                     key="input"
                     id="input"
@@ -339,7 +344,20 @@ function EditSection({
                       });
                       setInputValue(e.target.value);
                     }}
-                  ></textarea>
+                  ></textarea> */}
+                  <TextareaMarkdown
+                    className={`flex h-[200px] w-[95%] rounded-md border-[1px] border-solid  bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0`}
+                    placeholder="Leave a comment"
+                    value={inputValue ?? ""}
+                    onChange={(e) => {
+                      setPostData({
+                        ...postData,
+                        body: e.target.value,
+                      });
+                      setInputValue(e.target.value);
+                    }}
+                    ref={ref}
+                  ></TextareaMarkdown>
                   <div
                     onClick={onImageUpload}
                     onError={() => console.log("error")}
@@ -384,7 +402,6 @@ function EditSection({
           </section>
         </section>
       </section>
-      {/* Ends here */}
     </>
   );
 }
