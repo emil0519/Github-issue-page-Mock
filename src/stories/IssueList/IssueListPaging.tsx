@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@primer/octicons-react";
+import { useState } from "react";
 function IssueListPaging() {
   const [previous, setPrevious] = useState<boolean>(false);
 

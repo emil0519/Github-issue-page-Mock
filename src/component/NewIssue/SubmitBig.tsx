@@ -51,6 +51,7 @@ function SubmitTest({ postData }: PostDataProps) {
     if (postData.title.length === 0) {
       return;
     }
+
     await createIssue({
       baseType: "repos",
       type: "/issues",
@@ -59,6 +60,7 @@ function SubmitTest({ postData }: PostDataProps) {
       query: "",
       newIssue: JSON.stringify(postData),
     });
+
     window.location.assign(`/App`);
   };
 

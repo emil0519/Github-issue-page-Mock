@@ -1,28 +1,47 @@
-import styled from "styled-components";
 import { TriangleDownIcon } from "@primer/octicons-react";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import api from "../utils/api";
+import styled from "styled-components";
+import { useGetAllIssuesQuery } from "../state/issueRTK";
 
 function BoxHeader() {
-  let updatedLabels: any = useSelector((state) => state);
-  const [labels, setLabel]: any = useState();
-  useEffect(() => setLabel(labels), []);
-  // useEffect(() => {
-  //   (async () => {
-  //     setLabel(await api.getLabels("emil0519", "testing-issues"));
-  //   })().catch((error) => console.log(error));
-  // }, []);
+  const [userInfo, setUserInfo] = useState<any>();
+  const [skip, setSkip] = useState(true);
+  const [repo, setRepo] = useState("/testing-issues");
   useEffect(() => {
-    setLabel(updatedLabels);
-    // 每次有新label的時候會re-render一次
-  }, [updatedLabels]);
-  useEffect(() => {
-    if (typeof labels === "string") {
-      setLabel(JSON.parse(labels));
+    const items = localStorage.getItem("supabase.auth.token");
+    const repo = localStorage.getItem("repo");
+    if (
+      items !== null &&
+      items !== undefined &&
+      repo !== undefined &&
+      repo !== null
+    ) {
+      setUserInfo(JSON.parse(items));
+      setRepo(JSON.parse(repo));
     }
   }, []);
-  if (labels === undefined) {
+
+  useEffect(() => {
+    if (userInfo !== undefined && repo !== undefined) {
+      console.log(userInfo.currentSession.provider_token);
+      setSkip(false);
+    }
+  }, [userInfo, repo]);
+
+  const { data } = useGetAllIssuesQuery(
+    {
+      baseType: "repos",
+      type: "/labels",
+      name: `/${
+        skip ? "" : userInfo.currentSession.user.user_metadata.user_name
+      }`,
+      repo: `/${skip ? "" : repo}`,
+      query: "",
+    },
+    { skip: skip }
+  );
+
+  if (data === undefined) {
     return <></>;
   }
 
@@ -30,7 +49,7 @@ function BoxHeader() {
     <>
       <Wrapper>
         <Header>
-          <HeaderText>{labels.length} labels</HeaderText>
+          <HeaderText>{data.length} labels</HeaderText>
           <SortSection>
             <SortText>Sort</SortText>
             <SortDown />

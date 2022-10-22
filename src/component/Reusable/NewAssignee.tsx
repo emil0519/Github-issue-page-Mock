@@ -161,7 +161,6 @@ function NewAssignee({
                     </span>
                     {item.default.descriptionWithLink && (
                       <>
-                        hello1
                         <span
                           onClick={() => {
                             setClickIndex(0);

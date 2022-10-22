@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { TextareaMarkdownRef } from "textarea-markdown-editor";
 
 // type arrayProps = { array: (string | number | JSX.Element)[][] };
 type arrayProps = {
@@ -8,6 +9,7 @@ type arrayProps = {
 };
 
 function InputOptions({ array, inputValue, setInputValue }: arrayProps) {
+  const ref = useRef<TextareaMarkdownRef>(null);
   const [mouseOver, setMouseOver] = useState("");
   return (
     <div className={`ml-[13px] flex cursor-pointer`}>
@@ -23,6 +25,8 @@ function InputOptions({ array, inputValue, setInputValue }: arrayProps) {
               setInputValue(item[4] + " " + inputValue);
             } else if (item[2] === "link") {
               setInputValue(`[${inputValue}](url)`);
+            } else if (item[2] === "italic") {
+              ref.current?.trigger("italic");
             } else if (item[4] === "") {
               console.log("return");
               return;

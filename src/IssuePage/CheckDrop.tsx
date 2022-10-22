@@ -1,4 +1,8 @@
-import { CheckCircleIcon, IssueClosedIcon } from "@primer/octicons-react";
+import {
+  CheckCircleIcon,
+  IssueClosedIcon,
+  SkipIcon,
+} from "@primer/octicons-react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import down from "../img/triangle-down.svg";
@@ -33,9 +37,9 @@ function CheckDrop({ checkControl }: CheckDropProps) {
 
   const [update] = useUpdateMutation();
   const [state, setState] = useState<any>();
+  const [localState, setLocalState] = useState<string>("close");
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
-
   const [userInfo, setUserInfo] = useState<any>();
   const [skip, setSkip] = useState(true);
   const [repo, setRepo] = useState("");
@@ -72,9 +76,9 @@ function CheckDrop({ checkControl }: CheckDropProps) {
     { skip: skip }
   );
 
-  const handleState = async (param: string) => {
-    console.log("call handlestate");
+  useEffect(() => console.log(localState), [localState]);
 
+  const handleState = async (param: string) => {
     let body: any;
     switch (param) {
       case "completed": {
@@ -82,6 +86,7 @@ function CheckDrop({ checkControl }: CheckDropProps) {
           state: "closed",
           state_reason: "completed",
         };
+        setLocalState("reopen");
         break;
       }
       case "not planned": {
@@ -89,15 +94,16 @@ function CheckDrop({ checkControl }: CheckDropProps) {
           state: "closed",
           state_reason: "not_planned",
         };
+        setLocalState("reopen");
         break;
       }
       case "reopen": {
-        console.log("get into reopen");
-
         body = {
           state: "open",
           state_reason: "reopened",
         };
+        setLocalState("close");
+
         break;
       }
       default:
@@ -114,11 +120,15 @@ function CheckDrop({ checkControl }: CheckDropProps) {
   };
 
   useEffect(() => {
-    if (data !== undefined)
+    if (data !== undefined) {
       setState({
         state: data.state,
         stateReason: data.state_reason,
       });
+      if (data.state === "closed") {
+        setLocalState("reopen");
+      }
+    }
   }, [data]);
 
   if (state === undefined) {
@@ -129,27 +139,58 @@ function CheckDrop({ checkControl }: CheckDropProps) {
       <div
         onClick={() => {
           if (state.state === "open") {
-            handleState("completed");
+            localState === "close"
+              ? handleState("completed")
+              : handleState("not planned");
           } else {
-            handleState("reopen");
+            switch (localState) {
+              case "reopen": {
+                handleState("reopen");
+                break;
+              }
+              case "complete": {
+                handleState("completed");
+                break;
+              }
+              case "not planned": {
+                handleState("not planned");
+                break;
+              }
+              default: {
+                return;
+              }
+            }
           }
         }}
-        className="flex h-[32px] w-[132px] cursor-pointer items-center justify-center rounded-l-md border-[0.5px] border-solid border-[#e2e5ea] bg-[#f5f7f9] p-[5px_16px] hover:bg-[#f3f4f6]"
+        className="flex h-[32px] w-[max-content] cursor-pointer items-center justify-center rounded-l-md border-[0.5px] border-solid border-[#e2e5ea] bg-[#f5f7f9] p-[5px_16px] hover:bg-[#f3f4f6]"
       >
-        {/* here */}
         {state.state === "open" ? (
-          <IssueClosedIcon
-            fill="#7849d5"
-            className="mr-[4px] h-[16px] w-[16px]"
-          />
-        ) : (
+          localState === "close" ? (
+            <IssueClosedIcon
+              fill="#7849d5"
+              className="mr-[4px] h-[16px] w-[16px]"
+            />
+          ) : (
+            <SkipIcon fill="#585f68" className="mr-[4px] h-[16px] w-[16px]" />
+          )
+        ) : localState === "reopen" ? (
           <IssueClosedIcon
             fill="#1a7335"
             className="mr-[4px] h-[16px] w-[16px]"
           />
+        ) : localState === "complete" ? (
+          <CheckCircleIcon fill="#7e59d0" className={`mt-[4px]`} />
+        ) : (
+          <SkipIcon fill="#57606a" className="mt-[4px]" />
         )}
         <span className="text-[14px] text-[#212529] ">
-          {state.state === "open" ? "Close issue" : "Reopen"}
+          {state.state === "open"
+            ? "Close issue"
+            : localState === "not planned"
+            ? "Closed as not planned"
+            : localState === "complete"
+            ? "Closed as complete"
+            : "Reopen"}
         </span>
       </div>
       <div
@@ -173,16 +214,20 @@ function CheckDrop({ checkControl }: CheckDropProps) {
         <div className="flex h-[fit-content] w-[100%] cursor-pointer flex-col hover:bg-[#0469d6] hover:text-white">
           <div
             onClick={() => {
-              console.log(state.state);
               if (state.state === "open") {
-                handleState("completed");
+                setLocalState("close");
+                setShowCheckDrop(false);
               } else {
-                handleState("reopen");
+                setLocalState("reopen");
               }
             }}
             className="ml-[15px] mt-[10px] flex "
           >
-            <CheckCircleIcon fill="#8054d7" className="mt-[4px]" />
+            <CheckCircleIcon
+              fill={`${state.state === "open" ? "#7e59d0" : "#1a7335"}
+`}
+              className={`mt-[4px]`}
+            />
             <span className="ml-[5px] text-[14px] font-semibold">
               {state.state === "open" ? "Closed as completed" : "Reopen issue"}
             </span>
@@ -194,13 +239,27 @@ function CheckDrop({ checkControl }: CheckDropProps) {
           )}
         </div>
         <div
-          onClick={() => handleState("not planned")}
+          onClick={() => {
+            if (state.stateReason === "not_planned") {
+              setLocalState("complete");
+            } else {
+              setLocalState("not planned");
+            }
+            setShowCheckDrop(false);
+          }}
           className="flex h-[max-content] w-[100%] cursor-pointer flex-col hover:bg-[#0469d6] hover:text-white"
         >
           <div className="ml-[15px] mt-[10px] mb-[7px] flex cursor-pointer">
-            <CheckCircleIcon fill="#57606a" className="mt-[4px]" />
+            {state.state === "open" || state.stateReason === "completed" ? (
+              <SkipIcon fill="#57606a" className="mt-[4px]" />
+            ) : (
+              <CheckCircleIcon fill="#7e59d0" className={`mt-[4px]`} />
+            )}
+
             <span className="ml-[5px] text-[14px] font-semibold">
-              Closed as not planned
+              {state.state === "open" || state.stateReason === "completed"
+                ? "Closed as not planned"
+                : "Closed as completed"}
             </span>
           </div>
           {state.state === "open" && (
