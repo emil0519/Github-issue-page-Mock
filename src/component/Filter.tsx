@@ -1,11 +1,10 @@
-import x from "../img/x.svg";
-import solidDown from "../img/solid-down.svg";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import check from "../img/check.svg";
 import external from "../img/external.svg";
 import search from "../img/search.svg";
-import { useEffect, useState, useContext } from "react";
-import check from "../img/check.svg";
-import { useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import solidDown from "../img/solid-down.svg";
+import x from "../img/x.svg";
 import { UserContext } from "../utils/useContext";
 
 function Filter() {
@@ -25,6 +24,12 @@ function Filter() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query") as any;
+
+  useEffect(() => {
+    if (value.filter.length === 0) {
+      setClickName("");
+    }
+  }, [value]);
 
   useEffect(() => {
     switch (query) {
@@ -53,7 +58,6 @@ function Filter() {
     ) {
       return;
     } else {
-      console.log(itemName);
       setValue({
         ...value,
         filter: itemQuery,

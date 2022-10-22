@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import check from "../img/check.svg";
 import down from "../img/triangle-down.svg";
 import x from "../img/x.svg";
@@ -64,6 +63,9 @@ function IssueBoxHeader() {
     if (value.label.length === 0) {
       setClickName([]);
     }
+    if (value.sort.length === 0) {
+      setSortClickName("");
+    }
   }, [value]);
 
   const { data } = useGetAllIssuesQuery(
@@ -83,9 +85,6 @@ function IssueBoxHeader() {
     setLabelData(data);
     setLabelStore(data);
   }, [data]);
-
-  const [searchParams] = useSearchParams();
-  const queryOnUrl = searchParams.get("query");
 
   const titleName = [
     { name: "Author" },
