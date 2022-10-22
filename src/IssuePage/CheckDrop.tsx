@@ -25,9 +25,15 @@ type CheckDropProps = {
       }
     | undefined;
   setInputValue: React.Dispatch<React.SetStateAction<string>> | undefined;
+  setPostData: React.Dispatch<any>;
 };
 
-function CheckDrop({ checkControl, postData, setInputValue }: CheckDropProps) {
+function CheckDrop({
+  checkControl,
+  postData,
+  setInputValue,
+  setPostData,
+}: CheckDropProps) {
   const [showCheckDrop, setShowCheckDrop] = useState<boolean>(false);
 
   useEffect(() => {
@@ -93,17 +99,17 @@ function CheckDrop({ checkControl, postData, setInputValue }: CheckDropProps) {
   const handleState = async (param: string) => {
     let body: any;
     switch (param) {
-      case "completed": {
+      case "completed":
+      case "not planned": {
         body = {
           state: "closed",
-          state_reason: "completed",
+          state_reason: param === "completed" ? "completed" : "not_planned",
         };
         if (
           state.state === "open" &&
           postData !== undefined &&
           postData.body.length !== 0
         ) {
-          console.log("run");
           await update({
             baseType: "repos",
             type: "/issues",
@@ -117,14 +123,14 @@ function CheckDrop({ checkControl, postData, setInputValue }: CheckDropProps) {
         setLocalState("reopen");
         break;
       }
-      case "not planned": {
-        body = {
-          state: "closed",
-          state_reason: "not_planned",
-        };
-        setLocalState("reopen");
-        break;
-      }
+      // case "not planned": {
+      //   body = {
+      //     state: "closed",
+      //     state_reason: "not_planned",
+      //   };
+      //   setLocalState("reopen");
+      //   break;
+      // }
       case "reopen": {
         body = {
           state: "open",

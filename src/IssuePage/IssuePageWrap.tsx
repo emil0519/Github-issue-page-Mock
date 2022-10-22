@@ -271,7 +271,7 @@ function IssuePageWrap() {
                 setPostData={setPostData}
                 page={"issue"}
               />
-              <EditNote setInputValue={setInputValue} postData={postData} />
+              <EditNote setInputValue={setInputValue} postData={postData} setPostData={setPostData}/>
             </div>
           </section>
         </section>

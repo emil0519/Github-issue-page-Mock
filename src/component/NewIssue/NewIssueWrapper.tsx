@@ -264,7 +264,6 @@ function NewIssueWrapper() {
             <SubmitBig postData={postData} />
           </div>
         </section>
-        {/* <EditNote /> */}
       </section>
       <PopUpDataProcessor
         selectedValue={selectedValue}

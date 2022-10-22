@@ -11,11 +11,11 @@ type EditNoteProps = {
     assignees?: string[] | undefined;
     labels?: string[] | undefined;
   };
-
+  setPostData: React.Dispatch<any>;
   setInputValue?: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function EditNote({ postData, setInputValue }: EditNoteProps) {
+function EditNote({ postData, setInputValue, setPostData }: EditNoteProps) {
   const [repo, setRepo] = useState("");
   const [userInfo, setUserInfo] = useState<any>();
   useEffect(() => {
@@ -80,6 +80,7 @@ function EditNote({ postData, setInputValue }: EditNoteProps) {
           checkControl={checkControl}
           postData={postData}
           setInputValue={setInputValue}
+          setPostData={setPostData}
         />
 
         <div
