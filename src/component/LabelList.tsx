@@ -5,7 +5,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import {
   useDeleteMutation,
   useGetAllIssuesQuery,
-  useUpdateMutation,
+  useUpdateMutation
 } from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
 
@@ -127,7 +127,6 @@ function LabelList() {
 
 function Refer(props: any) {
   const [update] = useUpdateMutation();
-
   const [repo, setRepo] = useState("");
   const [userInfo, setUserInfo] = useState<any>();
   useEffect(() => {
@@ -179,9 +178,10 @@ function Refer(props: any) {
           : props.updateLabelInfo.newDes,
 
       color:
-        props.updateLabelInfo.newCol.length === 0
+        props.updateLabelInfo.newCol.length === 0 ||
+        localColor === item.itemColor
           ? item.itemColor
-          : props.updateLabelInfo.newCol.substring(1, 7),
+          : props.updateLabelInfo.newCol,
     };
 
     const message = await update({
@@ -242,7 +242,8 @@ function Refer(props: any) {
     const random = ((Math.random() * 0xffffff) << 0)
       .toString(16)
       .padStart(6, "0");
-    setLocalColor(random);
+    setLocalColor(`${random}`);
+    return random;
   }
 
   useOnClickOutside(ref, handleClickOutside);
@@ -322,7 +323,6 @@ function Refer(props: any) {
             <LabelName>Label Name</LabelName>
             <LabelInput
               placeholder="Label name"
-              defaultValue={`${props.itemName}`}
               onChange={(e) => {
                 props.setUpdateLabelInfo({
                   ...props.updateLabelInfo,
@@ -348,7 +348,15 @@ function Refer(props: any) {
           <ColorInputSection>
             <ColorText>Color</ColorText>
             <LowerWrapper>
-              <ColorRoller onClick={() => randomColor()} colors={localColor}>
+              <ColorRoller
+                onClick={() => {
+                  props.setUpdateLabelInfo({
+                    ...props.updateLabelInfo,
+                    newCol: randomColor(),
+                  }); 
+                }}
+                colors={localColor}
+              >
                 <RollerIcon />
               </ColorRoller>
 
@@ -358,7 +366,7 @@ function Refer(props: any) {
                 updateLabelInfo={props.updateLabelInfo}
                 setUpdateLabelInfo={props.setUpdateLabelInfo}
                 setLocalColor={setLocalColor}
-                localColor={localColor}
+                localColor={`${localColor}`}
               />
             </LowerWrapper>
           </ColorInputSection>

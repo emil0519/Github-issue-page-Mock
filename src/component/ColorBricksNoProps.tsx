@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useComponentVisible } from "../utils/useComponentVisible";
 
 function ColorBricksNoProps(props: any) {
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
-  const [editOpen, setEditOpen] = useState(false);
+  const [, setEditOpen] = useState(false);
   const [changeColor, setChangeColor] = useState<string>();
-
+  useEffect(() => console.log(changeColor), [changeColor]);
   const handleClickOutside = () => {
     setEditOpen(false);
     setIsComponentVisible(false);
@@ -16,86 +16,82 @@ function ColorBricksNoProps(props: any) {
 
   const solidColorList: any = [
     {
-      name: "#b6070c",
+      name: "b6070c",
     },
     {
-      name: "#d94017",
+      name: "d94017",
     },
     {
-      name: "#fbca31",
+      name: "fbca31",
     },
     {
-      name: "#0e8a25",
+      name: "0e8a25",
     },
     {
-      name: "#006b75",
+      name: "006b75",
     },
     {
-      name: "#1b76d8",
+      name: "1b76d8",
     },
     {
-      name: "#0052c8",
+      name: "0052c8",
     },
     {
-      name: "#521be2",
+      name: "521be2",
     },
   ];
 
   const lightColorList: any = [
     {
-      name: "#e99796",
+      name: "e99796",
     },
     {
-      name: "#f9d0c5",
+      name: "f9d0c5",
     },
     {
-      name: "#fef2c3",
+      name: "fef2c3",
     },
     {
-      name: "#c2e0c7",
+      name: "c2e0c7",
     },
     {
-      name: "#bfdadc",
+      name: "bfdadc",
     },
     {
-      name: "#c5def4",
+      name: "c5def4",
     },
     {
-      name: "#bfd4f1",
+      name: "bfd4f1",
     },
     {
-      name: "#d4c5f7",
+      name: "d4c5f7",
     },
   ];
 
   return (
     <ColorWrap>
-      <ColorInput
-        maxLength={7}
-        type="text"
-        defaultValue={props.defaultValue}
-        value={`#${props.localColor}`}
-        onClick={() => {
-          setIsComponentVisible(true);
-          setEditOpen(true);
-        }}
-        // onChange={(e) => {
-        //   props.toUpdateInfo("color", props.index, e.target.value);
-        // }}
-        onChange={(e) => {
-          props.setUpdateLabelInfo({
-            ...props.updateLabelInfo,
-            newCol: e.target.value,
-          });
-          setChangeColor(e.target.value);
-          props.setLocalColor(`#${e.target.value.split("#")[1]}`);
-          // if (props.localColor.length === 0) {
-          //   props.setLocalColor(`#${e.target.value}`);
-          // } else {
-          //   props.setLocalColor(`${e.target.value}`);
-          // }
-        }}
-      ></ColorInput>
+      <WrapNumberSign>
+        <ColorDefault>#</ColorDefault>
+        <ColorInput
+          maxLength={6}
+          type="text"
+          defaultValue={`${props.defaultValue}`}
+          value={`${props.localColor}`}
+          onClick={() => {
+            setIsComponentVisible(true);
+            setEditOpen(true);
+          }}
+          onChange={(e) => {
+            props.setUpdateLabelInfo({
+              ...props.updateLabelInfo,
+              newCol: e.target.value,
+            });
+            setChangeColor(e.target.value);
+            props.setLocalColor(e.target.value);
+          }}
+        ></ColorInput>
+      </WrapNumberSign>
+
       {isComponentVisible && (
         <ColorSelector style={{ display: "flex" }} ref={ref}>
           <DefaultColorText>Choose from default colors:</DefaultColorText>
@@ -111,7 +107,7 @@ function ColorBricksNoProps(props: any) {
                       newCol: name,
                     });
                     setChangeColor(name);
-                    props.setLocalColor(name.substring(1, 7));
+                    props.setLocalColor(name);
                   }}
                 />
               );
@@ -123,10 +119,13 @@ function ColorBricksNoProps(props: any) {
                 <ColorBrick
                   key={name}
                   colors={name}
-                  onClick={() => {
-                    // props.toUpdateInfo("color", props.index, name);
+                  onClick={(e) => {
+                    props.setUpdateLabelInfo({
+                      ...props.updateLabelInfo,
+                      newCol: name,
+                    });
                     setChangeColor(name);
-                    props.setLocalColor(name.substring(1, 7));
+                    props.setLocalColor(name);
                   }}
                 />
               );
@@ -154,7 +153,7 @@ type Col = {
   colors: string;
 };
 const ColorBrick = styled.div<Col>`
-  background: ${(props) => props.colors};
+  background: #${(props) => props.colors};
   width: 12px;
   height: 12px;
   border-radius: 3px;
@@ -169,6 +168,21 @@ const ColorBrick = styled.div<Col>`
 const DefaultColor = styled.div`
   display: flex;
   margin: 5px auto 0 8px;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const WrapNumberSign = styled.div`
+  position: relative;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const ColorDefault = styled.span`
+  position: absolute;
+  top: 33%;
+  left: 12px;
+
   @media screen and (min-width: 768px) {
   }
 `;
@@ -206,8 +220,8 @@ const ColorWrap = styled.section`
 `;
 
 const ColorInput = styled.input`
-  background: #f5f7f9;
-  padding: 5px 12px;
+  background: rgb(245, 247, 249);
+  padding: 5px 18px;
   border: 0.5px solid #cad1d9;
   margin-left: 6px;
   width: 89%;

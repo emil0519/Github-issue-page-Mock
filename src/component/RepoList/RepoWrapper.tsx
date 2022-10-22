@@ -50,13 +50,10 @@ function RepoWrapper() {
   return (
     <>
       <Header />
-      {/* <Repo />
-      <Option /> */}
       <RepoLayout
         data={data}
         user={userInfo.currentSession.user.user_metadata}
       />
-      {/* <IssueWrapper /> */}
       <Footer />
     </>
   );
