@@ -60,6 +60,7 @@ function NewAssignee({
   isError,
   type,
 }: controllerProps) {
+  useEffect(() => console.log(data), [data]);
   useEffect(() => {
     //若issue page已經有assingee或者label， onload的時候會自動勾
 
@@ -160,6 +161,7 @@ function NewAssignee({
                     </span>
                     {item.default.descriptionWithLink && (
                       <>
+                        hello1
                         <span
                           onClick={() => {
                             setClickIndex(0);
@@ -206,7 +208,11 @@ function NewAssignee({
                           ></img>
                         ) : (
                           <div
-                            style={{ background: `#${item.icon}` }}
+                            style={{
+                              background: item.icon.includes("http")
+                                ? `${item.icon}`
+                                : `#${item.icon}`,
+                            }}
                             className={`mr-[6px] h-[14px] w-[14px] rounded-full `}
                           ></div>
                         )}
@@ -266,19 +272,14 @@ function NewAssignee({
             })()}
 
             <div className="mt-[8px] mr-auto ml-auto w-[95%] text-[12px] text-[#6c737a]">
-              {/* 沒有點擊進去會顯示的內容 */}
               {item.default.isOpen && (
-                // ||
-                //   (type === "issue" &&
-                //     data !== undefined &&
-                //     (data.assignees.length === 0 || data.labels.length === 0) && (
-                // &&
-                //   (data.assignees.length === 0 || data.labels.length === 0)
                 <>
                   {item.selected.length === 0 &&
+                    type === "new" &&
                     item.default.descriptionWithoutLink}
                   {item.selected.length === 0 &&
-                    item.default.descriptionWithLink && (
+                    item.default.descriptionWithLink &&
+                    type === "new" && (
                       <>
                         <span
                           onClick={() => {

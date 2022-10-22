@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import check from "../img/check.svg";
 import down from "../img/triangle-down.svg";
 import x from "../img/x.svg";
@@ -29,7 +29,6 @@ function IssueBoxHeader() {
   const [labelData, setLabelData] = useState<any>();
   const [labelStore, setLabelStore] = useState<any>();
   const [type, setType] = useState("/labels");
-  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<any>();
   const [skip, setSkip] = useState(true);
   const [repo, setRepo] = useState("/testing-issues");
@@ -49,10 +48,23 @@ function IssueBoxHeader() {
 
   useEffect(() => {
     if (userInfo !== undefined && repo !== undefined) {
-      console.log(userInfo.currentSession.provider_token);
       setSkip(false);
     }
   }, [userInfo, repo]);
+
+  function clearLabel() {
+    setClickName([]);
+    setValue({
+      ...value,
+      label: [],
+    });
+  }
+
+  useEffect(() => {
+    if (value.label.length === 0) {
+      setClickName([]);
+    }
+  }, [value]);
 
   const { data } = useGetAllIssuesQuery(
     {
@@ -118,17 +130,6 @@ function IssueBoxHeader() {
       ...value,
       label: newLabel,
     });
-
-    // if (queryOnUrl === null) {
-    //   navigate(`?query=?labels=${name}`);
-    // } else if (!queryOnUrl.includes("labels")) {
-    //   navigate(`?query=?labels=${name}`);
-    // } else if (queryOnUrl.includes(name)) {
-    //   navigate("/");
-    // } else {
-    //   let addedQuery = `?query=${queryOnUrl},${name}`;
-    //   navigate(addedQuery);
-    // }
   }
 
   function navigator(query: string) {
@@ -208,7 +209,10 @@ function IssueBoxHeader() {
                       ></input>
                     </div>
                     <div className="h-[416px] overflow-y-auto overflow-x-hidden">
-                      <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-between border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]">
+                      <div
+                        onClick={() => clearLabel()}
+                        className="flex h-[54px] w-[100%] cursor-pointer items-center justify-between border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]"
+                      >
                         <span className=" m-[16px] ml-[52px] text-xs font-semibold">
                           Unlabeled
                         </span>

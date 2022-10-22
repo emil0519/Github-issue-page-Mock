@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import AvatarIcon from "../component/Reusable/AvatarIcon";
 import PreviewLabel from "../component/Reusable/PreviewLabel";
 import { DataProps } from "./Title";
-import { useEffect, useState } from "react";
 
 function AssigneeLabel({ data }: DataProps) {
   const [avatarData, setAvatarData] = useState();
@@ -15,7 +15,7 @@ function AssigneeLabel({ data }: DataProps) {
     return <></>;
   }
   return (
-    <section className="block med:hidden">
+    <section className="block w-[95%] med:hidden">
       {data.assignees.length === 0 && data.labels.length === 0 ? (
         ""
       ) : (

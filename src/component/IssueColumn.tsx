@@ -213,7 +213,7 @@ function IssueColumn() {
   }
   if (data !== undefined && data.length === 0) {
     return (
-      <section className="flex h-[296px] w-[100%] flex-col items-center justify-center border-[1px] border-solid border-[#f1f3f5]">
+      <section className="flex h-[296px] w-[100%] flex-col items-center justify-center border-[0.3px] border-solid border-gray-400">
         <img src={open} alt="" className="h-[24px] w-[24px]"></img>
         <div className="mt-[24px] text-[24px] font-bold">
           No results matched your search.

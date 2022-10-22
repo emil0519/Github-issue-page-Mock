@@ -59,7 +59,7 @@ function SubmitTest({ postData }: PostDataProps) {
       query: "",
       newIssue: JSON.stringify(postData),
     });
-    navigate(`/IssuePage?query=${data.length + 1}`);
+    window.location.assign(`/App`);
   };
 
   return (

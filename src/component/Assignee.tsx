@@ -1,16 +1,23 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import check from "../img/check.svg";
 import down from "../img/triangle-down.svg";
 import x from "../img/x.svg";
 import { useGetAllIssuesQuery } from "../state/issueRTK";
 import { UserContext } from "../utils/useContext";
 
 function Assignee() {
-  const navigate = useNavigate();
   const { value, setValue } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState<any>();
   const [skip, setSkip] = useState(true);
   const [repo, setRepo] = useState("");
+  const [clickName, setClickName] = useState<string>("");
+
+  useEffect(() => {
+    if (value.assignees.length === 0) {
+      setClickName("");
+    }
+  }, [value]);
+
   useEffect(() => {
     const items = localStorage.getItem("supabase.auth.token");
     const repo = localStorage.getItem("repo");
@@ -174,7 +181,16 @@ function Assignee() {
           ></input>
         </div>
         <div className="h-[202px] overflow-y-auto overflow-x-hidden small:h-[416px]">
-          <div className="flex h-[54px] w-[100%] cursor-pointer items-center justify-between border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]">
+          <div
+            onClick={() => {
+              setClickName("");
+              setValue({
+                ...value,
+                assignees: "",
+              });
+            }}
+            className="flex h-[54px] w-[100%] cursor-pointer items-center justify-between border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px] small:w-[298px]"
+          >
             <span className=" m-[16px] ml-[52px] text-xs font-semibold">
               Assigned to nobody
             </span>
@@ -188,10 +204,18 @@ function Assignee() {
                   ...value,
                   assignees: `assignee=${item.login}`,
                 });
+                setClickName(item.login);
               }}
               className="ml-[31px] flex h-[54px] w-[100%] cursor-pointer flex-row items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#d3d9e0] bg-[white] hover:bg-[#f3f5f7] small:h-[49px]"
             >
               <div className="flex flex-row">
+                <img
+                  src={check}
+                  alt=""
+                  className={`${
+                    clickName === item.login ? "visible" : "invisible"
+                  } mr-[8px] ml-[16px]  h-[16px] w-[16px]`}
+                ></img>
                 <img
                   src={item.avatar_url}
                   alt=""

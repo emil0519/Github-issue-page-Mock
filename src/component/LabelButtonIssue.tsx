@@ -4,6 +4,7 @@ import {
   SearchIcon,
   TagIcon,
 } from "@primer/octicons-react";
+import { useWindowWidth } from "@react-hook/window-size";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,7 @@ export interface opener {
 }
 
 function LabelButtonsIssues() {
+  const windowWidth = useWindowWidth();
   const [labelOpen, setLabelOpen] = useState(false);
   const navigate = useNavigate();
   const [defaultColor, setDefaultColor] = useState("#e99695");
@@ -42,7 +44,6 @@ function LabelButtonsIssues() {
   const [redBorder, setRedBorder] = useState(false);
   useEffect(() => {
     //validation on input
-
     newLabelInfo.color.includes("#") ? setRedBorder(false) : setRedBorder(true);
     newLabelInfo.name.length >= 1
       ? setCreateLabelChange(true)
@@ -50,41 +51,6 @@ function LabelButtonsIssues() {
   }, [newLabelInfo]);
   const [created, setCreated] = useState(0);
   const dispatch = useDispatch();
-
-  // const startCreate = async () => {
-  //   await api
-  //     .createLabels(
-  //       "emil0519",
-  //       "testing-issues",
-  //       newLabelInfo.name,
-  //       newLabelInfo.description,
-  //       newLabelInfo.color.substring(1)
-  //     )
-  //     .then((data) => {
-  //       if (
-  //         data.message !== "Validation Failed" ||
-  //         data.message === undefined
-  //       ) {
-  //         dispatch({
-  //           type: "createList",
-  //           payload: { data },
-  //         });
-  //         setCreateLabelChange(false);
-  //         setLabelText("Saving ...");
-  //         setTimeout(() => setLabelOpen(false), 1000);
-  //       } else if (data.errors !== undefined) {
-  //         alert(
-  //           `Your label ${
-  //             data.errors[0].field
-  //           } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
-  //         );
-  //       } else {
-  //         alert(
-  //           "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
-  //         );
-  //       }
-  //     });
-  // };
 
   return (
     <Wrapper>
@@ -104,7 +70,9 @@ function LabelButtonsIssues() {
           </MileSection>
         </SubWrapOne>
         <NewLabel onClick={() => navigate("/NewIssue")}>
-          <NewLabelText>New</NewLabelText>
+          <NewLabelText>
+            {windowWidth <= 768 ? "New" : "New Issue"}
+          </NewLabelText>
         </NewLabel>
       </UpperWrapper>
       <Filter />
@@ -413,6 +381,7 @@ const NewLabelText = styled.span`
   font-weight: 600;
   color: white;
   text-align: center;
+
   @media screen and (min-width: 768px) {
   }
 `;
