@@ -5,7 +5,7 @@ import {
 } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
+import { useUpdateMutation } from "../state/issueRTK";
 import { hourAdder, timeAgo } from "../utils/horus";
 
 export type DataProps = {
@@ -58,14 +58,6 @@ function Title({ data, comments }: DataProps) {
       setEdit(false);
     }
   };
-
-  const { issueData } = useGetAllIssuesQuery({
-    baseType: "repos",
-    type: "/issues",
-    name: "/emil0519",
-    repo: "/testing-issues",
-    query: `/${query}`,
-  });
 
   if (data === undefined || comments.data === undefined) {
     return <></>;

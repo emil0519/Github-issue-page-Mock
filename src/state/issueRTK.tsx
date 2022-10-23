@@ -57,12 +57,12 @@ export const createIssueApi: any = createApi({
   tagTypes: ["issues", "repo"],
   endpoints: (builder) => ({
     getAllIssues: builder.query<GetLebal[], Parameter>({
-      query: ({ baseType, type, name, repo, query }) => ({
+      query: ({ baseType, type, name, repo, query, token }) => ({
         url: `${baseType}${name}${repo}${type}${query}`,
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json",
-          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          Authorization: `token ${token}`,
           "if-none-match": "",
         }),
       }),

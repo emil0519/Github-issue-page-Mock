@@ -50,6 +50,7 @@ function IssueSpecialPart() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: `/${query}`,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );

@@ -74,6 +74,7 @@ function OpenClosed() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: `${queryString}`,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );

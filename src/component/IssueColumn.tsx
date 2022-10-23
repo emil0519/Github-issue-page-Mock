@@ -3,7 +3,7 @@ import {
   ChevronRightIcon,
   CircleSlashIcon,
   IssueClosedIcon,
-  IssueOpenedIcon,
+  IssueOpenedIcon
 } from "@primer/octicons-react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -38,6 +38,7 @@ function IssueColumn() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: `${queryString}`,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );
@@ -85,6 +86,7 @@ function IssueColumn() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: `?state=closed`,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );
@@ -98,6 +100,7 @@ function IssueColumn() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: nextPageQuery,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );

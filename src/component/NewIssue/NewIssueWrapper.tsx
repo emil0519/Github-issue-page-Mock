@@ -165,6 +165,7 @@ function NewIssueWrapper() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: "",
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );
@@ -191,6 +192,7 @@ function NewIssueWrapper() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: "",
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );

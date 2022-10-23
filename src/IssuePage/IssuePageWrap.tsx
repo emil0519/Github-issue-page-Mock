@@ -100,6 +100,7 @@ function IssuePageWrap() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: `/${query}`,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );
@@ -112,6 +113,7 @@ function IssuePageWrap() {
     }`,
     repo: `/${skip ? "" : repo}`,
     query: `/${query}/comments`,
+    token: `${skip ? "" : userInfo.currentSession.provider_token}`,
   });
 
   const timeline = useGetAllIssuesQuery({
@@ -122,6 +124,7 @@ function IssuePageWrap() {
     }`,
     repo: `/${skip ? "" : repo}`,
     query: `/${query}/timeline`,
+    token: `${skip ? "" : userInfo.currentSession.provider_token}`,
   });
 
   useEffect(() => {
@@ -204,6 +207,7 @@ function IssuePageWrap() {
     }`,
     repo: `/${skip ? "" : repo}`,
     query: "",
+    token: `${skip ? "" : userInfo.currentSession.provider_token}`,
   });
 
   useEffect(() => {
@@ -227,6 +231,7 @@ function IssuePageWrap() {
     }`,
     repo: `/${skip ? "" : repo}`,
     query: "",
+    token: `${skip ? "" : userInfo.currentSession.provider_token}`,
   });
   useEffect(() => {
     //處理fetch回來的assignee data

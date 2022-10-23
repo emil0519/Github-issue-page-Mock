@@ -50,6 +50,7 @@ function DropDownMenu({
       }`,
       repo: `/${skip ? "" : repo}`,
       query: `/${query}/comments`,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );

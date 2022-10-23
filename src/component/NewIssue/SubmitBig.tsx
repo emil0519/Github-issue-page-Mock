@@ -42,6 +42,7 @@ function SubmitTest({ postData }: PostDataProps) {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: ``,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );

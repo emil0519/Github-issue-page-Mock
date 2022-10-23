@@ -39,6 +39,7 @@ function Closed() {
       }`,
       repo: `/${skip ? "" : repo}`,
       query: `?state=closed`,
+      token: `${skip ? "" : userInfo.currentSession.provider_token}`,
     },
     { skip: skip }
   );
