@@ -25,13 +25,9 @@ function InputOptions({ array, inputValue, setInputValue }: arrayProps) {
               setInputValue(item[4] + " " + inputValue);
             } else if (item[2] === "link") {
               setInputValue(`[${inputValue}](url)`);
-            } else if (item[2] === "italic") {
-              ref.current?.trigger("italic");
-            } else if (item[4] === "") {
-              return;
-            } else {
-              setInputValue(item[4] + inputValue + item[4]);
-            }
+            } else if (item[2] === "italic" || item[2] === "bold") {
+              setInputValue(item[4] + "" + inputValue + item[4]);
+            } else return;
           }}
           onMouseOver={() => setMouseOver(item[2])}
           onMouseOut={() => setMouseOver("")}

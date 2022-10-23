@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import EditSection from "../component/NewIssue/EditSection";
+import Preview from "../component/NewIssue/Preview";
 import BigAvatar from "../component/Reusable/BigAvatar";
 import DropDownMenu from "../component/Reusable/DropDownMenu";
-import PopUpSection from "../component/Reusable/PopUpSection";
 import Reaction from "../component/Reusable/Reaction";
-import smile from "../img/smile.svg";
 import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
 import { hourAdder, timeAgo } from "../utils/horus";
 
@@ -71,6 +70,8 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
     },
     { skip: skip }
   );
+
+  useEffect(() => console.log(comments), [comments]);
 
   const [update] = useUpdateMutation();
   const [hoverOnDots, setHoverOnDots] = useState<boolean>(false);
@@ -178,6 +179,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
                 <span className="mr-[3px] text-[14px] text-[#4d555e]">
                   commented
                 </span>
+
                 <span className="mr-[3px] cursor-pointer text-[14px] text-[#4d555e] hover:text-[#407fd9] hover:underline">
                   {(() => {
                     let hours = data.created_at.slice(0, -1);
@@ -250,18 +252,20 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
                   No description provided.
                 </i>
               ) : (
-                <div className="ml-[16px] mt-[16px]">{data.body}</div>
+                <div className="ml-[16px] mt-[16px] mb-[24px] h-[max-content]">
+                  <Preview clickName="content" inputValue={data.body} />
+                </div>
               )}
             </>
 
             <div className="flex items-center">
-              <div
+              {/* <div
                 onClick={() => setOpen(true)}
                 className={`relative m-[16px_0_16px_16px] flex h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-full border-[0.5px] border-solid border-[#d3d9e0] bg-[#f5f7f9] hover:bg-[#f1f2f4]`}
               >
                 <img src={smile} alt="" className="h-[16px] w-[16px]"></img>
               </div>
-              <PopUpSection open={open} setOpen={setOpen} />
+              <PopUpSection open={open} setOpen={setOpen} /> */}
               <Reaction data={render} />
             </div>
             <section className={`${editOpen ? "block" : "hidden"}`}>

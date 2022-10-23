@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 type PreviewProps = {
   clickName: string;
   inputValue: string;
-  images: any;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  images?: any;
+  setInputValue?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function Preview({
@@ -77,53 +76,31 @@ function Preview({
     );
   }
 
-  const [storeInput, setStoreInput] = useState<string>("");
-
-  useEffect(() => {
-    //在preview時將input顯示
-    if (clickName === "preview") {
-      if (images.length === 0) {
-        setInputValue(inputValue);
-        setStoreInput(inputValue);
-      } else {
-        //如有圖片資料，直接顯示不需顯示input上的圖片連結
-        const startingValue = inputValue.indexOf("<");
-        const differences = inputValue.indexOf(`>`) - startingValue + 1;
-        const searcher = inputValue.substring(startingValue, differences);
-        const newInput = inputValue.replace(searcher, "");
-
-        setStoreInput(inputValue);
-        setInputValue(newInput);
-      }
-    } else {
-      //回到write時顯示原本的input
-
-      setInputValue(storeInput);
-    }
-  }, [clickName]);
   return (
     <section
       className={`${
-        clickName === "preview" ? "flex" : "hidden"
-      } mt-[12px] min-h-[239px] w-[95%] flex-col bg-[white]`}
+        clickName === "preview" || clickName === "content" ? "flex" : "hidden"
+      } ${
+        clickName === "content" ? "h-[max-content]" : "min-h-[239px]"
+      } mt-[12px] w-[95%] flex-col bg-[white]`}
     >
       {inputValue.length === 0 ? (
         "Nothing to preview"
       ) : (
         <>
-          {images.map((image: any, index: number) => (
-            <div key={index} className="flex w-[100%] flex-col">
-              <img
+          {/* {images.map((image: any, index: number) => ( */}
+          <div className="flex w-[100%] flex-col">
+            {MarkdownPreviewer()}
+            {/* <img
                 src={image.dataURL}
                 alt=""
                 className="h-auto w-auto max-w-[100%]"
-              />
-              <div className="">{inputValue}</div>
-            </div>
-          ))}
+              /> */}
+            {/* <div className="">{inputValue}</div> */}
+          </div>
         </>
       )}
-      {images.length === 0 ? <> {MarkdownPreviewer()}</> : ""}
+      {/* {images.length === 0 ? <> {MarkdownPreviewer()}</> : ""} */}
     </section>
   );
 }
