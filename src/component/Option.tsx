@@ -33,6 +33,7 @@ const Wrapper = styled.section`
   display: flex;
   background: #f5f7f9;
   height: 48px;
+  overflow-x: auto;
 `;
 
 export default Option;

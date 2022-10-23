@@ -246,7 +246,7 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
             </div>
             <>
               {data.body === null ? (
-                <i className="ml-[16px] mt-[16px] text-[14px] text-[#4d555e]">
+                <i className="ml-[16px] mt-[16px] mb-[24px] text-[14px] text-[#4d555e]">
                   No description provided.
                 </i>
               ) : (
