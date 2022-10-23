@@ -7,11 +7,11 @@ import {
 } from "@primer/octicons-react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import comment from "../img/comment.svg";
-import open from "../img/issue-opened.svg";
-import { useGetAllIssuesQuery } from "../state/issueRTK";
-import { hourAdder, timeAgo } from "../utils/horus";
-import { UserContext } from "../utils/useContext";
+import comment from "../../img/comment.svg";
+import open from "../../img/issue-opened.svg";
+import { useGetAllIssuesQuery } from "../../state/issueRTK";
+import { hourAdder, timeAgo } from "../../utils/horus";
+import { UserContext } from "../../utils/useContext";
 
 function IssueColumn() {
   const { value, setValue } = useContext(UserContext);

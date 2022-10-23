@@ -1,7 +1,7 @@
 import { XIcon } from "@primer/octicons-react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../utils/useContext";
+import { UserContext } from "../../utils/useContext";
 
 function Clear() {
   const navigate = useNavigate();

@@ -2,151 +2,63 @@ import {
   IssueReopenedIcon,
   MilestoneIcon,
   SearchIcon,
+  TagIcon,
 } from "@primer/octicons-react";
+import { useWindowWidth } from "@react-hook/window-size";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import labelIcon from "../img/labelicon.png";
-import { useUpdateMutation } from "../state/issueRTK";
-import useGenerateRandomColor from "../utils/useGenerateRandomColor";
-import ColorBricks from "./ColorBricks";
+import useGenerateRandomColor from "../../utils/useGenerateRandomColor";
+import Filter from "../IssueList/Filter";
 
 export interface opener {
   labelOpen: boolean;
 }
 
-function LabelButtons() {
-  const [update] = useUpdateMutation();
+function LabelButtonsIssues() {
+  const windowWidth = useWindowWidth();
   const [labelOpen, setLabelOpen] = useState(false);
-  const [defaultColor, setDefaultColor] = useState("e99695");
+  const navigate = useNavigate();
+  const [defaultColor, setDefaultColor] = useState("#e99695");
   const [newLabelInfo, setNewLabelInfo] = useState({
     name: "",
     description: "",
-    color: "e99695",
+    color: "#e99695",
   });
   const [labelText, setLabelText] = useState("Create Label");
   const { color, generateColor } = useGenerateRandomColor();
   useEffect(() => {
     generateColor();
     setDefaultColor(color);
-    setNewLabelInfo({
-      ...newLabelInfo,
-      color: color,
-    });
   }, []);
   useEffect(() => {
-    setDefaultColor(`${color}`);
+    setDefaultColor(`#${color}`);
 
-    setNewLabelInfo({ ...newLabelInfo, color: `${color}` });
+    setNewLabelInfo({ ...newLabelInfo, color: `#${color}` });
   }, [color]);
 
   const [defaultLabelPreview, setDefaultLabelPreview] =
     useState("Label Preview");
   const [createLabelChange, setCreateLabelChange] = useState(false);
   const [redBorder, setRedBorder] = useState(false);
-
-  const [repo, setRepo] = useState("");
-  const [userInfo, setUserInfo] = useState<any>();
-  useEffect(() => {
-    const items = localStorage.getItem("supabase.auth.token");
-    const repo = localStorage.getItem("repo");
-    if (
-      items !== null &&
-      items !== undefined &&
-      repo !== undefined &&
-      repo !== null
-    ) {
-      setUserInfo(JSON.parse(items));
-      setRepo(JSON.parse(repo));
-    }
-  }, []);
-
   useEffect(() => {
     //validation on input
+    newLabelInfo.color.includes("#") ? setRedBorder(false) : setRedBorder(true);
     newLabelInfo.name.length >= 1
       ? setCreateLabelChange(true)
       : setCreateLabelChange(false);
   }, [newLabelInfo]);
   const [created, setCreated] = useState(0);
-
-  const startCreate = async () => {
-    const body = {
-      name: newLabelInfo.name,
-      description: newLabelInfo.description,
-      color: newLabelInfo.color,
-    };
-
-    const message = await update({
-      baseType: "repos",
-      type: "/labels",
-      name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
-      repo: `/${repo}`,
-      query: ``,
-      content: JSON.stringify(body),
-      token: userInfo.currentSession.provider_token,
-    });
-
-    if (message.error === undefined) {
-      setNewLabelInfo({
-        name: "",
-        description: "",
-        color: "#e99695",
-      });
-      setCreateLabelChange(false);
-      setLabelText("Saving ...");
-      setTimeout(() => setLabelOpen(false), 1000);
-    } else {
-      alert(
-        `Your ${
-          message.error.data.errors[0].resource
-        } have some problem, it may be caused by ${
-          message.error.data.errors[0].code === "custom"
-            ? message.error.data.errors[0].message
-            : message.error.data.errors[0].code
-        }.`
-      );
-    }
-
-    // await api
-    //   .createLabels(
-    //     "emil0519",
-    //     "testing-issues",
-    //     newLabelInfo.name,
-    //     newLabelInfo.description,
-    //     newLabelInfo.color.substring(1)
-    //   )
-    //   .then((data) => {
-    //     if (
-    //       data.message !== "Validation Failed" ||
-    //       data.message === undefined
-    //     ) {
-    //       dispatch({
-    //         type: "createList",
-    //         payload: { data },
-    //       });
-    // setCreateLabelChange(false);
-    // setLabelText("Saving ...");
-    // setTimeout(() => setLabelOpen(false), 1000);
-    //     } else if (data.errors !== undefined) {
-    //       alert(
-    //         `Your label ${
-    //           data.errors[0].field
-    //         } is ${data.errors[0].code.replace("_", " ")}. Please try again.`
-    //       );
-    //     } else {
-    //       alert(
-    //         "Something in your input went wrong, please check if \n\tYour label is already exist or \n\tColor is not in hex format."
-    //       );
-    //     }
-    //   });
-  };
+  const dispatch = useDispatch();
 
   return (
     <Wrapper>
       <UpperWrapper>
         <SubWrapOne>
-          <LabelSection>
+          <LabelSection onClick={() => navigate("/Label")}>
             <LabelSubSection>
-              <LabelIcon alt="" src={labelIcon}></LabelIcon>
+              <LabelTag />
               <LabelText>Labels</LabelText>
             </LabelSubSection>
           </LabelSection>
@@ -156,99 +68,23 @@ function LabelButtons() {
               <MileText>Milestones</MileText>
             </MileStoneSubSection>
           </MileSection>
-          <BigSearchBarWrapper>
-            <BigSearchIcon />
-            <BigSearchBar placeholder="Search all labels" />
-          </BigSearchBarWrapper>
         </SubWrapOne>
-        <NewLabel>
-          <NewLabelText
-            onClick={() => {
-              setLabelOpen(true);
-              setLabelText("Create Label");
-              setCreated(created + 1);
-              setDefaultLabelPreview("Label Preview");
-              if (labelOpen) {
-                setLabelOpen(false);
-              }
-            }}
-          >
-            New Label
+        <NewLabel onClick={() => navigate("/NewIssue")}>
+          <NewLabelText>
+            {windowWidth <= 768 ? "New" : "New Issue"}
           </NewLabelText>
         </NewLabel>
       </UpperWrapper>
-      <SearchBarWrapper>
-        <SearchIconIMG />
-        <SearchBar placeholder="Search all labels" />
-      </SearchBarWrapper>
-      <NewLabelSection labelOpen={labelOpen}>
-        <LabelPreview colors={defaultColor}>{defaultLabelPreview}</LabelPreview>
-        <BigWrapper>
-          <LabelInputSection>
-            <LabelName>Label Name</LabelName>
-            <LabelInput
-              value={newLabelInfo.name}
-              placeholder="Label name"
-              onChange={(e) => {
-                setNewLabelInfo({ ...newLabelInfo, name: e.target.value });
-                setDefaultLabelPreview(e.target.value);
-              }}
-            />
-          </LabelInputSection>
-          <LabelInputSection>
-            <LabelName>Description</LabelName>
-            <LabelInput
-              value={newLabelInfo.description}
-              placeholder="Description (Optional)"
-              onChange={(e) =>
-                setNewLabelInfo({
-                  ...newLabelInfo,
-                  description: e.target.value,
-                })
-              }
-            />
-          </LabelInputSection>
-          <ColorInputSection>
-            <ColorText>Color</ColorText>
-            <LowerWrapper>
-              <ColorRoller
-                colors={defaultColor}
-                onClick={() => generateColor()}
-              >
-                <RollerIcon />
-              </ColorRoller>
-              <InputWrapper>
-                <ColorBricks
-                  color={color}
-                  setNewLabelInfo={setNewLabelInfo}
-                  newLabelInfo={newLabelInfo}
-                  setDefaultColor={setDefaultColor}
-                  defaultColor={defaultColor}
-                  redBorder={redBorder}
-                />
-              </InputWrapper>
-            </LowerWrapper>
-          </ColorInputSection>
-          <ButtonWrapper>
-            <CreateLabelButton
-              redBorder={redBorder}
-              createLabelChange={createLabelChange}
-            >
-              <CreateLabelText onClick={() => startCreate()}>
-                {labelText}
-              </CreateLabelText>
-            </CreateLabelButton>
-            <CancelButton>
-              <CancelText onClick={() => setLabelOpen(false)}>
-                Cancel
-              </CancelText>
-            </CancelButton>
-          </ButtonWrapper>
-        </BigWrapper>
-      </NewLabelSection>
+      <Filter />
     </Wrapper>
   );
 }
+
+const LabelTag = styled(TagIcon)`
+  width: 14.78px;
+  height: 14.78px;
+  margin-right: 5px;
+`;
 
 const SearchIconIMG = styled(SearchIcon)`
   width: 21px;
@@ -304,14 +140,13 @@ const BigWrapper = styled.section`
     display: flex;
     align-items: center;
     margin-top: 20px;
-    /* margin-right: 6px; */
+    margin-right: 6px;
   }
 `;
 
 const ButtonWrapper = styled.section`
   display: flex;
   @media screen and (min-width: 768px) {
-    margin-right: 20px;
   }
 `;
 
@@ -414,7 +249,7 @@ const ColorRoller = styled.div<Col>`
   align-items: center;
   width: 32px;
   height: 31px;
-  background: #${(props) => props.colors};
+  background: ${(props) => props.colors};
   border-radius: 5px;
   margin-top: 10px;
   @media screen and (min-width: 768px) {
@@ -456,7 +291,7 @@ const LabelPreview = styled.div<Col>`
   font-size: 10px;
   height: 24px;
   margin-left: 10px;
-  background: #${(props) => props.colors};
+  background: ${(props) => props.colors};
   color: white;
   font-weight: 600;
   border-radius: 15px;
@@ -478,7 +313,7 @@ const NewLabelSection = styled.section<NewLabels>`
   display: ${(props) => (props.labelOpen ? "flex" : "none")};
   flex-direction: column;
   width: 95%;
-  height: 360px;
+  height: 328px;
   background: #f5f7f9;
   margin: 20px auto;
   border: 0.5px solid #cad1d9;
@@ -486,7 +321,6 @@ const NewLabelSection = styled.section<NewLabels>`
   @media screen and (min-width: 768px) {
     flex-direction: column;
     height: 149px;
-    width: 100%;
   }
 `;
 
@@ -523,9 +357,15 @@ const UpperWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   /* margin-right: 16px; */
-  width: 100%;
+  width: 95%;
   margin: 0 auto;
+  margin-left: 0;
   @media screen and (min-width: 768px) {
+    justify-content: flex-end;
+    order: 2;
+    width: 413px;
+    margin: 0;
+    /* margin-right: 16px; */
   }
 `;
 
@@ -541,12 +381,14 @@ const NewLabelText = styled.span`
   font-weight: 600;
   color: white;
   text-align: center;
+
   @media screen and (min-width: 768px) {
   }
 `;
 
 const NewLabel = styled.div`
   background: #29994a;
+  margin-left: 16px;
   width: 98.69px;
   height: 32px;
   font-size: 14px;
@@ -609,7 +451,7 @@ const MileStoneIMG = styled(MilestoneIcon)`
 const LabelText = styled.span`
   font-size: 14px;
   font-weight: 600;
-  color: white;
+  color: black;
   @media screen and (min-width: 768px) {
   }
 `;
@@ -629,15 +471,20 @@ const LabelSubSection = styled.div`
 `;
 
 const LabelSection = styled.section`
-  background: #1760cf;
+  background: white;
   width: 97px;
   height: 32px;
   align-items: center;
   display: flex;
   justify-content: center;
+  border: 1px solid #d1d2d5;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+  /* margin-left: 16px; */
   cursor: pointer;
+  &:hover {
+    background: #f5f7f9;
+  }
   @media screen and (min-width: 768px) {
   }
 `;
@@ -645,11 +492,16 @@ const LabelSection = styled.section`
 const Wrapper = styled.section`
   background: white;
   margin-top: 20px;
-  width: 95%;
-  margin-right: auto;
-  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
   @media screen and (min-width: 768px) {
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 `;
 
-export default LabelButtons;
+export default LabelButtonsIssues;

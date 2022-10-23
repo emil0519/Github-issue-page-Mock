@@ -1,6 +1,6 @@
-import LabelButtonsIssue from "./LabelButtonIssue";
+import LabelButtonsIssue from "../LabelList/LabelButtonIssue";
+import OpenClosed from "../OpenClosed/OpenClosedSmall";
 import Clear from "./Clear";
-import OpenClosed from "./OpenClosed/OpenClosedSmall";
 
 function IssueHeader() {
   return (

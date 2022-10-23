@@ -1,7 +1,7 @@
 import { TriangleDownIcon } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useGetAllIssuesQuery } from "../state/issueRTK";
+import { useGetAllIssuesQuery } from "../../state/issueRTK";
 
 function BoxHeader() {
   const [userInfo, setUserInfo] = useState<any>();

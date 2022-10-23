@@ -1,16 +1,13 @@
-import { useRef } from "react";
 import { Helmet } from "react-helmet";
+import Footer from "../Footer";
+import Header from "../Header";
+import Option from "../Option";
+import Repo from "../Repo";
 import BoxHeader from "./BoxHeader";
-import Footer from "./Footer";
-import Header from "./Header";
 import LabelButtons from "./LabelButtons";
 import LabelList from "./LabelList";
-import Option from "./Option";
-import Repo from "./Repo";
 
 function Label() {
-  const inputRef = useRef(null);
-
   return (
     <>
       <Header />

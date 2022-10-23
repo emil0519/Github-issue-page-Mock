@@ -6,7 +6,7 @@ import {
   useDeleteMutation,
   useGetAllIssuesQuery,
   useUpdateMutation,
-} from "../state/issueRTK";
+} from "../../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
 
 function useComponentVisible(initialIsVisible: any) {

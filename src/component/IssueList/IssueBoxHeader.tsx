@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import check from "../img/check.svg";
-import down from "../img/triangle-down.svg";
-import x from "../img/x.svg";
-import { useGetAllIssuesQuery } from "../state/issueRTK";
-import { UserContext } from "../utils/useContext";
+import check from "../../img/check.svg";
+import down from "../../img/triangle-down.svg";
+import x from "../../img/x.svg";
+import { useGetAllIssuesQuery } from "../../state/issueRTK";
+import { UserContext } from "../../utils/useContext";
+import OpenClosedInHeader from "../OpenClosed/OpenClosedBig";
 import Assignee from "./Assignee";
-import OpenClosedInHeader from "./OpenClosed/OpenClosedBig";
 
 function IssueBoxHeader() {
   const { value, setValue } = useContext(UserContext);

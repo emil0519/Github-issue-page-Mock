@@ -1,9 +1,9 @@
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import App from "./App";
 import Error from "./component/Error/Error";
-import Label from "./component/Label";
+import App from "./component/IssueList/App";
+import Label from "./component/LabelList/Label";
 import NewIssue from "./component/NewIssue";
 import RepoWrapper from "./component/RepoList/RepoWrapper";
 import SignIn from "./component/SignIn";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import bulb from "../img/light-bulb.svg";
+import bulb from "../../img/light-bulb.svg";
 
 function ProTips() {
   const tipsList = [

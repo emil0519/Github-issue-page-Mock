@@ -1,11 +1,11 @@
 import { Helmet } from "react-helmet";
 import { createGlobalStyle } from "styled-components";
-import Footer from "./component/Footer";
-import Header from "./component/Header";
-import IssueWrapper from "./component/IssueWrapper";
-import Option from "./component/Option";
-import Repo from "./component/Repo";
-import { UserContext } from "./utils/useContext";
+import { UserContext } from "../../utils/useContext";
+import Footer from "../Footer";
+import Header from "../Header";
+import Option from "../Option";
+import Repo from "../Repo";
+import IssueWrapper from "./IssueWrapper";
 
 import { useState } from "react";
 

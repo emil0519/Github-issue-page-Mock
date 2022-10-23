@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import check from "../img/check.svg";
-import external from "../img/external.svg";
-import search from "../img/search.svg";
-import solidDown from "../img/solid-down.svg";
-import x from "../img/x.svg";
-import { UserContext } from "../utils/useContext";
+import check from "../../img/check.svg";
+import external from "../../img/external.svg";
+import search from "../../img/search.svg";
+import solidDown from "../../img/solid-down.svg";
+import x from "../../img/x.svg";
+import { UserContext } from "../../utils/useContext";
 
 function Filter() {
   const [showFilter, setShowFilter] = useState(false);

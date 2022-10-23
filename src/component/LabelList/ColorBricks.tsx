@@ -1,12 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useComponentVisible } from "../utils/useComponentVisible";
+import { useComponentVisible } from "../../utils/useComponentVisible";
 
-function ColorBricksNoProps(props: any) {
+function ColorBricks(props: any) {
   const { ref, isComponentVisible, setIsComponentVisible, useOnClickOutside } =
     useComponentVisible(false);
-  const [, setEditOpen] = useState(false);
-  const [changeColor, setChangeColor] = useState<string>();
+  const [editOpen, setEditOpen] = useState(false);
 
   const handleClickOutside = () => {
     setEditOpen(false);
@@ -69,29 +68,27 @@ function ColorBricksNoProps(props: any) {
   ];
 
   return (
-    <ColorWrap>
+    <>
       <WrapNumberSign>
         <ColorDefault>#</ColorDefault>
+
         <ColorInput
           maxLength={6}
-          type="text"
-          defaultValue={`${props.defaultValue}`}
-          value={`${props.localColor}`}
+          redBorder={props.redBorder}
+          value={`${props.defaultColor}`}
+          onChange={(e) => {
+            props.setDefaultColor(e.target.value);
+            props.setNewLabelInfo({
+              ...props.newLabelInfo,
+              color: e.target.value,
+            });
+          }}
           onClick={() => {
             setIsComponentVisible(true);
             setEditOpen(true);
           }}
-          onChange={(e) => {
-            props.setUpdateLabelInfo({
-              ...props.updateLabelInfo,
-              newCol: e.target.value,
-            });
-            setChangeColor(e.target.value);
-            props.setLocalColor(e.target.value);
-          }}
         ></ColorInput>
       </WrapNumberSign>
-
       {isComponentVisible && (
         <ColorSelector style={{ display: "flex" }} ref={ref}>
           <DefaultColorText>Choose from default colors:</DefaultColorText>
@@ -101,13 +98,12 @@ function ColorBricksNoProps(props: any) {
                 <ColorBrick
                   key={name}
                   colors={name}
-                  onClick={(e) => {
-                    props.setUpdateLabelInfo({
-                      ...props.updateLabelInfo,
-                      newCol: name,
+                  onClick={() => {
+                    props.setDefaultColor(name);
+                    props.setNewLabelInfo({
+                      ...props.newLabelInfo,
+                      color: name,
                     });
-                    setChangeColor(name);
-                    props.setLocalColor(name);
                   }}
                 />
               );
@@ -119,13 +115,12 @@ function ColorBricksNoProps(props: any) {
                 <ColorBrick
                   key={name}
                   colors={name}
-                  onClick={(e) => {
-                    props.setUpdateLabelInfo({
-                      ...props.updateLabelInfo,
-                      newCol: name,
+                  onClick={() => {
+                    props.setDefaultColor(name);
+                    props.setNewLabelInfo({
+                      ...props.newLabelInfo,
+                      color: name,
                     });
-                    setChangeColor(name);
-                    props.setLocalColor(name);
                   }}
                 />
               );
@@ -137,18 +132,58 @@ function ColorBricksNoProps(props: any) {
         <DefaultColorText>Choose from default colors:</DefaultColorText>
         <DefaultColor>
           {solidColorList.map(({ name }: any, index: number) => {
-            return <ColorBrick key={name} colors={name} />;
+            return (
+              <ColorBrick
+                key={name}
+                colors={name}
+                onClick={() => {
+                  props.setDefaultColor(name);
+                  props.setNewLabelInfo({
+                    ...props.newLabelInfo,
+                    color: name,
+                  });
+                }}
+              />
+            );
           })}
         </DefaultColor>
         <DefaultColor>
           {lightColorList.map(({ name }: any) => {
-            return <ColorBrick key={name} colors={name} />;
+            return (
+              <ColorBrick
+                key={name}
+                colors={name}
+                onClick={() => {
+                  props.setDefaultColor(name);
+                  props.setNewLabelInfo({
+                    ...props.newLabelInfo,
+                    color: name,
+                  });
+                }}
+              />
+            );
           })}
         </DefaultColor>
       </ColorSelector>
-    </ColorWrap>
+    </>
   );
 }
+
+const ColorDefault = styled.span`
+  position: absolute;
+  top: 33%;
+  left: 12px;
+
+  @media screen and (min-width: 768px) {
+  }
+`;
+
+const WrapNumberSign = styled.div`
+  position: relative;
+  @media screen and (min-width: 768px) {
+  }
+`;
+
 type Col = {
   colors: string;
 };
@@ -172,21 +207,6 @@ const DefaultColor = styled.div`
   }
 `;
 
-const WrapNumberSign = styled.div`
-  position: relative;
-  @media screen and (min-width: 768px) {
-  }
-`;
-
-const ColorDefault = styled.span`
-  position: absolute;
-  top: 33%;
-  left: 12px;
-
-  @media screen and (min-width: 768px) {
-  }
-`;
-
 const DefaultColorText = styled.div`
   color: #57606a;
   font-size: 8px;
@@ -200,27 +220,24 @@ const ColorSelector = styled.section`
   height: 87px;
   background: white;
   position: absolute;
-  top: 119%;
-  left: 197px;
+  top: 110%;
+  left: 6px;
   border: 0.5px solid #cad1d9;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   display: none;
   @media screen and (min-width: 768px) {
-    left: 0;
   }
 `;
 
-const ColorWrap = styled.section`
-  width: 100%;
-  position: relative;
-  top: 0px;
-  left: 0px;
-`;
+type ColorInputType = {
+  redBorder: boolean;
+};
 
-const ColorInput = styled.input`
-  background: rgb(245, 247, 249);
+const ColorInput = styled.input<ColorInputType>`
+  background: #f5f7f9;
+  color: ${(props) => (props.redBorder ? "red" : "black")};
   padding: 5px 18px;
   border: 0.5px solid #cad1d9;
   margin-left: 6px;
@@ -229,6 +246,4 @@ const ColorInput = styled.input`
   margin-top: 9px;
 `;
 
-//傳props一定要設定type，在styled component
-
-export default ColorBricksNoProps;
+export default ColorBricks;
