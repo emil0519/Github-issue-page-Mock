@@ -66,6 +66,7 @@ function IssuePage() {
     },
     { skip: skip }
   );
+  useEffect(() => console.log(data, "data in issue page"), [data]);
 
   if (data === undefined) {
     return <></>;

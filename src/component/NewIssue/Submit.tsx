@@ -52,7 +52,7 @@ function Submit({ postData }: PostDataProps) {
     if (postData.title.length === 0) {
       return;
     }
-    await createIssue({
+    const message = await createIssue({
       baseType: "repos",
       type: "/issues",
       name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
@@ -61,7 +61,9 @@ function Submit({ postData }: PostDataProps) {
       newIssue: JSON.stringify(postData),
       token: userInfo.currentSession.provider_token,
     });
-    window.location.assign(`/App`);
+    console.log(message);
+
+    // window.location.assign(`/App`);
   };
 
   return (
