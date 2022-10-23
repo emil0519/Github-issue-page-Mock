@@ -10,7 +10,6 @@ import {
   LinkIcon,
   ListOrderedIcon,
   ListUnorderedIcon,
-  MarkdownIcon,
   MentionIcon,
   QuoteIcon,
   ReplyIcon,
@@ -23,7 +22,7 @@ import TextareaMarkdown, {
 } from "textarea-markdown-editor";
 import InputOptions from "../Reusable/InputOptions";
 
-import ImageUploading, { ImageListType } from "react-images-uploading";
+import { ImageListType } from "react-images-uploading";
 import Preview from "./Preview";
 
 export type EditSectionProps = {
@@ -301,89 +300,19 @@ function EditSection({
                 setInputValue={setInputValue}
               />
             </section>
-            <ImageUploading
-              multiple
-              value={images}
-              onChange={onChange}
-              maxNumber={maxNumber}
-              resolutionWidth={10}
-            >
-              {({ onImageUpload, isDragging, dragProps, errors }) => (
-                <>
-                  {errors &&
-                    errors.acceptType &&
-                    setDefaultAttach("We don't support that file type.")}
-                  {/* <textarea
-                    {...dragProps}
-                    key="input"
-                    id="input"
-                    name="input"
-                    className={`${
-                      isDragging ? "border-[#dcff85]" : "border-[#cad1d9]"
-                    } flex h-[200px] w-[95%] rounded-md border-[1px] border-solid  bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0`}
-                    placeholder="Leave a comment"
-                    value={inputValue ?? ""}
-                    onChange={(e) => {
-                      setPostData({
-                        ...postData,
-                        body: e.target.value,
-                      });
-                      setInputValue(e.target.value);
-                    }}
-                  ></textarea> */}
-                  <TextareaMarkdown
-                    className={`flex h-[200px] w-[95%] rounded-md border-[1px] border-solid  bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0`}
-                    placeholder="Leave a comment"
-                    value={inputValue ?? ""}
-                    onChange={(e) => {
-                      setPostData({
-                        ...postData,
-                        body: e.target.value,
-                      });
-                      setInputValue(e.target.value);
-                    }}
-                    ref={ref}
-                  ></TextareaMarkdown>
-                  <div
-                    onClick={onImageUpload}
-                    className={`${
-                      page === "new" ? "hidden" : "flex"
-                    } h-[30px] w-[95%] cursor-pointer items-center justify-between border-t-[1px] border-dashed border-[#cad1d9] bg-[#f6f8fa] med:flex med:h-[44px] med:w-[98%] med:cursor-pointer med:items-center med:justify-between`}
-                  >
-                    <span
-                      className={`${
-                        defaultAttach ===
-                        "Attach files by dragging & dropping, selecting or pasting them."
-                          ? "text-[#57606a]"
-                          : "text-[#d23641]"
-                      } ml-[4px] text-[14px] `}
-                    >
-                      {defaultAttach}
-                    </span>
-                    <section
-                      onMouseOver={() => setHoverOnMarkDown(true)}
-                      onMouseOut={() => setHoverOnMarkDown(false)}
-                    >
-                      <MarkdownIcon
-                        fill={`${hoverOnMarkDown ? "#0469d6" : "#57606a"}`}
-                        className="relative"
-                      />
-                      <div
-                        className={`
-            ${hoverOnMarkDown ? "med:flex" : "hidden"}  
-            absolute top-[66%] right-[21px] w-[max-content] cursor-text items-center justify-center rounded-md bg-black p-[5px_9px]`}
-                      >
-                        <span className="downward-triangle absolute top-[100%] left-[200px] h-[9px] w-[9px] bg-black"></span>
-                        <span className="text-xs text-[white]">
-                          {" "}
-                          Styling with Markdown is supported
-                        </span>
-                      </div>
-                    </section>
-                  </div>
-                </>
-              )}
-            </ImageUploading>
+            <TextareaMarkdown
+              className={`flex h-[200px] w-[95%] rounded-md border-[1px] border-solid  bg-[#f5f7f9] p-[8px] pb-[150px] med:w-[98%] med:border-x-[1px] med:border-t-[1px] med:border-b-0`}
+              placeholder="Leave a comment"
+              value={inputValue ?? ""}
+              onChange={(e) => {
+                setPostData({
+                  ...postData,
+                  body: e.target.value,
+                });
+                setInputValue(e.target.value);
+              }}
+              ref={ref}
+            ></TextareaMarkdown>
           </section>
         </section>
       </section>

@@ -71,8 +71,6 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
     { skip: skip }
   );
 
-  useEffect(() => console.log(comments), [comments]);
-
   const [update] = useUpdateMutation();
   const [hoverOnDots, setHoverOnDots] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);

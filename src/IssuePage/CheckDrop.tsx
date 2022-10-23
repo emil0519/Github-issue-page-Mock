@@ -93,6 +93,8 @@ function CheckDrop({
   );
 
   const handleState = async (param: string) => {
+    console.log("start handle");
+
     let body: any;
     switch (param) {
       case "completed":
@@ -113,20 +115,15 @@ function CheckDrop({
             repo: `/${repo}`,
             query: `/${query}/comments`,
             content: JSON.stringify(postData),
+            token: userInfo.currentSession.provider_token,
           });
+          console.log(userInfo, "this is token");
+
           setInputValue!("");
         }
         setLocalState("reopen");
         break;
       }
-      // case "not planned": {
-      //   body = {
-      //     state: "closed",
-      //     state_reason: "not_planned",
-      //   };
-      //   setLocalState("reopen");
-      //   break;
-      // }
       case "reopen": {
         body = {
           state: "open",
@@ -146,6 +143,7 @@ function CheckDrop({
       repo: `/${repo}`,
       query: `/${query}`,
       content: JSON.stringify(body),
+      token: userInfo.currentSession.provider_token,
     });
   };
 

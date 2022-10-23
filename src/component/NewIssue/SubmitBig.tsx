@@ -63,7 +63,7 @@ function SubmitTest({ postData }: PostDataProps) {
     });
     console.log(message);
 
-    // window.location.assign(`/App`);
+    window.location.assign(`/App`);
   };
 
   return (
