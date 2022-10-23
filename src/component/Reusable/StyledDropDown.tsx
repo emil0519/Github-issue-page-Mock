@@ -16,7 +16,6 @@ function StyledDropDown({ controller, show, setShow }: ControllerProps) {
     window.location.assign(`/`);
   }
 
-
   if (controller === undefined) {
     return <></>;
   }
@@ -32,9 +31,10 @@ function StyledDropDown({ controller, show, setShow }: ControllerProps) {
       <Wrapper show={show}>
         {controller.map((item) =>
           item.content === "|" ? (
-            <Line />
+            <Line key={item.content} />
           ) : item.content === "Sign out" ? (
             <EachItem
+              key={item.content}
               onClick={() => {
                 signOut();
                 setShow(false);
@@ -43,7 +43,9 @@ function StyledDropDown({ controller, show, setShow }: ControllerProps) {
               {item.content}
             </EachItem>
           ) : (
-            <EachItem onClick={() => setShow(false)}>{item.content}</EachItem>
+            <EachItem key={item.content} onClick={() => setShow(false)}>
+              {item.content}
+            </EachItem>
           )
         )}
       </Wrapper>

@@ -93,8 +93,6 @@ function CheckDrop({
   );
 
   const handleState = async (param: string) => {
-    console.log("start handle");
-
     let body: any;
     switch (param) {
       case "completed":
@@ -117,7 +115,6 @@ function CheckDrop({
             content: JSON.stringify(postData),
             token: userInfo.currentSession.provider_token,
           });
-          console.log(userInfo, "this is token");
 
           setInputValue!("");
         }

@@ -58,10 +58,6 @@ function IssuePageWrap() {
         content: JSON.stringify(body),
         token: userInfo.currentSession.provider_token,
       });
-      console.log(userInfo.currentSession.user.user_metadata.user_name, "user");
-      console.log(repo, "repo");
-      console.log(body, "body");
-      console.log(response, "response");
     };
     updateSideBar();
   }, [showDropDown]);

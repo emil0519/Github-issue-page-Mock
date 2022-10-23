@@ -2,10 +2,14 @@
 
 # dependencies
 /node_modules
+/。node_modules
 /.pnp
 .pnp.js
 .firebase/hosting/YnVpbGQ.cache
 /.firebase/hosting
+/firebase
+/storybook
+
 
 # testing
 /coverage
