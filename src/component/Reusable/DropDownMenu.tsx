@@ -71,6 +71,7 @@ function DropDownMenu({
         name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
         repo: `/${repo}`,
         query: `/comments/${searchData[0].id}`,
+        token: userInfo.currentSession.provider_token,
       });
       setEditOpen!(false);
     }

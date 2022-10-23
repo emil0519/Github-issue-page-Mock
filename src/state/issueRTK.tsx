@@ -81,12 +81,12 @@ export const createIssueApi: any = createApi({
       providesTags: ["repo"],
     }),
     createIssue: builder.mutation({
-      query: ({ baseType, type, name, repo, query, newIssue }) => ({
+      query: ({ baseType, type, name, repo, query, newIssue, token }) => ({
         url: `${baseType}${name}${repo}${type}${query}`,
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
-          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          Authorization: `token ${token}`,
           "if-none-match": "",
         }),
         body: newIssue,
@@ -108,12 +108,12 @@ export const createIssueApi: any = createApi({
       invalidatesTags: ["issues"],
     }),
     delete: builder.mutation({
-      query: ({ baseType, type, name, repo, query }) => ({
+      query: ({ baseType, type, name, repo, query, token }) => ({
         url: `${baseType}${name}${repo}${type}${query}`,
         method: "DELETE",
         headers: new Headers({
           "Content-Type": "application/json",
-          Authorization: `token ${process.env.REACT_APP_PASSWORD}`,
+          Authorization: `token ${token}`,
           "if-none-match": "",
         }),
       }),

@@ -59,6 +59,7 @@ function SubmitTest({ postData }: PostDataProps) {
       repo: `/${repo}`,
       query: "",
       newIssue: JSON.stringify(postData),
+      token: userInfo.currentSession.provider_token,
     });
 
     window.location.assign(`/App`);

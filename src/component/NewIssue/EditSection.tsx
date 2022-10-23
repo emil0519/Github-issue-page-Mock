@@ -95,20 +95,6 @@ function EditSection({
     [clickOnACount]
   );
 
-  const toCreate = async () => {
-    // if (postData.title.length === 0) {
-    //   return;
-    // }
-    // await createIssue({
-    //   baseType: "repos",
-    //   type: "/issues",
-    //   name: "/emil0519",
-    //   repo: "/testing-issues",
-    //   query: "",
-    //   newIssue: JSON.stringify(postData),
-    // });
-  };
-
   const inputIconsArray = [
     //[0]=JSX component,[1]=Pop-up message, [2]=item name , [3]=Showing condition (Non-applicable),
     //[4]=onClick event parameter

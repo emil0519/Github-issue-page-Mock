@@ -226,6 +226,7 @@ function Refer(props: any) {
         name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
         repo: `/${repo}`,
         query: `/${props.name}`,
+        token: userInfo.currentSession.provider_token,
       });
     }
   }
