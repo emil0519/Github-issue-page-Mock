@@ -93,7 +93,23 @@ function OpenClosedInHeader() {
     <section className="m-0 hidden big:flex">
       <div className="mr-[4px] flex cursor-pointer big:h-[21px] big:w-[71px]">
         <img src={open} alt="" className="mr-[4px] h-[16px] w-[16px]"></img>
-        <span className="text-xs font-semibold">{data.length} Open</span>
+        <span
+          onClick={() =>
+            setValue({
+              ...value,
+              closed: `state=open`,
+            })
+          }
+          className="text-xs font-semibold"
+        >
+          {value.closed === "state=open" || value.closed.length === 0 ? (
+            <>
+              <p className="font-semibold">{data.length} Open</p>
+            </>
+          ) : (
+            <p className="font-normal">{data.length} Open</p>
+          )}
+        </span>
       </div>
       <ClosedBig />
     </section>

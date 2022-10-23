@@ -5,10 +5,9 @@ import { UserContext } from "../../utils/useContext";
 import Closed from "./ClosedSmall";
 
 function OpenClosed() {
-  const { value, setValue } = useContext<any>(UserContext);
-  const [baseType, setBaseType] = useState("/repos");
-  const [type, setType] = useState("/issues");
-  const [name, setName] = useState("/emil0519");
+  const { value, setValue } = useContext(UserContext);
+  const [baseType] = useState("/repos");
+  const [type] = useState("/issues");
   const [queryString, setQueryString] = useState("");
 
   useEffect(() => {
@@ -86,8 +85,22 @@ function OpenClosed() {
     <section className="mt-[20px] mb-[15px] flex big:hidden">
       <div className="mr-[4px] flex cursor-pointer">
         <img src={open} alt="" className="mr-[4px] h-[16px] w-[16px]"></img>
-        <span className="text-xs  font-semibold big:h-[21px] big:w-[72.45px]">
-          {data.length} Open
+        <span
+          onClick={() =>
+            setValue({
+              ...value,
+              closed: `state=open`,
+            })
+          }
+          className="text-xs  font-semibold big:h-[21px] big:w-[72.45px]"
+        >
+          {value.closed === "state=open" || value.closed.length === 0 ? (
+            <>
+              <p className="font-semibold">{data.length} Open</p>
+            </>
+          ) : (
+            <p className="font-normal">{data.length} Open</p>
+          )}
         </span>
         <Closed />
       </div>

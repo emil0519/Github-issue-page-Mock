@@ -3,7 +3,7 @@ import {
   ChevronRightIcon,
   CircleSlashIcon,
   IssueClosedIcon,
-  IssueOpenedIcon
+  IssueOpenedIcon,
 } from "@primer/octicons-react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -238,7 +238,10 @@ function IssueColumn() {
             <section className="flex h-[fit-content] w-[100%] cursor-pointer items-center justify-start border-t-[0.5px] border-b-[0.5px] border-solid border-[#cad1d9] bg-[white] pl-[16px] pr-[16px] hover:bg-[#f5f7f9] small:justify-evenly  small:border-[0.5px] big:justify-between">
               <section className="flex h-[fit-content] w-[100%] cursor-pointer items-center justify-start">
                 {(() => {
-                  if (value.closed.length === 0) {
+                  if (
+                    value.closed === "state=open" ||
+                    value.closed.length === 0
+                  ) {
                     return (
                       <IssueOpenedIcon
                         fill="#1a7335"

@@ -58,7 +58,13 @@ function Closed() {
           })
         }
       >
-        {data.length} Closed
+        {value.closed === "state=closed" ? (
+          <>
+            <b>{data.length}</b> <b>Closed</b>
+          </>
+        ) : (
+          <>{data.length} Closed</>
+        )}
       </span>
     </div>
   );
