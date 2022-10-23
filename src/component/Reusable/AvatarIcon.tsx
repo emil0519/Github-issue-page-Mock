@@ -11,6 +11,7 @@ function AvatarIcon({ data, render }: AvatarProps) {
   //data - to compare owner of this repo and issue
   //render- for actual render in this component
   const [hover, setHover] = useState<string>("");
+
   if (render === undefined) {
     return <></>;
   }
@@ -59,7 +60,6 @@ function AvatarIcon({ data, render }: AvatarProps) {
                   ></img>
                   <span className="text-xs text-[#525960] ">
                     Owns this repository
-                    {/* 之後能夠選repo的時候再修正 */}
                   </span>
                 </div>
               </>

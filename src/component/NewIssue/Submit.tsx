@@ -61,9 +61,8 @@ function Submit({ postData }: PostDataProps) {
       newIssue: JSON.stringify(postData),
       token: userInfo.currentSession.provider_token,
     });
-    console.log(message);
 
-    // window.location.assign(`/App`);
+    window.location.assign(`/App`);
   };
 
   return (
