@@ -15,7 +15,7 @@ function OpenClosedInHeader() {
   // const [data, setData] = useState<any>(undefined);
   // useEffect(() => {
   //   setData(value.dataLength);
-  //   console.log(value.dataLength);
+
   // }, [value]);
 
   useEffect(() => {

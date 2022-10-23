@@ -360,7 +360,6 @@ function EditSection({
                   ></TextareaMarkdown>
                   <div
                     onClick={onImageUpload}
-                    onError={() => console.log("error")}
                     className={`${
                       page === "new" ? "hidden" : "flex"
                     } h-[30px] w-[95%] cursor-pointer items-center justify-between border-t-[1px] border-dashed border-[#cad1d9] bg-[#f6f8fa] med:flex med:h-[44px] med:w-[98%] med:cursor-pointer med:items-center med:justify-between`}

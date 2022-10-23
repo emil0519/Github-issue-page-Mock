@@ -29,7 +29,6 @@ function SubmitTest({ postData }: PostDataProps) {
 
   useEffect(() => {
     if (userInfo !== undefined && repo !== undefined) {
-      console.log(userInfo.currentSession.provider_token);
       setSkip(false);
     }
   }, [userInfo, repo]);

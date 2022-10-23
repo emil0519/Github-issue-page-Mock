@@ -39,6 +39,7 @@ type controllerProps = {
   reRender?: number;
   isError?: boolean;
   type: string;
+  user: string;
 };
 
 function NewAssignee({
@@ -59,8 +60,8 @@ function NewAssignee({
   reRender,
   isError,
   type,
+  user,
 }: controllerProps) {
-  useEffect(() => console.log(data), [data]);
   useEffect(() => {
     //若issue page已經有assingee或者label， onload的時候會自動勾
 
@@ -76,14 +77,12 @@ function NewAssignee({
               data.assignees.map((item: any) => {
                 newController[0].selected!.push(item.login);
               });
-              console.log(newController, "new controller");
               setController(newController);
             }
             if (data.labels.length !== 0) {
               data.labels.map((item: any) => {
                 newController[1].selected!.push(item.name);
               });
-              console.log("controller reset 5");
 
               setController(newController);
             }
@@ -96,12 +95,9 @@ function NewAssignee({
     }
   }, [showDropDown, data]);
 
-  useEffect(() => console.log(controller, "controller"), [controller]);
-
   const [mouseOver, setMouseOver] = useState("");
 
   const [mainHeader, setMainHeader] = useState<string[]>([]);
-  // useEffect(() => console.log(controller), [controller]);
   if (
     controller[0].data === undefined ||
     controller[0].default.descriptionWithoutLink === undefined ||
@@ -123,7 +119,6 @@ function NewAssignee({
               onClick={() => {
                 setShowDropDown(item.title);
                 setClickIndex!(index);
-                // console.log(index);
                 setMainHeader([
                   item.default.mainHeader,
                   item.default.inputPlaceholder,
@@ -187,9 +182,7 @@ function NewAssignee({
                 for (let x = 0; x < showSelected.length; x++) {
                   renderData.push(showSelected[x][0]);
                 }
-                // console.log(controller, "controller");
-                // console.log(showSelected, "showSelected");
-                // console.log(renderData, "renderData");
+            
 
                 return renderData.map((item: any) => {
                   return (
@@ -283,7 +276,7 @@ function NewAssignee({
                         <span
                           onClick={() => {
                             setClickIndex(0);
-                            setSelectedValue("emil0519");
+                            setSelectedValue(user);
                           }}
                           className="hover:text-[#3e7bd7]"
                         >

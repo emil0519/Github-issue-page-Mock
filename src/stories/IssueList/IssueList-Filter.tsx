@@ -1,9 +1,9 @@
-import x from "../../img/x.svg";
-import solidDown from "../../img/solid-down.svg";
-import external from "../../img/external.svg";
-import search from "../../img/search.svg";
 import { useState } from "react";
 import check from "../../img/check.svg";
+import external from "../../img/external.svg";
+import search from "../../img/search.svg";
+import solidDown from "../../img/solid-down.svg";
+import x from "../../img/x.svg";
 
 function IssueListFilter() {
   const [showFilter, setShowFilter] = useState(false);
@@ -18,39 +18,6 @@ function IssueListFilter() {
     { name: "Everything assigned to you", query: "assignee=emil0519" },
     { name: "Everything mentioning you", query: "mentioned=emil0519" },
   ];
-
-  //   setValue({
-  //     filter: "",
-  // label: [],
-  // assignees: "",
-  // sort: "",
-  // closed: "",
-  // paging: "",
-  // search: "",
-  //   })
-  // console.log("enter now");
-  // switch (inputValue) {
-  //   case "is:issue is:open":
-  //   case "is:issue is:open ":
-  //   case " is:issue is:open": {
-  //     navigate("/");
-  //     break;
-  //   }
-  //   case "is:open assignee:@me":
-  //   case "is:open assignee:@me ":
-  //   case " is:open assignee:@me": {
-  //     navigate("?query=?assignee=emil0519");
-  //     break;
-  //   }
-  //   case "is:open mentions:@me":
-  //   case "is:open mentions:@me ":
-  //   case " is:open mentions:@me": {
-  //     navigate("?query=?assignee=emil0519");
-  //     break;
-  //   }
-  //   default:
-  //     return;
-  // }
 
   return (
     <section className="mt-[23px] ml-[0] flex w-[95%] med:m-[0]  med:w-[60%]">

@@ -50,7 +50,6 @@ function Assignee() {
     },
     { skip: skip }
   );
-  // useEffect(() => console.log(data), [data]);
 
   const [localData, setLocalData] = useState<any>();
 

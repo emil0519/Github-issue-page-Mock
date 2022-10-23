@@ -1,15 +1,14 @@
-import { useEffect } from "react";
-import tag from "../img/tag.svg";
-import pencil from "../img/pencil.svg";
-import person from "../img/person.svg";
 import {
   CircleSlashIcon,
   IssueClosedIcon,
   SyncIcon,
 } from "@primer/octicons-react";
 import AvatarIcon from "../component/Reusable/AvatarIcon";
-import UserName from "../component/Reusable/UserName";
 import PreviewLabel from "../component/Reusable/PreviewLabel";
+import UserName from "../component/Reusable/UserName";
+import pencil from "../img/pencil.svg";
+import person from "../img/person.svg";
+import tag from "../img/tag.svg";
 import { hourAdder, timeAgo } from "../utils/horus";
 
 type DataProps = {
@@ -19,7 +18,6 @@ type DataProps = {
 };
 
 function AssigneeLabelTimeline({ data, origin, avatarData }: DataProps) {
-  // useEffect(() => console.log(avatarData), [avatarData]);
   if (data === undefined) {
     return <></>;
   }
@@ -119,8 +117,6 @@ function AssigneeLabelTimeline({ data, origin, avatarData }: DataProps) {
           </span>
           <span className="mt-[2px] ml-[3px] cursor-pointer text-[14px] text-[#4d555e] hover:text-[#4982da] hover:underline">
             {(() => {
-              // console.log(data[0].date);
-              // return "hi";
               let hours = data[0].date.slice(0, -1);
               let obj = hourAdder(8, new Date(hours));
               let timeStamp = obj.toString().substring(4, 24);

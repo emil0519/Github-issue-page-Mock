@@ -47,8 +47,6 @@ function Submit({ postData }: PostDataProps) {
     { skip: skip }
   );
 
-  useEffect(() => console.log(data), [data]);
-
   const handleSubmit = async () => {
     if (postData.title.length === 0) {
       return;

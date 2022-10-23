@@ -1,27 +1,25 @@
-import { useEffect, useState } from "react";
-import InputOptions from "../../component/Reusable/InputOptions";
 import {
-  ChevronUpIcon,
-  ChevronDownIcon,
-  TypographyIcon,
-  QuoteIcon,
-  CodeIcon,
-  LinkIcon,
-  MentionIcon,
-  ImageIcon,
-  ReplyIcon,
-  HeadingIcon,
   BoldIcon,
-  ItalicIcon,
-  ListUnorderedIcon,
-  ListOrderedIcon,
-  TasklistIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CodeIcon,
   CrossReferenceIcon,
+  HeadingIcon,
+  ImageIcon,
+  ItalicIcon,
+  LinkIcon,
+  ListOrderedIcon,
+  ListUnorderedIcon,
   MarkdownIcon,
+  MentionIcon,
+  QuoteIcon,
+  ReplyIcon,
+  TasklistIcon,
+  TypographyIcon,
 } from "@primer/octicons-react";
+import { useEffect, useState } from "react";
 
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import Preview from "../../component/NewIssue/Preview";
 
 export type EditSectionProps = {
   postData: {
@@ -342,7 +340,6 @@ function EditSection({
                   ></textarea>
                   <div
                     onClick={onImageUpload}
-                    onError={() => console.log("error")}
                     className={`${
                       page === "new" ? "hidden" : "flex"
                     } h-[30px] w-[95%] cursor-pointer items-center justify-between border-t-[1px] border-dashed border-[#cad1d9] bg-[#f6f8fa] med:flex med:h-[44px] med:w-[98%] med:cursor-pointer med:items-center med:justify-between`}

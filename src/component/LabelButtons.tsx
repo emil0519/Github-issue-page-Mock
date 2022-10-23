@@ -1,7 +1,7 @@
 import {
   IssueReopenedIcon,
   MilestoneIcon,
-  SearchIcon
+  SearchIcon,
 } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -82,8 +82,8 @@ function LabelButtons() {
       repo: `/${repo}`,
       query: ``,
       content: JSON.stringify(body),
+      token: userInfo.currentSession.provider_token,
     });
-    console.log(message);
 
     if (message.error === undefined) {
       setNewLabelInfo({

@@ -1,10 +1,8 @@
 import { IssueOpenedIcon } from "@primer/octicons-react";
-import doggy from "../../img/doggy.png";
+import { useEffect, useState } from "react";
 import avatar from "../../img/avatar.png";
 import comment from "../../img/comment.svg";
-import { useState, useEffect } from "react";
 import api from "../../utils/api";
-import { iteratorSymbol } from "immer/dist/internal";
 
 function IssueColumn() {
   // const [hoverUser, setHoverUser] = useState(false);
@@ -19,9 +17,7 @@ function IssueColumn() {
     api.getIssues("emil0519", "testing-issues").then((data) => setIssues(data));
   }, []);
 
-  useEffect(() => {
-    console.log(issues);
-  }, [issues]);
+  useEffect(() => {}, [issues]);
 
   function getIssueList() {
     let margin: string = "margin-[5px 0]";
@@ -123,10 +119,8 @@ function IssueColumn() {
                   <>
                     {(() => {
                       if (item.assignees.length === 0) {
-                        console.log("=0");
                         return;
                       } else {
-                        console.log("=1");
                         item.assignees.map(() => {
                           return (
                             <>

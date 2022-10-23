@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { hourAdder, timeAgo } from "../../utils/horus";
 
 import { RepoProps } from "./RepoLayout";
 
 function EachRepo({ data }: RepoProps) {
-  useEffect(() => console.log(data), [data]);
   const [items, setItems] = useState();
   const navigate = useNavigate();
 

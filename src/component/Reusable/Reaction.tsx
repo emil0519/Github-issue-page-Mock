@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // const _ = require("lodash");
 
 type EmojiProps = {
@@ -7,7 +7,7 @@ type EmojiProps = {
 
 function Reaction({ data }: EmojiProps) {
   const [hover, setHover] = useState<string>("");
-  // useEffect(() => console.log(data), [data]);
+
   if (data === undefined) {
     return <></>;
   }

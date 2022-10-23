@@ -58,12 +58,9 @@ function IssueColumn() {
 
   useEffect(() => {
     if (userInfo !== undefined && repo !== undefined) {
-      console.log(userInfo.currentSession.provider_token);
       setSkip(false);
     }
   }, [userInfo, repo]);
-
-  // useEffect(() => console.log(data), [data]);
 
   useEffect(() => {
     if (value.search.length !== 0) {
@@ -208,7 +205,11 @@ function IssueColumn() {
     }
   }, [category]);
 
-  if (data === undefined || closedData === undefined) {
+  if (
+    data === undefined ||
+    closedData === undefined ||
+    userInfo === undefined
+  ) {
     return <></>;
   }
   if (data !== undefined && data.length === 0) {
@@ -307,7 +308,7 @@ function IssueColumn() {
                       let differences = Date.now() - Date.parse(timeStamp);
                       return timeAgo(new Date(Date.now() - differences));
                     })()}{" "}
-                    by {item.user.login}
+                    by {userInfo.currentSession.user.user_metadata.user_name}
                   </span>
                 </div>
               </section>

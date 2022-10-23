@@ -49,7 +49,6 @@ function PopUpDataProcessor({
 
   useEffect(() => {
     if (userInfo !== undefined && repo !== undefined) {
-      console.log(userInfo.currentSession.provider_token);
       setSkip(false);
     }
   }, [userInfo, repo]);
@@ -73,7 +72,6 @@ function PopUpDataProcessor({
     }
   });
 
-  // useEffect(() => console.log(isError), [isError]);
   // 改進: call in condition or else it will return 404 in new issue page
   const [localData, setLocalData] = useState<any>();
   // useEffect(() => {
@@ -83,7 +81,7 @@ function PopUpDataProcessor({
   //     setLocalData(data);
   //   }
   // }, [query]);
-  // useEffect(() => console.log(clickIndex), [clickIndex]);
+
   useEffect(() => {
     //處理每張選單勾選的element
     if (controller !== undefined && controller[clickIndex].data !== undefined) {
@@ -109,18 +107,6 @@ function PopUpDataProcessor({
         let copyController = JSON.parse(JSON.stringify(controller));
         const num = controller[clickIndex].selected.indexOf(selectedValue);
         copyController[clickIndex].selected.splice(num, 1);
-
-        // console.log(controller[clickIndex].selected.splice(num, 1));
-        // const newController = controller;
-        // newController[0].selected = controller[clickIndex].selected.splice(
-        //   num,
-        //   1
-        // );
-
-        // console.log(newController);
-        // 改進：這邊console.log的話會看到controller改變了，但不會重新render
-        //可能因為改變了object react會沒有反應，目前先讓NewAssignee吃一個number，強制讓它rerender
-        //參見 https://stackoverflow.com/questions/71185474/component-not-re-rendering-after-change-in-an-array-state-in-react
         setController(copyController);
         setreRender(reRender + 1);
       }
@@ -129,7 +115,6 @@ function PopUpDataProcessor({
 
   useEffect(() => {
     // Search function within dropdown menu
-    console.log("controller reset 1");
 
     if (controller === undefined) {
       return;
@@ -154,7 +139,6 @@ function PopUpDataProcessor({
         }
         return { ...item };
       });
-      console.log(newController);
 
       setController(newController);
     } else if (inputValue.length === 0) {
@@ -165,8 +149,6 @@ function PopUpDataProcessor({
         }
         return { ...item };
       });
-      console.log(newController);
-      console.log("controller reset 2");
 
       setController(newController);
     }
@@ -184,13 +166,12 @@ function PopUpDataProcessor({
         //清空
         return { ...item };
       });
-      console.log("controller reset 3");
 
       setController(newController);
     }
   }, [clearAssigneeRate]);
 
-  if (controller === undefined) {
+  if (controller === undefined || userInfo === undefined) {
     return <></>;
   }
   return (
@@ -212,7 +193,7 @@ function PopUpDataProcessor({
         data={data}
         reRender={reRender}
         type={type}
-        // isError={isError}
+        user={userInfo.currentSession.user.user_metadata.user_name}
       />
     </section>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { useComponentVisible } from "../utils/useComponentVisible";
 
@@ -7,7 +7,7 @@ function ColorBricksNoProps(props: any) {
     useComponentVisible(false);
   const [, setEditOpen] = useState(false);
   const [changeColor, setChangeColor] = useState<string>();
-  useEffect(() => console.log(changeColor), [changeColor]);
+
   const handleClickOutside = () => {
     setEditOpen(false);
     setIsComponentVisible(false);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import issueOpen from "../../img/issue-opened.svg";
 import repo from "../../img/repo.png";
 
@@ -10,7 +10,6 @@ type AvatarProps = {
 function AvatarIcon({ data, render }: AvatarProps) {
   //data - to compare owner of this repo and issue
   //render- for actual render in this component
-
   const [hover, setHover] = useState<string>("");
   if (render === undefined) {
     return <></>;

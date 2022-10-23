@@ -5,7 +5,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import {
   useDeleteMutation,
   useGetAllIssuesQuery,
-  useUpdateMutation
+  useUpdateMutation,
 } from "../state/issueRTK";
 import ColorBricksNoProps from "./ColorBricksNoProps";
 
@@ -68,7 +68,6 @@ function LabelList() {
 
   useEffect(() => {
     if (userInfo !== undefined && repo !== undefined) {
-      console.log(userInfo.currentSession.provider_token);
       setSkip(false);
     }
   }, [userInfo, repo]);
@@ -191,6 +190,7 @@ function Refer(props: any) {
       repo: `/${repo}`,
       query: `/${item.itemName}`,
       content: JSON.stringify(body),
+      token: userInfo.currentSession.provider_token,
     });
 
     if (message.error === undefined) {
@@ -353,7 +353,7 @@ function Refer(props: any) {
                   props.setUpdateLabelInfo({
                     ...props.updateLabelInfo,
                     newCol: randomColor(),
-                  }); 
+                  });
                 }}
                 colors={localColor}
               >

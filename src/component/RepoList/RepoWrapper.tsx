@@ -22,7 +22,6 @@ function RepoWrapper() {
 
   useEffect(() => {
     if (userInfo !== undefined) {
-      console.log(userInfo);
       setSkip(false);
     }
   }, [userInfo]);
@@ -43,7 +42,6 @@ function RepoWrapper() {
     if (error !== undefined && error.status === 401) {
       navigate("/");
     }
-    console.log(error);
   }, [error]);
   if (userInfo === undefined) {
     return <></>;

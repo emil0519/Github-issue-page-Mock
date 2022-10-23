@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import EditSection from "../../component/NewIssue/EditSection";
 import BigAvatar from "../../component/Reusable/BigAvatar";
-import DropDownMenu from "./DropDownStories";
 import PopUpSection from "../../component/Reusable/PopUpSection";
 import Reaction from "../../component/Reusable/Reaction";
 import smile from "../../img/smile.svg";
 import { hourAdder, timeAgo } from "../../utils/horus";
+import DropDownMenu from "./DropDownStories";
 
 const _ = require("lodash");
 
@@ -22,7 +21,6 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [hoverOnCancel, setHoverOnCancel] = useState<boolean>(false);
-  // useEffect(() => console.log(clickOnDots), [clickOnDots]);
 
   const initController = [
     { content: "Copy link" },
@@ -147,7 +145,6 @@ function InitialContent({ data, type, count }: InitalCommentProps) {
               </div>
               <div
                 onClick={() => {
-                  // console.log("false");
                   setClickOnDots(false);
                 }}
                 //給dropdown menu的透明外層

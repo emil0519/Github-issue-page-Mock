@@ -55,7 +55,6 @@ function EditNote({ postData, setInputValue, setPostData }: EditNoteProps) {
     },
   ];
   const [update] = useUpdateMutation();
-  useEffect(() => console.log(postData), [postData]);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
 
@@ -70,6 +69,7 @@ function EditNote({ postData, setInputValue, setPostData }: EditNoteProps) {
       repo: `/${repo}`,
       query: `/${query}/comments`,
       content: JSON.stringify(postData),
+      token: userInfo.currentSession.provider_token,
     });
     setInputValue!("");
   };

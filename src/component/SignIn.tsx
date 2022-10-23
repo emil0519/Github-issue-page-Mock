@@ -36,10 +36,8 @@ const App = () => {
   }
   useEffect(() => {
     if (session === undefined || session === null) {
-      console.log("return");
       return;
     } else if (session.provider_token !== undefined) {
-      console.log(session);
       navigate("/Repo");
     }
   }, [session]);

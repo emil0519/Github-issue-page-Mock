@@ -16,12 +16,6 @@ function Repo() {
     setRepo(JSON.parse(localRepo));
   }, []);
 
-  useEffect(() => {
-    if (user !== undefined && repo !== undefined) {
-      console.log(repo);
-      console.log(user.currentSession.user.user_metadata.user_name);
-    }
-  }, [repo, user]);
   if (user === undefined && repo === undefined) {
     return <></>;
   }

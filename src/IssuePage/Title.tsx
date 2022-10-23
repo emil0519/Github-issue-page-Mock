@@ -1,13 +1,12 @@
 import {
   CircleSlashIcon,
   IssueClosedIcon,
-  IssueOpenedIcon
+  IssueOpenedIcon,
 } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetAllIssuesQuery, useUpdateMutation } from "../state/issueRTK";
 import { hourAdder, timeAgo } from "../utils/horus";
-
 
 export type DataProps = {
   data: any;
@@ -54,6 +53,7 @@ function Title({ data, comments }: DataProps) {
         repo: `/${repo}`,
         query: `/${query}`,
         content: JSON.stringify(changedTitle),
+        token: userInfo.currentSession.provider_token,
       });
       setEdit(false);
     }
@@ -116,9 +116,10 @@ function Title({ data, comments }: DataProps) {
               >
                 <span className="mr-[3px] text-xs font-semibold">Edit</span>
               </div>
-              <div 
-              onClick={()=>navigate("/NewIssue")}
-              className="flex h-[28px] w-[fit-content] cursor-pointer items-center justify-center rounded-md border-[1px] border-solid border-[#278443] bg-[#29994a] hover:bg-[#288c46]">
+              <div
+                onClick={() => navigate("/NewIssue")}
+                className="flex h-[28px] w-[fit-content] cursor-pointer items-center justify-center rounded-md border-[1px] border-solid border-[#278443] bg-[#29994a] hover:bg-[#288c46]"
+              >
                 <span className="w-[max-content] p-[5px] text-xs font-semibold text-white">
                   New issue
                 </span>

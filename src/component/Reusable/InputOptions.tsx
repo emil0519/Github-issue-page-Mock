@@ -28,7 +28,6 @@ function InputOptions({ array, inputValue, setInputValue }: arrayProps) {
             } else if (item[2] === "italic") {
               ref.current?.trigger("italic");
             } else if (item[4] === "") {
-              console.log("return");
               return;
             } else {
               setInputValue(item[4] + inputValue + item[4]);

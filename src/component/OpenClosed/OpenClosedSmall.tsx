@@ -11,12 +11,6 @@ function OpenClosed() {
   const [name, setName] = useState("/emil0519");
   const [queryString, setQueryString] = useState("");
 
-  // const [data, setData] = useState<any>(undefined);
-  // useEffect(() => {
-  //   setData(value.dataLength);
-  //   console.log(value.dataLength);
-  // }, [value]);
-
   useEffect(() => {
     // 將useContext的資料轉為query string
     let preQuery = [];
@@ -90,12 +84,7 @@ function OpenClosed() {
   return (
     <section className="mt-[20px] mb-[15px] flex big:hidden">
       <div className="mr-[4px] flex cursor-pointer">
-        <img
-          onClick={() => console.log("clicked")}
-          src={open}
-          alt=""
-          className="mr-[4px] h-[16px] w-[16px]"
-        ></img>
+        <img src={open} alt="" className="mr-[4px] h-[16px] w-[16px]"></img>
         <span className="text-xs  font-semibold big:h-[21px] big:w-[72.45px]">
           {data.length} Open
         </span>

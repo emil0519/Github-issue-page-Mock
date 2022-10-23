@@ -4,7 +4,6 @@ type SmallPopUpProps = {
 };
 
 function SmallPopUp({ hover, message }: SmallPopUpProps) {
-  console.log(message[1]);
   return (
     <>
       {message.map((item, index) => (

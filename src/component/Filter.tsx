@@ -34,7 +34,6 @@ function Filter() {
   useEffect(() => {
     switch (query) {
       case "?creator=emil0519": {
-        console.log("set");
         setDefaultInput("is:open is:issue author:@me");
         break;
       }
@@ -87,7 +86,7 @@ function Filter() {
       // paging: "",
       // search: "",
       //   })
-      // console.log("enter now");
+
       // switch (inputValue) {
       //   case "is:issue is:open":
       //   case "is:issue is:open ":

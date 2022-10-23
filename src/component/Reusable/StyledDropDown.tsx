@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 import { superbase } from "../../utils/client";
 
@@ -17,7 +16,6 @@ function StyledDropDown({ controller, show, setShow }: ControllerProps) {
     window.location.assign(`/`);
   }
 
-  useEffect(() => console.log(show), [show]);
 
   if (controller === undefined) {
     return <></>;

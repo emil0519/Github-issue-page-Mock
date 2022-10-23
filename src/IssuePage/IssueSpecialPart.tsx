@@ -54,10 +54,6 @@ function IssueSpecialPart() {
     { skip: skip }
   );
 
-  // useEffect(() => {
-  //   console.log(avatarData);
-  // }, [avatarData]);
-
   useEffect(() => {
     if (data !== undefined) {
       setAvatarData(data.assignees);

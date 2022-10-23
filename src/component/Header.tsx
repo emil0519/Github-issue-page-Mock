@@ -39,19 +39,15 @@ function Header() {
   useEffect(() => {
     const items = localStorage.getItem("supabase.auth.token");
     if (items !== null && items !== undefined) {
-      console.log("null");
+
       return;
     } else {
-      console.log("nav");
+
       navigate("/");
     }
   }, []);
 
-  useEffect(() => {
-    if (user !== undefined) {
-      console.log(user.currentSession.user.user_metadata.user_name);
-    }
-  }, [user]);
+
 
   useEffect(() => {
     if (user !== undefined) {

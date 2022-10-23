@@ -28,11 +28,9 @@ function IssuePageWrap() {
       let body: any;
       switch (showDropDown) {
         case "Assignee post": {
-          console.log(controller, "in assignee");
           let selected = controller.filter(
             (item: any) => item.title === "Assignee"
           );
-          console.log(selected);
 
           let newSelected = selected[0].selected;
           body = { assignees: newSelected };
@@ -50,16 +48,20 @@ function IssuePageWrap() {
         default:
           return;
       }
-      console.log(body);
 
-      await update({
+      const response = await update({
         baseType: "repos",
         type: "/issues",
         name: `/${userInfo.currentSession.user.user_metadata.user_name}`,
         repo: `/${repo}`,
         query: `/${query}`,
         content: JSON.stringify(body),
+        token: userInfo.currentSession.provider_token,
       });
+      console.log(userInfo.currentSession.user.user_metadata.user_name, "user");
+      console.log(repo, "repo");
+      console.log(body, "body");
+      console.log(response, "response");
     };
     updateSideBar();
   }, [showDropDown]);
@@ -123,18 +125,6 @@ function IssuePageWrap() {
   });
 
   useEffect(() => {
-    //Options for reusable component
-
-    //之後再回來：這邊想要在onload的時候即將assignee 及label放進selected但不成功
-    // let assigneeSelected: string[] = [];
-    // if (data === undefined && controller === undefined) {
-    //   return;
-    // } else if (data.assignees.length !== 0) {
-    //   data.assignees.map((item: any) => {
-    //     assigneeSelected.push(item.login);
-    //   });
-    //   console.log(assigneeSelected, "assigneeSelected");
-    // }
     setController([
       {
         title: "Assignee",
@@ -271,7 +261,11 @@ function IssuePageWrap() {
                 setPostData={setPostData}
                 page={"issue"}
               />
-              <EditNote setInputValue={setInputValue} postData={postData} setPostData={setPostData}/>
+              <EditNote
+                setInputValue={setInputValue}
+                postData={postData}
+                setPostData={setPostData}
+              />
             </div>
           </section>
         </section>

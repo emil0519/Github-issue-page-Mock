@@ -1,6 +1,5 @@
 import { MarkdownIcon } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
-import avatar from "../../img/github-avatar.png";
 import { useGetAllIssuesQuery } from "../../state/issueRTK";
 import EditSection from "./EditSection";
 import PopUpDataProcessor from "./PopUpDataProcessor";
@@ -153,7 +152,6 @@ function NewIssueWrapper() {
 
   useEffect(() => {
     if (userInfo !== undefined && repo !== undefined) {
-      console.log(userInfo.currentSession.provider_token);
       setSkip(false);
     }
   }, [userInfo, repo]);
@@ -210,10 +208,14 @@ function NewIssueWrapper() {
     }
   }, [fetchedAssigneeData]);
 
+  if (userInfo === undefined) {
+    return <></>;
+  }
+
   return (
     <section className="flex flex-col med:relative med:m-[0_auto] med:w-[95%] med:flex-row med:justify-center">
       <img
-        src={avatar}
+        src={userInfo.currentSession.user.user_metadata.avatar_url}
         alt=""
         className="mt-[36px] hidden med:mr-[19px] med:block med:h-[40px] med:w-[40px] med:rounded-full"
       ></img>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Helmet } from "react-helmet";
 import BoxHeader from "./BoxHeader";
 import Footer from "./Footer";
@@ -10,7 +10,6 @@ import Repo from "./Repo";
 
 function Label() {
   const inputRef = useRef(null);
-  useEffect(() => console.log(inputRef.current), [inputRef]);
 
   return (
     <>

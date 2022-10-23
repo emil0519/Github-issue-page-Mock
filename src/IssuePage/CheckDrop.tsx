@@ -91,11 +91,6 @@ function CheckDrop({
     { skip: skip }
   );
 
-  useEffect(() => {
-    if (postData !== undefined && postData.body !== undefined)
-      console.log(postData.body.length);
-  }, [postData]);
-
   const handleState = async (param: string) => {
     let body: any;
     switch (param) {
