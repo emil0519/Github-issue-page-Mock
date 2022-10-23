@@ -18,7 +18,9 @@ function RepoLayout({ data, user }: RepoProps) {
           alt=""
           className="mr-[24px] h-[65px] w-[65px] rounded-full med:h-[296px] med:w-[296px]"
         ></img>
-        <span className="mt-[12px] text-[20px]">{user.user_name}</span>
+        <span className="mt-[12px] mr-[22px] text-[20px]">
+          {user.user_name}
+        </span>
       </div>
       <div className="mt-[20px] flex h-[max-content] items-center rounded-md border-[1px] border-solid border-[#cad1d9] p-[5px] med:hidden">
         <span className="text-[14px]">Please choose a repository below</span>

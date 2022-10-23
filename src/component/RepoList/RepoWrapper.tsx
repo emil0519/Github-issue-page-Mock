@@ -56,9 +56,9 @@ function RepoWrapper() {
       />
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Sign in</title>
+        <title>Your repositories</title>
         <link rel="canonical" href="/App" />
-        <meta name="keywords" content="github" />
+        <meta name="keywords" content="github, github repositories" />
         <meta name="author" content="Emil Lau" />
       </Helmet>
       <Footer />
