@@ -2,7 +2,7 @@
 
 這個專案以React & Typesccript復刻了Github Issue Page大部分的功能，包括串Github 的Oauth 會員登入系統、串接Github Issue Page的CRUD api及HTML Editor。
 
-Demo: [https://emil-w0p3.web.app/](https://emil-w0p3.web.app/)
+Demo: [https://emil-w0p3.web.app/](https://emil-w0p3.web.app/)<br />
 現在自訂登入系統尚未完成，請以您的Github帳號登入
 For now, the customized login is still in progress, please login with your github account.
 
