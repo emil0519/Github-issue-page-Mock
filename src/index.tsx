@@ -6,7 +6,7 @@ import App from "./component/IssueList/App";
 import Label from "./component/LabelList/Label";
 import NewIssue from "./component/NewIssue";
 import RepoWrapper from "./component/RepoList/RepoWrapper";
-import SignIn from "./component/SignIn";
+import SignIn from "./pages/SignIn";
 import "./index.css";
 import IssuePage from "./IssuePage/IssuePage";
 import reportWebVitals from "./reportWebVitals";
