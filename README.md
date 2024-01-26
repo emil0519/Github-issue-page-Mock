@@ -2,6 +2,10 @@
 
 這個專案以React & Typesccript復刻了Github Issue Page大部分的功能，包括串Github 的Oauth 會員登入系統、串接Github Issue Page的CRUD api及HTML Editor。
 
+Demo: [https://emil-w0p3.web.app/](https://emil-w0p3.web.app/)
+現在自訂登入系統尚未完成，請以您的Github帳號登入
+For now, the customized login is still in progress, please login with your github account.
+
 In this React/Typescript web app, I mocked Github Issue Page, perserving most of it's features.  Highlighting the Github Oauth signin mechanism supported by superbase. A issue list that connect to Github API for CRUD features, and HTML Editor.
 
 # 聯繫方式 / Contacts
@@ -9,6 +13,12 @@ In this React/Typescript web app, I mocked Github Issue Page, perserving most of
 我正在各地尋找新的工作，如有任何指教，請不吝致電或Whatsapp(886)0901-055-121，[或來函至 r09343018@ntu.edu.tw 賜教](mailto:r09343018@ntu.edu.tw)。
 
 I am actively looking for job opportunities around the world, please don't heistate to contact me through Whatsapp or directly dial (886)0901-055-121, or [send me an email](mailto:r09343018@ntu.edu.tw)
+
+## 使用技術 / Tech Stack
+Core: React, Typescript, Styled-component, TailwindCSS
+APIs & State management: RTK query & Redux
+Deploy: Firebase
+SEO: React Helmet
 
 ## 目前功能 / Current Features
 

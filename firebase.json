@@ -10,17 +10,6 @@
               }
           ],
           "ignore": ["firebase.json", "/.", "/node_modules/"]
-      },
-      {
-          "target": "emil0519storybooks",
-          "public": "storybook-static",
-          "rewrites": [
-              {
-                  "source": "**",
-                  "destination": "/index.html"
-              }
-          ],
-          "ignore": ["firebase.json", "/.", "/node_modules/"]
       }
   ]
 }
