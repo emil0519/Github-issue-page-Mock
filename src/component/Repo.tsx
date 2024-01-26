@@ -1,24 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import repoLogo from "../img/repo.svg";
 import Watch from "./Watch";
+import checkAuth from "../HOC/checkAuth";
 
 function Repo() {
   const [repo, setRepo] = useState();
   const [user, setUser] = useState<any>();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const localUser: any = localStorage.getItem("supabase.auth.token");
-    const localRepo: any = localStorage.getItem("repo");
-    setUser(JSON.parse(localUser));
-    setRepo(JSON.parse(localRepo));
-  }, []);
-
-  if (user === undefined && repo === undefined) {
-    return <></>;
-  }
   return (
     <TitleWrapper>
       <RepoWrapper>
@@ -108,4 +99,4 @@ const TitleWrapper = styled.section`
   }
 `;
 
-export default Repo;
+export default checkAuth(Repo);
