@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+}
+
+@layer utilities {
+  .upward-triangle {
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+  .leftward-triangle {
+    clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  }
+  .downward-triangle {
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+  }
+}

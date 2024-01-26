@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "emil-w0p3"
+  },
+  "targets": {
+    "emil-w0p3": {
+      "hosting": {
+        "emil-w0p3": [
+          "emil-w0p3"
+        ],
+        "emil0519storybooks": [
+          "emil0519storybooks"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
