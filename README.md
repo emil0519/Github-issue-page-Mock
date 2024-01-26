@@ -14,6 +14,12 @@ In this React/Typescript web app, I mocked Github Issue Page, perserving most of
 
 I am actively looking for job opportunities around the world, please don't heistate to contact me through Whatsapp or directly dial (886)0901-055-121, or [send me an email](mailto:r09343018@ntu.edu.tw)
 
+## 使用技術 / Tech Stack
+Core: React, Typescript, Styled-component, TailwindCSS
+APIs & State management: RTK query & Redux
+Deploy: Firebase
+SEO: React Helmet
+
 ## 目前功能 / Current Features
 
 - 串接Github Oauth會員登入系統，選用superbase作為後端會員系統替代品，來串接特定用戶的issue列表
