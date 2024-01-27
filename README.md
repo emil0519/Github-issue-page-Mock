@@ -2,8 +2,11 @@
 這個專案以React & Typesccript復刻了Github Issue Page大部分的功能，包括串Github 的Oauth 會員登入系統、串接Github Issue Page的CRUD api及HTML Editor。
 
 Demo: [https://emil-w0p3.web.app/](https://emil-w0p3.web.app/)
+
 現在自訂登入系統尚未完成，請以您的Github帳號登入
+
 For now, the customized login is still in progress, please login with your github account.
+
 
 In this React/Typescript web app, I mocked Github Issue Page, perserving most of it's features.  Highlighting the Github Oauth signin mechanism supported by superbase. A issue list that connect to Github API for CRUD features, and HTML Editor.
 
@@ -27,6 +30,7 @@ SEO: React Helmet
 - 新增Issue Page，以HTML Editor新增Issue Page並與Assignee、Labels等功能連動，支援多選選單功能
 - 編輯時，利用Reusable component帶入API資訊
 
+
 - Implement member system through superbase and connect to your personal Github account, with official access token, this web app links to your own issue page and perform CRUD features.
 - Perform website slicing with accuracy to pixel and implement logics in Issue Page. User can search, categorize the issues through its status (open/closed) or categorize according to author, label and assignees.
 - Through reusabale component, allows user to create and edit their own issues, with dropdown menu featuring multiple selections.
@@ -38,6 +42,7 @@ SEO: React Helmet
 - 以Node.js 實作後端CRUD功能及在後端檢核資料
 - 以React hook form 實作前端檢核
 - 以GCP部署網站，了解cicd及deploy流程
+
 
 - Refactor: Progress- `pages/SignIn` & `pages/RepoList`
 - Implement database and membership system through Node.js & SQL, explore methods of password encryption
