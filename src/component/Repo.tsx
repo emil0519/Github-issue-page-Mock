@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import repoLogo from "../img/repo.svg";
@@ -10,12 +10,19 @@ function Repo() {
   const [user, setUser] = useState<any>();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const localUser: any = localStorage.getItem("supabase.auth.token");
+    const localRepo: any = localStorage.getItem("repo");
+    setUser(JSON.parse(localUser));
+    setRepo(JSON.parse(localRepo));
+  }, []);
+
   return (
     <TitleWrapper>
       <RepoWrapper>
         <RepoLogo alt="" src={repoLogo} />
         <UserName onClick={() => navigate("/Repo")}>
-          {user.currentSession.user.user_metadata.user_name}{" "}
+          {user?.currentSession.user.user_metadata.user_name || ""}
         </UserName>
         <Slash>/</Slash>
         <RepoName onClick={() => navigate("/App")}>{repo}</RepoName>
@@ -99,4 +106,4 @@ const TitleWrapper = styled.section`
   }
 `;
 
-export default checkAuth(Repo);
+export default Repo;
