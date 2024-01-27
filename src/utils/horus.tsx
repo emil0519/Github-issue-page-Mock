@@ -1,4 +1,4 @@
-export function hourAdder(numOfHours: number, date = new Date()) {
+export const hourAdder = (numOfHours: number, date = new Date()) => {
   date.setHours(date.getHours() + numOfHours);
   return date;
 }

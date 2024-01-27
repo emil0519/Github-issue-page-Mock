@@ -13,6 +13,8 @@ import SignIn from './pages/SignIn'
 import IssuePage from './IssuePage/IssuePage'
 import reportWebVitals from './reportWebVitals'
 import ErrorBoundary from './ErrorBoundary'
+import LayoutWrapper from './component/LayoutWrapper'
+
 import { store } from './state/store'
 
 const App: FC = () => {
@@ -22,14 +24,19 @@ const App: FC = () => {
                 <Provider store={store}>
                     <Routes>
                         <Route path="/" element={<SignIn />}></Route>
-                        <Route path="/Repo" element={<RepoList />}></Route>
-                        <Route path="/App" element={<IssueList />}></Route>
-                        <Route path="/Label" element={<Label />}></Route>
-                        <Route path="/NewIssue" element={<NewIssue />}></Route>
-                        <Route
-                            path="/IssuePage"
-                            element={<IssuePage />}
-                        ></Route>
+                        <Route element={<LayoutWrapper />}>
+                            <Route path="/Repo" element={<RepoList />}></Route>
+                            <Route path="/App" element={<IssueList />}></Route>
+                            <Route path="/Label" element={<Label />}></Route>
+                            <Route
+                                path="/NewIssue"
+                                element={<NewIssue />}
+                            ></Route>
+                            <Route
+                                path="/IssuePage"
+                                element={<IssuePage />}
+                            ></Route>
+                        </Route>
                         <Route path="*" element={<Error />}></Route>
                     </Routes>
                 </Provider>

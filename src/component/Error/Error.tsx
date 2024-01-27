@@ -1,15 +1,12 @@
-import errorIMG from "../../img/404.png";
-import Footer from "../Footer";
-import Header from "../Header";
+import errorIMG from '../../img/404.png'
 
-function Error() {
-  return (
-    <>
-      <Header />
-      <img src={errorIMG} alt="" className="h-[425px] w-[100%]"></img>
-      <Footer />
-    </>
-  );
+const Error = () => {
+    return (
+        <img
+            src={errorIMG}
+            alt="This is error page"
+        ></img>
+    )
 }
 
-export default Error;
+export default Error
