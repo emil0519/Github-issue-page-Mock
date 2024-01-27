@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import check from "../../img/check.svg";
 import external from "../../img/external.svg";
-import search from "../../img/search.svg";
+// import search from "../../img/search.svg";
 import solidDown from "../../img/solid-down.svg";
 import x from "../../img/x.svg";
 import { UserContext } from "../../utils/useContext";
@@ -15,9 +15,7 @@ function Filter() {
   const { value, setValue } = useContext(UserContext);
 
   const filterName = [
-    { name: "Open issues and pull request", query: "" },
     { name: "Your issues", query: `creator=emil0519` },
-    { name: "Your pull requests", query: "" },
     { name: "Everything assigned to you", query: "assignee=emil0519" },
     { name: "Everything mentioning you", query: "mentioned=emil0519" },
   ];
@@ -76,39 +74,6 @@ function Filter() {
         paging: "",
         search: searchQuery,
       });
-
-      //   setValue({
-      //     filter: "",
-      // label: [],
-      // assignees: "",
-      // sort: "",
-      // closed: "",
-      // paging: "",
-      // search: "",
-      //   })
-
-      // switch (inputValue) {
-      //   case "is:issue is:open":
-      //   case "is:issue is:open ":
-      //   case " is:issue is:open": {
-      //     navigate("/");
-      //     break;
-      //   }
-      //   case "is:open assignee:@me":
-      //   case "is:open assignee:@me ":
-      //   case " is:open assignee:@me": {
-      //     navigate("?query=?assignee=emil0519");
-      //     break;
-      //   }
-      //   case "is:open mentions:@me":
-      //   case "is:open mentions:@me ":
-      //   case " is:open mentions:@me": {
-      //     navigate("?query=?assignee=emil0519");
-      //     break;
-      //   }
-      //   default:
-      //     return;
-      // }
     }
   }
 
@@ -197,7 +162,7 @@ function Filter() {
         </div>
       </div>
 
-      <div className="flex h-[32px]  w-[100%] bg-[#f5f7f9] ">
+      {/* <div className="flex h-[32px]  w-[100%] bg-[#f5f7f9] ">
         <img
           src={search}
           className="relative mr-[16px] mt-[8px] mb-[8px] ml-[8px] h-[16px] w-[16px]"
@@ -209,7 +174,7 @@ function Filter() {
           onKeyDown={(e) => handleInput(e)}
           className="w-[100%] bg-[#f5f7f9] p-[8px] text-[14px] text-[#636c75] small:w-[100%] med:w-[100%]"
         ></input>
-      </div>
+      </div> */}
     </section>
   );
 }

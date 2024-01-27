@@ -24,30 +24,6 @@ type Parameter = {
   token?: string;
 };
 
-// type Query = {
-//   name: string;
-//   repo: string;
-//   query: string;
-// };
-
-// interface CreateLabel {
-//   id: number;
-//   node_id: string;
-//   url: string;
-//   name: string;
-//   color: string;
-//   default: boolean;
-//   description: string;
-// }
-
-// type CreateLabelParameter = {
-//   name: string;
-//   repo: string;
-//   token: string;
-//   createLabelName: string;
-//   createLabelColor: string;
-//   createLabelDescription: string;
-// };
 
 export const createIssueApi: any = createApi({
   reducerPath: "createLabelApi",
@@ -91,7 +67,6 @@ export const createIssueApi: any = createApi({
         }),
         body: newIssue,
         providesTags: ["issues"],
-        // change position of providesTag if needed
       }),
     }),
     update: builder.mutation({
