@@ -59,7 +59,6 @@ const RepoList = () => {
         <meta name="keywords" content="github, github repositories" />
         <meta name="author" content="Emil Lau" />
       </Helmet>
-      <Footer />
     </>
   );
 }
