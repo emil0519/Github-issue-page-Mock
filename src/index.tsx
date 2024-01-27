@@ -5,7 +5,7 @@ import Error from "./component/Error/Error";
 import App from "./component/IssueList/App";
 import Label from "./component/LabelList/Label";
 import NewIssue from "./component/NewIssue";
-import RepoWrapper from "./component/RepoList/RepoWrapper";
+import RepoWrapper from "./pages/RepoList";
 import SignIn from "./pages/SignIn";
 import "./index.css";
 import IssuePage from "./IssuePage/IssuePage";
