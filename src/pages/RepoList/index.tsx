@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { useGetRepoQuery } from "../../state/issueRTK";
-import Footer from "../../component/Footer";
+import Footer from "../../component/LayoutWrapper/Footer";
 import RepoLayout from "./RepoLayout";
 
 const RepoList = () => {

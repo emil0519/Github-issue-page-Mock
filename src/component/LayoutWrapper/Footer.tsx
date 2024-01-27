@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import greyGithub from "../img/grey-github.png";
+import greyGithub from "../../img/grey-github.png";
 function Footer() {
   const footerWords = [
     { name: "Terms" },

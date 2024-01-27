@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useSearchParams } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
-import Footer from "../component/Footer";
 import Option from "../component/Option";
 import Repo from "../component/Repo";
 import { useGetAllIssuesQuery } from "../state/issueRTK";
@@ -76,7 +75,6 @@ function IssuePage() {
         <Repo />
         <Option />
         <IssuePageWrap />
-        <Footer />
         <Helmet>
           <meta charSet="utf-8" />
           <title>{data.title}</title>

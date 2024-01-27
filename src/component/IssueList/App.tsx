@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet";
 import { createGlobalStyle } from "styled-components";
 import { UserContext } from "../../utils/useContext";
-import Footer from "../Footer";
 import Option from "../Option";
 import Repo from "../Repo";
 import IssueWrapper from "./IssueWrapper";
@@ -38,7 +37,6 @@ function App() {
         <Repo />
         <Option />
         <IssueWrapper />
-        <Footer />
       </UserContext.Provider>
     </>
   );
