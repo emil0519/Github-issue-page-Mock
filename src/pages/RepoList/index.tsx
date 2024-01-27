@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { useGetRepoQuery } from "../../state/issueRTK";
 import Footer from "../../component/Footer";
-import Header from "../../component/Header";
 import RepoLayout from "./RepoLayout";
 
 const RepoList = () => {
@@ -49,7 +48,6 @@ const RepoList = () => {
 
   return (
     <>
-      <Header />
       <RepoLayout
         data={data}
         user={userInfo.currentSession.user.user_metadata}

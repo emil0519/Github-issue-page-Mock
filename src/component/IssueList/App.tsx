@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet";
 import { createGlobalStyle } from "styled-components";
 import { UserContext } from "../../utils/useContext";
 import Footer from "../Footer";
-import Header from "../Header";
 import Option from "../Option";
 import Repo from "../Repo";
 import IssueWrapper from "./IssueWrapper";
@@ -36,7 +35,6 @@ function App() {
           <meta name="keywords" content="github,issue page" />
           <meta name="author" content="Emil Lau" />
         </Helmet>
-        <Header />
         <Repo />
         <Option />
         <IssueWrapper />

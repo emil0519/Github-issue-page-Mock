@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { useSearchParams } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import Footer from "../component/Footer";
-import Header from "../component/Header";
 import Option from "../component/Option";
 import Repo from "../component/Repo";
 import { useGetAllIssuesQuery } from "../state/issueRTK";
@@ -74,7 +73,6 @@ function IssuePage() {
     <>
       <GlobalStyle />
       <UserContext.Provider value={{ value, setValue }}>
-        <Header />
         <Repo />
         <Option />
         <IssuePageWrap />

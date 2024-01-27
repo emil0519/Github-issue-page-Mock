@@ -1,6 +1,6 @@
 import { BellIcon, MarkGithubIcon } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import down from "../img/down.png";
 import hamburger from "../img/hamburger.png";
@@ -154,6 +154,7 @@ function Header() {
           showDrop={showDrop}
           setShowDrop={setShowDrop}
         />
+        <Outlet />
       </>
     );
   }

@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet";
 import Footer from "../Footer";
-import Header from "../Header";
 import Option from "../Option";
 import Repo from "../Repo";
 import BoxHeader from "./BoxHeader";
@@ -10,7 +9,6 @@ import LabelList from "./LabelList";
 function Label() {
   return (
     <>
-      <Header />
       <Repo />
       <Option />
       <LabelButtons />

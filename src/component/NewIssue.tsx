@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet";
 import { createGlobalStyle } from "styled-components";
 import Footer from "./Footer";
-import Header from "./Header";
 import NewIssueWrapper from "./NewIssue/NewIssueWrapper";
 import Option from "./Option";
 import Repo from "./Repo";
@@ -15,7 +14,6 @@ function NewIssue() {
   return (
     <>
       <GlobalStyle />
-      <Header />
       <Repo />
       <Option />
       <NewIssueWrapper />
