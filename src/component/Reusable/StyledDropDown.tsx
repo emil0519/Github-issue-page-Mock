@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { superbase } from "../../utils/client";
-
+import { superbase } from "../../utils/clientProduction";
 type ControllerProps = {
   controller: {
     content: string;

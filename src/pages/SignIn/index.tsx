@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router-dom'
 import github from '../../img/github.svg'
-import { superbase } from '../../utils/client'
+import { superbase } from '../../utils/clientProduction'
 
 type AuthUserType = User | null;
 type SessionType = Session | null
