@@ -1,5 +1,4 @@
-import { superbase } from "../../utils/client";
-
+import { superbase } from "../../utils/clientProduction";
 type SmallDropProps = {
   controller: {
     content: string;
